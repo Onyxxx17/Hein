@@ -4,14 +4,16 @@ import java.util.ArrayList;
 
 public class Parade {
     private ArrayList<Card> cards;
-
     /**
      * Constructor for Parade. Initializes the parade with 6 cards from the deck.
      *
      * @param deck The deck from which cards are drawn to form the initial parade.
      */
-    public Parade(Deck deck) {
+    public Parade() {
         this.cards = new ArrayList<>();
+    }
+
+    public void add5Cards(Deck deck){
         for (int i = 0; i <= 5; i++) { // Adds 6 cards to the parade
             Card card = deck.removeCardFromDeck();
             cards.add(card);

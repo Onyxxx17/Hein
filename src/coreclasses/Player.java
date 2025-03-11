@@ -20,7 +20,8 @@ public abstract class Player {
     }
 
     public abstract void playCard(Parade parade, Scanner scanner);
-    public abstract void finalPlay(Parade parade,Scanner scanner);
+
+    public abstract void finalPlay(Parade parade, Scanner scanner);
 
     //Initilize closedCards
     //Not sure if this can be applied in GameManager. This is Temporary
@@ -51,33 +52,37 @@ public abstract class Player {
         // for (int i = toCount; i < currentCardsInParade.size() - 1; i++) {
         //     System.out.println(currentCardsInParade.get(i));
         // }
-
         // Process the cards to remove (based on color and value comparisons)
         if (toCount > 0) {
-            for (int i = 0; i < toCount; i++) {
-                Card card = currentCardsInParade.get(i);
-                //Player will receive cards that have the same colour as the played card or cards that have lower values
-                if ((card.getColor().equals(cardPlayedByPlayer.getColor()) || cardPlayedByPlayer.getValue() >= card.getValue()) && !card.equals(cardPlayedByPlayer)) {
-                    // Add card to the removal list
-                    cardsToRemove.add(card);
+            if (cardPlayedByPlayer.getValue() == 0) {
+                for (int i = 0; i < toCount; i++) {
+                    cardsToRemove.add(currentCardsInParade.get(i));
+                }
+                currentCardsInParade.remove(cardPlayedByPlayer);
+            } else {
+                for (int i = 0; i < toCount; i++) {
+                    Card card = currentCardsInParade.get(i);
+                    //Player will receive cards that have the same colour as the played card or cards that have lower values
+                    if ((card.getColor().equals(cardPlayedByPlayer.getColor()) || cardPlayedByPlayer.getValue() >= card.getValue()) && !card.equals(cardPlayedByPlayer)) {
+                        // Add card to the removal list
+                        cardsToRemove.add(card);
+                    }
                 }
             }
-        }
 
-        // if (!cardsToRemove.isEmpty()) {
-        //     System.out.println(name + " gets " + cardsToRemove);
-        // } else {
-        //     System.out.println(name + " gets no cards.");
-        // }
-
-        // Remove the cards safely from the parade and add them to openCards
-        currentCardsInParade.removeAll(cardsToRemove);
-        for (Card card : cardsToRemove) {
-            openCards.computeIfAbsent(card.getColor(), key -> new ArrayList<>()).add(card);
+            // if (!cardsToRemove.isEmpty()) {
+            //     System.out.println(name + " gets " + cardsToRemove);
+            // } else {
+            //     System.out.println(name + " gets no cards.");
+            // }
+            // Remove the cards safely from the parade and add them to openCards
+            currentCardsInParade.removeAll(cardsToRemove);
+            for (Card card : cardsToRemove) {
+                openCards.computeIfAbsent(card.getColor(), key -> new ArrayList<>()).add(card);
+            }
         }
     }
-
-     // Draw a single card from the deck
+        // Draw a single card from the deck
     public void drawCardFromDeck(Deck deck) {
         Card card = deck.removeCardFromDeck();
         closedCards.add(card);
@@ -95,6 +100,7 @@ public abstract class Player {
 
     // Count total number of cards in openCards
     public int getColorCount() {
+
         int totalCount = 0;
         for (ArrayList<Card> cards : openCards.values()) {
             totalCount += cards.size();
@@ -102,6 +108,7 @@ public abstract class Player {
         return totalCount;
     }
 //Getter methods
+
     public ArrayList<Card> getClosedCards() {
         return closedCards;
     }

@@ -15,14 +15,16 @@ public class Tester {
 
         //List of players (Human vs Computer)
         ArrayList<Player> players = GameUtil.createPlayers(playerCount,sc);
-        // Start the game
-        Deck deck = new Deck();
-        deck.shuffle();
-        Parade parade = new Parade(deck);
 
 
         //Can use the below in GameManager Class
         //Give initial 5 cards to each player
+
+        // Start the game
+        Deck deck = new Deck();
+        deck.shuffle();
+        Parade parade = new Parade();
+        parade.add5Cards(deck);
         for (Player player : players) {
             player.InitialClosedCards(deck);
         }
@@ -30,10 +32,14 @@ public class Tester {
         for (Player player : players) {
             parade.showParade();
             System.out.println("\n"+player.getName() + "'s Turn");
-            if(player instanceof Human human) {
-                human.showCards();
+            if(player instanceof Human) {
+                Human h = (Human) player;
+                h.showCards();
             }
             player.playCard(parade,sc);
+            if(parade.getCards().isEmpty()){
+                parade.add5Cards(deck);
+            }
             player.drawCardsFromParade(parade);
             player.drawCardFromDeck(deck);
             System.out.println(player.getName() + "'s open cards :" + player.getOpenCards());
@@ -48,8 +54,9 @@ public class Tester {
         for (Player player : players) {
             parade.showParade();
             System.out.println(player.getName() + "'s Turn");
-            if(player instanceof Human human) {
-                human.showCards();
+            if(player instanceof Human) {
+                Human h = (Human) player;
+                h.showCards();
             }
             player.playCard(parade, sc);
             player.drawCardsFromParade(parade);
