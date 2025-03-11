@@ -1,39 +1,46 @@
 package coreclasses;
 
+/**
+ * Represents a playing card with a color and value.
+ */
 public class Card {
-    public char color;
+    /** The color of the card. */
+    public String color;
+
+    /** The value of the card. */
     public int value;
 
-    // constructor
-    public Card(char c, int v) {
-        this.color = c;
-        this.value = v;
+    /**
+     * Creates a card with the given color and value.
+     */
+    public Card(String color, int value) {
+        this.color = color;
+        this.value = value;
     }
 
+    /** Returns the card's value. */
     public int getValue() {
         return value;
     }
 
-    public char getColor() {
+    /* Returns the card's color. */
+    public String getColor() {
         return color;
     }
 
+    /**
+     * Checks if this card is equal to another card based on color and value.
+     * 
+     * @param c the card to compare with
+     * @return true if the cards have the same color and value, false otherwise
+     */
+    public boolean equals(Card c) {
+        return this.color.equals(c.getColor()) && this.value == c.getValue();
+    }
+
+    /* Returns a string representation of the card. */
+    @Override
     public String toString() {
         return "{" + color + ":" + value + "}";
     }
-
-    // tester for card class (from gpt)
-    // public static void main(String[] args) {
-    //     // Create a new card
-    //     Card card = new Card('R', 5);
-
-    //     // Test getters
-    //     System.out.println("Card Color: " + card.getColor());  // Expected: R
-    //     System.out.println("Card Value: " + card.getValue());   // Expected: 5
-
-    //     // Test toString()
-    //     System.out.println("Card Representation: " + card);    // Expected: { R:5 }
-    // }
-
-        
 }

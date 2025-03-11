@@ -1,0 +1,69 @@
+package utils;
+public class Helper {
+
+    // Function to clear the console
+    public static void flush() {
+        try {
+            // For Windows
+            if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // For Unix-based systems (Linux, macOS, etc.)
+                System.out.print("\033[H\033[2J");  
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            System.out.println("Error clearing the console: " + e.getMessage());
+        }
+    }
+
+    public static void showSpinnerLoading(String message, int duration) {
+        String[] spinner = {"|", "/", "-", "\\"};
+        int i = 0;
+        long endTime = System.currentTimeMillis() + duration * 1000;  // Set duration for spinner in seconds
+    
+        System.out.print(message);
+        while (System.currentTimeMillis() < endTime) {
+            System.out.print("\r" + message + " " + spinner[i % 4]);  // Overwrite previous character
+            i++;
+            try {
+                Thread.sleep(250);  // Delay between spins (250 milliseconds)
+            } catch (InterruptedException e) {
+            }
+        }
+        System.out.println("\nLoading complete!");
+    }
+
+    /**
+     * Introduces a delay to simulate waiting between player turns.
+     * 
+     * @param milliseconds the duration to wait in milliseconds
+     */
+    public static void delay(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Thread was interrupted.");
+        }
+    }
+
+    /**
+     * Simulates a typewriter effect when printing a message.
+     * 
+     * @param message the message to display
+     * @param delay the delay in milliseconds between characters
+     */
+    public static void typewrite(String message, long delay) {
+        for (char c : message.toCharArray()) {
+            System.out.print(c);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Thread was interrupted.");
+            }
+        }
+        System.out.println();
+    }
+}

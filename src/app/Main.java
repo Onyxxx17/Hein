@@ -1,51 +1,42 @@
-package app;
-import exceptions.InvalidPlayerCountException;
-import java.util.*;
+// package app;
+// import coreclasses.*;
+// import exceptions.InvalidPlayerCountException;
+// import java.util.*;
+// import utils.GameUtil;
+// public class Main {
 
-public class Main {
+//     public static void main(String[] args) {
+//         GameUtil scanner = new GameUtil();
+//         scanner.welcomeMessage();
+//         int playerCount = scanner.askForNumberOfPlayers();
 
-    public static void main(String[] args) {
+//         // Game start message
+//         System.out.println("Starting the game with " + playerCount + " players...");
 
-        // Welcome Message
-        System.out.println("Welcome to the Parade Game!");
-        Scanner scanner = new Scanner(System.in);
+//         //List of players (Human vs Computer)
+//         ArrayList<Player> players = GameUtil.createPlayers(playerCount);
+//         // Start the game
+//         Deck deck = new Deck();
+//         deck.shuffle();
+//         Parade parade = new Parade();
 
-        int playerCount = 0;
+//         //Give initial 5 cards to each player
+//         for (Player player : players) {
+//             player.InitialClosedCards(deck);
+//         }
 
-        // Input loop for player count
-        while (true) {
-            try {
-                System.out.print("Enter the number of players: ");
-                playerCount = scanner.nextInt();
+//         parade.initialParade(deck);
 
-                // Validate player count
-                if (playerCount < 2 || playerCount > 6) {
-                    throw new InvalidPlayerCountException("Invalid player count. This game can be played by 2-6 players.\n");
-                }
-
-                // Break the loop if a valid player count is entered
-                break;
-
-            } catch (InvalidPlayerCountException e) {
-                // Handle InvalidPlayerCountException
-                System.out.println(e.getMessage());
-
-            } catch (InputMismatchException e) {
-                // Handle InputMismatchException (non-integer input)
-                System.out.println("Invalid input. Please enter a number.\n");
-
-                // Clear the input buffer
-                scanner.next();
-            }
-        }
-
-        // Game start message
-        System.out.println("Starting the game with " + playerCount + " players...");
-
-        // Start the game
-
-
-        // Close the scanner
-        scanner.close();
-    }
-}
+//         for (Player player : players) {
+//             parade.showParade();
+//             if(player instanceof Human) {
+//                 ((Human) player).showCards();
+//             }
+//             player.playCard(parade);
+//             player.drawCardsFromParade(parade);
+//             player.drawCardFromDeck(deck);
+//         }
+//         // Close the scanner
+//         scanner.close();
+//     }
+// }
