@@ -49,7 +49,9 @@ Running:     java -cp tempclasses coreclasses.Main
 
 Playing a Card
 [] When a face value of 0 is played, remove all cards from the Parade (except the 0 card itself) and add to player's collection
-[] Otherwise, remove cards if the colour matches and value comparison
+[] If the played card has a value v, then the first v cards in the Parade (from the right) are safe and cannot be removed
+   --> The removal check starts from the (v+1)th card onward
+[] Then, remove cards if the colour matches and value comparison
    --> Has the same colour as the played card
    --> Has a value equal to or lower than the played card
 
@@ -59,6 +61,58 @@ End Game Condition
     --> A player collects all 6 colours
 [] Player discard 2 cards from their hand and add to their collection
 [] Player with the lowest score wins
+
+
+----------------------------------------------
+|              Program Structure              |
+----------------------------------------------
+
+The game is organized and structured into different classes, each handling a specific aspect of the game logic.
+
+[App]
+1. Main
+Main entry point for the game
+
+
+[Coreclasses]
+1. Card
+Represents a single playing card, stores the colour and the value of the card
+
+2. Deck
+Manages the shuffling and distribution of the cards, provides the drawing pile for players 
+
+3. Parade
+Represents the cards on the table, handles card placement and removal 
+
+4.Player
+Manages players' hand and collections of cards, score and calculate player's total score based on the open cards
+
+5. Computer
+Simulates an AI player that acts as a human player and handles the computer's player card selection during gameplay 
+
+6. Human
+Representing human player, prompting users for input, allowing them to interact along the game by selecting cards to play
+
+
+[Exceptions]
+1. InvalidPlayerCountException
+Customed exception to handle invalid player count input, ensuring user input is between 2 to 6
+
+2. InvalidTypeException
+Customed exception to handle invalid player type input, when a player is neither a human or computer
+
+
+[Gameplay]
+1. GameManager
+Controls the flow, turns, and win condition of the game, checks whether end game condition is trigerred
+
+
+[Utils]
+1. GameUtils
+Includes functions to display welcome message, validate user input, and provides utility for game initialization
+
+2. Helper
+Provides utility methods for game, for instance, clearing the console, displaying a loading spinner, introducing delays between players' turns, etc.
 
 
 ----------------------------------------------
