@@ -58,7 +58,6 @@ public abstract class Player {
                 for (int i = 0; i < toCount; i++) {
                     cardsToRemove.add(currentCardsInParade.get(i));
                 }
-                currentCardsInParade.remove(cardPlayedByPlayer);
             } else {
                 for (int i = 0; i < toCount; i++) {
                     Card card = currentCardsInParade.get(i);
@@ -86,6 +85,29 @@ public abstract class Player {
     public void drawCardFromDeck(Deck deck) {
         Card card = deck.removeCardFromDeck();
         closedCards.add(card);
+    }
+
+    public void showOpenCards() {
+        if (openCards.isEmpty()) {
+            System.out.println(name + " has no open cards.");
+            return;
+        }
+    
+        System.out.println(name + "'s Open Cards:");
+        for (Map.Entry<String, ArrayList<Card>> entry : openCards.entrySet()) {
+            String color = entry.getKey();
+            List<Card> cards = entry.getValue();
+    
+            // Print color name first
+            System.out.print(color + " cards: ");
+    
+            // Print all cards for this color
+            for (int i = 0; i < cards.size(); i++) {
+                System.out.print(cards.get(i)); 
+                if (i < cards.size() - 1) System.out.print(", ");
+            }
+            System.out.println();
+        }
     }
 //Calculation Methods
 

@@ -16,7 +16,7 @@ public class Human extends Player {
     /**
      * Allows the human player to play a card from their hand into the parade.
      *
-     * @param parade  The parade where the card will be added.
+     * @param parade The parade where the card will be added.
      * @param scanner Scanner object for user input.
      */
     @Override
@@ -54,15 +54,17 @@ public class Human extends Player {
     }
 
     /**
-     * Allows the player to choose two cards from their hand to be moved to open cards before scoring.
+     * Allows the player to choose two cards from their hand to be moved to open
+     * cards before scoring.
      *
-     * @param parade  The parade object (not used here but passed for consistency).
+     * @param parade The parade object (not used here but passed for
+     * consistency).
      * @param scanner Scanner object for user input.
      */
     @Override
     public void finalPlay(Parade parade, Scanner scanner) {
         // Display the player's hand before making selections
-        showCards();
+        showClosedCards();
 
         System.out.println("\nBefore we go to score calculation, choose two cards from your hand to add to open cards for scoring!\n");
 
@@ -72,7 +74,7 @@ public class Human extends Player {
             try {
                 // Show the updated hand after the first selection
                 if (selectedCount == 1) {
-                    showCards();
+                    showClosedCards();
                 }
 
                 // Prompt the player to select a card
@@ -100,7 +102,7 @@ public class Human extends Player {
     /**
      * Displays the player's current hand of closed cards.
      */
-    public void showCards() {
+    public void showClosedCards() {
         System.out.println("You have: ");
         for (int i = 0; i < closedCards.size(); i++) {
             System.out.printf("[%d] %s  ", i + 1, closedCards.get(i));

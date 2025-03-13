@@ -3,17 +3,21 @@ package coreclasses;
 import java.util.ArrayList;
 
 public class Parade {
+
     private ArrayList<Card> cards;
+
     /**
-     * Constructor for Parade. Initializes the parade with 6 cards from the deck.
+     * Constructor for Parade. Initializes the parade with 6 cards from the
+     * deck.
      *
-     * @param deck The deck from which cards are drawn to form the initial parade.
+     * @param deck The deck from which cards are drawn to form the initial
+     * parade.
      */
     public Parade() {
         this.cards = new ArrayList<>();
     }
 
-    public void add5Cards(Deck deck){
+    public void add5Cards(Deck deck) {
         for (int i = 0; i <= 5; i++) { // Adds 6 cards to the parade
             Card card = deck.removeCardFromDeck();
             cards.add(card);
@@ -55,7 +59,11 @@ public class Parade {
      * Displays the current parade of cards.
      */
     public void showParade() {
-        System.out.println("\nCurrent Parade: " + cards);
+        System.out.print("Current Parade: ");
+        for (Card card : cards) {
+            System.out.print(card + " "); // Uses color formatting from toString()
+        }
+        System.out.println();
     }
 
     /**
