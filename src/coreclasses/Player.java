@@ -108,6 +108,7 @@ public abstract class Player {
             }
             System.out.println();
         }
+        System.out.println();
     }
 //Calculation Methods
 

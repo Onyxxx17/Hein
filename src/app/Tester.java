@@ -63,9 +63,8 @@ public class Tester {
             GameUtil.pressEnterToContinue(sc);
         }
 
-        System.out.println("\n");
+        System.out.println("Adding two cards to open cards for final play.\n");
         for (Player player : players) {
-            System.out.println();
             System.out.println(player.getName() + "'s Turn");
             player.finalPlay(parade, sc);
             player.showOpenCards();

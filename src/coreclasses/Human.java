@@ -86,7 +86,7 @@ public class Human extends Player {
                     // Remove the selected card and add it to open cards
                     Card selectedCard = closedCards.remove(index - 1);
                     openCards.computeIfAbsent(selectedCard.getColor(), key -> new ArrayList<>()).add(selectedCard);
-                    System.out.println(selectedCard + " is added to " + name + "'s Open Cards!");
+                    System.out.println(selectedCard + " is added to " + name + "'s Open Cards!\n");
                     selectedCount++; // Increase the count
                 } else {
                     System.out.println("Invalid choice! Enter a number between 1 and " + closedCards.size() + ".");

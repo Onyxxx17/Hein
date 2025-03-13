@@ -57,7 +57,7 @@ public class Computer extends Player {
             Card selectedCard = closedCards.remove(index); // Remove the selected card
 
             // Add the selected card to open cards
-            System.out.println(selectedCard + " is added to " + name + "'s Open Cards!");
+            System.out.println(selectedCard + " is added to " + name + "'s Open Cards!\n");
             openCards.computeIfAbsent(selectedCard.getColor(), key -> new ArrayList<>()).add(selectedCard);
         }
     }

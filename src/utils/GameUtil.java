@@ -7,7 +7,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class GameUtil {
-    private static final int DELAY_DURATION = 400;
+    private static final int DELAY_DURATION = 100;
     public static void welcomeMessage() {
         Helper.typewrite("Welcome to the Parade Card Game!\n", DELAY_DURATION);
         Helper.typewrite("Remember Players! The rule is simple. Score as low as possible. Good Luck!\n", DELAY_DURATION);
