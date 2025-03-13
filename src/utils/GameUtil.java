@@ -16,7 +16,7 @@ public class GameUtil {
     public static void pressEnterToContinue(Scanner scanner) {
         System.out.print("Press Enter to continue...");
         scanner.nextLine(); // Waits for the user to press Enter
-        scanner.nextLine();
+        //scanner.nextLine();
         Helper.flush();
     }
 

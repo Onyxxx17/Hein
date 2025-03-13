@@ -19,7 +19,7 @@ public class Human extends Player {
      * @param parade The parade where the card will be added.
      * @param scanner Scanner object for user input.
      */
-    @Override
+    //@Override
     public void playCard(Parade parade, Scanner scanner) {
         // Ensure the player has cards to play
         if (closedCards.isEmpty()) {
@@ -61,7 +61,7 @@ public class Human extends Player {
      * consistency).
      * @param scanner Scanner object for user input.
      */
-    @Override
+    //@Override
     public void finalPlay(Parade parade, Scanner scanner) {
         // Display the player's hand before making selections
         showClosedCards();
