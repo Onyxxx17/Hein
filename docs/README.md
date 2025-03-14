@@ -23,7 +23,7 @@ Running:     java -cp tempclasses app.Tester
 |                 Game Feature                |
 ----------------------------------------------
 
-[] Players each roll a dice to determine the play sequence, highest value goes first
+[] Players each roll a dice to determine the play sequence, highest value goes first, followed by next player in line (not player who rolled the second highest!)
 [] Automatic deck shuffling and dealing
 [] Players take turns selecting and playing cards
 [] Parade mechanics for card removal based on fixed rules
