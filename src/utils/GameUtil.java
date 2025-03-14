@@ -95,11 +95,9 @@ public class GameUtil {
     }
 
     public static Player decideStartingPlayer(ArrayList<Player> players) {
-        Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.",100);
-        // Create a list of contenders (all players initially)
+        Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.", 100);
         ArrayList<Player> contenders = new ArrayList<>(players);
-        
-        // Keep rolling until there's a single winner
+    
         while (contenders.size() > 1) {
             System.out.println("\nRolling to decide the starting player... 🎲");
     
@@ -111,8 +109,7 @@ public class GameUtil {
                 try {
                     RollDice.animateRoll(player.getName()); // Display rolling animation
                     int roll = RollDice.roll(); // Get a random dice roll (1-6)
-                    System.out.print(RollDice.getDiceFace(roll)); // Display the dice face
-                    System.out.println(player.getName() + " rolled " + roll);
+                    System.out.println(player.getName() + " rolled " + roll); // Display the roll value
     
                     // Store players based on their rolled value
                     rollMap.putIfAbsent(roll, new ArrayList<>());
@@ -138,10 +135,8 @@ public class GameUtil {
     
         // The final remaining player is the starting player
         Player startingPlayer = contenders.get(0);
-        System.out.println("\n" + startingPlayer.getName() + "got the highest roll! " + startingPlayer.getName() + " goes first! ✨");
+        System.out.println("\n" + startingPlayer.getName() + " got the highest roll! " + startingPlayer.getName() + " goes first! ✨");
     
-        // Start the game with the chosen player
-        // gameManager.playerTurn(startingPlayer);
         return startingPlayer;
     }
 
