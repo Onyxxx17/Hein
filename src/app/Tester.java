@@ -5,7 +5,7 @@ import utils.*;
 
 public class Tester {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Scanner sc = new Scanner(System.in);
         // GameUtil.welcomeMessage();
         // GameUtil.pressEnterToContinue(sc);

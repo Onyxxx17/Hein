@@ -94,8 +94,9 @@ public class GameUtil {
         return players;
     }
 
-    public static Player decideStartingPlayer(ArrayList<Player> players) {
+    public static Player decideStartingPlayer(ArrayList<Player> players) throws InterruptedException {
         Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.", 45);
+        Thread.sleep(1000);
         ArrayList<Player> contenders = new ArrayList<>(players);
     
         while (contenders.size() > 1) {
@@ -121,6 +122,8 @@ public class GameUtil {
                     // Handle any interruptions during the animation
                     System.out.println("Animation interrupted for player: " + player.getName());
                     Thread.currentThread().interrupt();
+                    // Continue execution instead of breaking
+                    continue;
                 }
             }
     
@@ -129,7 +132,7 @@ public class GameUtil {
     
             // If multiple players rolled the highest, they will reroll
             if (contenders.size() > 1) {
-                System.out.println("\nTie! Rerolling...");
+                System.out.println("\nTie between players scoring " + maxRoll + "! Rerolling for these players...");
             }
         }
     

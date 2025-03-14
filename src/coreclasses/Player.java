@@ -79,6 +79,14 @@ public abstract class Player {
             for (Card card : cardsToRemove) {
                 openCards.computeIfAbsent(card.getColor(), key -> new ArrayList<>()).add(card);
             }
+            if(!cardsToRemove.isEmpty()){
+                System.out.print(name + " receives:");
+                for (Card card : cardsToRemove) {
+                    System.out.print(card);
+                }
+            } else{
+                System.out.println(name + " receives no cards this round.");
+            }
         }
     }
         // Draw a single card from the deck
