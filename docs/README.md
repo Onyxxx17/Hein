@@ -15,8 +15,8 @@ Player with the lowest score wins.
 
 JDK 8(?) or higher, and able to read simple English to follow the instructions given
 
-Compilation: javac -d tempclasses -cp src src/coreclasses/Main.java
-Running:     java -cp tempclasses coreclasses.Main
+Compilation: javac -d tempclasses -cp src src/app/Tester.java
+Running:     java -cp tempclasses app.Main
 
 
 ----------------------------------------------
