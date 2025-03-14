@@ -16,14 +16,14 @@ Player with the lowest score wins.
 JDK 8(?) or higher, and able to read simple English to follow the instructions given
 
 Compilation: javac -d tempclasses -cp src src/app/Tester.java
-Running:     java -cp tempclasses app.Main
+Running:     java -cp tempclasses app.Tester
 
 
 ----------------------------------------------
 |                 Game Feature                |
 ----------------------------------------------
 
-[] Randomized starting player // wanna ask player to roll dice and see who goes first to make it more interesting?
+[] Players each roll a dice to determine the play sequence, highest value goes first, followed by next player in line (not player who rolled the second highest!)
 [] Automatic deck shuffling and dealing
 [] Players take turns selecting and playing cards
 [] Parade mechanics for card removal based on fixed rules
