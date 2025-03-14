@@ -95,7 +95,7 @@ public class GameUtil {
     }
 
     public static Player decideStartingPlayer(ArrayList<Player> players) {
-        Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.", 100);
+        Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.", 45);
         ArrayList<Player> contenders = new ArrayList<>(players);
     
         while (contenders.size() > 1) {

@@ -62,7 +62,7 @@ public class RollDice {
 
     public static void animateRoll(String playername,int index) throws InterruptedException {
         System.out.println("\n🎲 " + playername + " is rolling the dice...");
-        Thread.sleep(1000); // Delay for 1 second
+        Thread.sleep(1300); // Delay for 1 second
         System.out.println(DICE_FACES[index-1]); // Display one random dice face
     }
 }
