@@ -44,7 +44,10 @@ public class Tester {
             player.drawCardFromDeck(deck);
             player.showOpenCards();
             GameUtil.pressEnterToContinue(sc);
-
+            if (player instanceof Human) {
+                sc.nextLine();
+            }
+            Helper.flush();
         }
 
         //Code below should happen when the end game is reached

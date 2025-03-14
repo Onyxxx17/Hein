@@ -17,7 +17,6 @@ public class GameUtil {
         System.out.print("Press Enter to continue...");
         scanner.nextLine(); // Waits for the user to press Enter
         //scanner.nextLine();
-        Helper.flush();
     }
 
     public static int askForNumberOfPlayers(Scanner scanner) {
