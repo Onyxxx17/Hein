@@ -3,6 +3,7 @@ package utils;
 import coreclasses.*;
 import exceptions.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -91,5 +92,76 @@ public class GameUtil {
 
         }
         return players;
+    }
+
+    public static Player decideStartingPlayer(ArrayList<Player> players) {
+        Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.",100);
+        // Create a list of contenders (all players initially)
+        ArrayList<Player> contenders = new ArrayList<>(players);
+        
+        // Keep rolling until there's a single winner
+        while (contenders.size() > 1) {
+            System.out.println("\nRolling to decide the starting player... 🎲");
+    
+            int maxRoll = 0; // To track the highest roll
+            HashMap<Integer, ArrayList<Player>> rollMap = new HashMap<>(); // Map roll values to players
+    
+            // Each contender rolls the dice
+            for (Player player : contenders) {
+                try {
+                    RollDice.animateRoll(player.getName()); // Display rolling animation
+                    int roll = RollDice.roll(); // Get a random dice roll (1-6)
+                    System.out.print(RollDice.getDiceFace(roll)); // Display the dice face
+                    System.out.println(player.getName() + " rolled " + roll);
+    
+                    // Store players based on their rolled value
+                    rollMap.putIfAbsent(roll, new ArrayList<>());
+                    rollMap.get(roll).add(player);
+    
+                    // Update maxRoll if this roll is the highest so far
+                    maxRoll = Math.max(maxRoll, roll);
+                } catch (InterruptedException e) {
+                    // Handle any interruptions during the animation
+                    System.out.println("Animation interrupted for player: " + player.getName());
+                    Thread.currentThread().interrupt();
+                }
+            }
+    
+            // Get only the players who rolled the highest value
+            contenders = rollMap.get(maxRoll);
+    
+            // If multiple players rolled the highest, they will reroll
+            if (contenders.size() > 1) {
+                System.out.println("\nTie! Rerolling...");
+            }
+        }
+    
+        // The final remaining player is the starting player
+        Player startingPlayer = contenders.get(0);
+        System.out.println("\n" + startingPlayer.getName() + "got the highest roll! " + startingPlayer.getName() + " goes first! ✨");
+    
+        // Start the game with the chosen player
+        // gameManager.playerTurn(startingPlayer);
+        return startingPlayer;
+    }
+
+    public static void rearrangePlayersList(ArrayList<Player> players, Player startingPlayer) {
+        int startingIndex = players.indexOf(startingPlayer);
+        if (startingIndex == -1) {
+            return; // Starting player not found in the list (should not happen but added just in case)
+        }
+    
+        // Create a new list with the starting player and the rest in order
+        ArrayList<Player> rearrangedList = new ArrayList<>();
+        for (int i = startingIndex; i < players.size(); i++) {
+            rearrangedList.add(players.get(i));
+        }
+        for (int i = 0; i < startingIndex; i++) {
+            rearrangedList.add(players.get(i));
+        }
+    
+        // Update the original players list
+        players.clear();
+        players.addAll(rearrangedList);
     }
 }

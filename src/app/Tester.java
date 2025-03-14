@@ -16,7 +16,9 @@ public class Tester {
 
         //List of players (Human vs Computer)
         ArrayList<Player> players = GameUtil.createPlayers(playerCount, sc);
-        decideStartingPlayer(players);
+        Helper.flush();
+        Player firstPlayer = GameUtil.decideStartingPlayer(players);
+        GameUtil.rearrangePlayersList(players, firstPlayer);
 
         //Can use the below in GameManager Class
         //Give initial 5 cards to each player
@@ -64,6 +66,10 @@ public class Tester {
             player.drawCardsFromParade(parade);
             player.showOpenCards();
             GameUtil.pressEnterToContinue(sc);
+            if (player instanceof Human) {
+                sc.nextLine();
+            }
+            Helper.flush();
         }
 
         System.out.println("Adding two cards to open cards for final play.\n");
@@ -72,6 +78,10 @@ public class Tester {
             player.finalPlay(parade, sc);
             player.showOpenCards();
             GameUtil.pressEnterToContinue(sc);
+            if (player instanceof Human) {
+                sc.nextLine();
+            }
+            Helper.flush();
         }
 
         Helper.flush();
@@ -81,77 +91,5 @@ public class Tester {
         // Close the scanner
         sc.close();
     }
-
-    static void decideStartingPlayer(ArrayList<Player> players) {
-
-        int[] rolls = new int[players.size()];
-
-        // Each player / computer rolls
-
-        for (int i = 0; i < players.size(); i++) {
-            try {
-                RollDice.animateRoll(players.get(i).getName());
-                int roll = RollDice.roll();
-                System.out.println(RollDice.getDiceFace(roll));
-                System.out.println(players.get(i).getName() + " rolled " + roll);
-                rolls[i] = roll;
-
-            } catch (InterruptedException e) {
-                System.out.println("Animation interrupted for player: " + players.get(i).getName());
-                Thread.currentThread().interrupt();
-                return;
-            }
-        }
-
-        // Find highest roll
-
-        ArrayList<Player> winners = new ArrayList<>();
-        int max = 0;
-        for (int i = 0; i < rolls.length; i++) {
-            if (rolls[i] > max) {
-                max = rolls[i];
-            }
-        }
-
-        for (int i = 0; i < rolls.length; i++) {
-            if (rolls[i] == max) {
-                winners.add(players.get(i));
-            }
-        }
-
-        // Handle multiple winners
-        while (winners.size() > 1) {
-            System.out.println("Tie! Rerolling...");
-            rolls = new int[players.size()];
-            winners.clear();
-            
-            for (int i = 0; i < players.size(); i++) {
-                try {
-                    RollDice.animateRoll(players.get(i).getName());
-                    int roll = RollDice.roll();
-                    System.out.println(RollDice.getDiceFace(roll));
-                    System.out.println(players.get(i).getName() + " rolled " + roll);
-                    rolls[i] = roll;
-                } catch (InterruptedException e) {
-                    System.out.println("Animation interrupted for player: " + players.get(i).getName());
-                    Thread.currentThread().interrupt();
-                    return;
-                }
-            }
-        
-            // finds highest value in the rolls array and assigns it to max. If rolls is empty, max will be set to 0.
-            max = Arrays.stream(rolls).max().orElse(0);
-            for (int i = 0; i < rolls.length; i++) {
-                if (rolls[i] == max) {
-                    winners.add(players.get(i));
-                }
-            }
-        }
-
-        Player startingPlayer = winners.get(0);
-        System.out.println(startingPlayer.getName() + " goes first! ✨");
-
-        // call
-        // gameManager.playerTurn(startingPlayer)
-    }
+    
 }

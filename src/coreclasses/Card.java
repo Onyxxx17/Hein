@@ -1,5 +1,7 @@
 package coreclasses;
 
+import utils.Helper;
+
 /**
  * Represents a playing card with a color and value.
  */
@@ -38,20 +40,8 @@ public class Card {
         return this.color.equals(c.getColor()) && this.value == c.getValue();
     }
 
-    public String getColorCode() {
-        switch (color.toLowerCase()) {
-            case "blue": return "\u001B[34m"; // Blue
-            case "green": return "\u001B[32m"; // Green
-            case "grey": return "\u001B[37m"; // Grey
-            case "orange": return "\u001B[38;5;214m"; // Orange (ANSI extended color code)
-            case "purple": return "\u001B[35m"; // Purple
-            case "red": return "\u001B[31m"; // Red
-            default: return "\u001B[0m"; // Reset (Default color)
-        }
-    }
-
     @Override
     public String toString() {
-        return getColorCode() + "[" + color + " " + value + "]" + "\u001B[0m";
+        return Helper.getColorCode(color) + "[" + color + " " + value + "]" + "\u001B[0m";
     }
 }
