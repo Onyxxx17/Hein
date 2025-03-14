@@ -107,8 +107,8 @@ public class GameUtil {
             // Each contender rolls the dice
             for (Player player : contenders) {
                 try {
-                    RollDice.animateRoll(player.getName()); // Display rolling animation
                     int roll = RollDice.roll(); // Get a random dice roll (1-6)
+                    RollDice.animateRoll(player.getName(), roll); // Display rolling animation
                     System.out.println(player.getName() + " rolled " + roll); // Display the roll value
     
                     // Store players based on their rolled value
