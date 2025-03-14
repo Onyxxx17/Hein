@@ -34,54 +34,58 @@ public abstract class Player {
 
     // Method to draw cards to openCards from the parade based on playedCard(Last Card in Parade)'s card
     public void drawCardsFromParade(Parade parade) {
-        // parade.showParade();
         ArrayList<Card> currentCardsInParade = parade.getCards();
+        if (currentCardsInParade.isEmpty()) {
+            System.out.println(name + " receives no cards this round (parade is empty).");
+            return;
+        }
+    
         Card cardPlayedByPlayer = currentCardsInParade.get(currentCardsInParade.size() - 1);
-
+    
         // Create a list to store cards to be removed (prevents ConcurrentModificationException)
         ArrayList<Card> cardsToRemove = new ArrayList<>();
-
+    
         // Check the value of the player's card in parade
-        // If it is larger than the total number of cards in parade, no cards will be removed from parade
         int cardNumber = cardPlayedByPlayer.getValue();
         int toCount = (currentCardsInParade.size() - cardNumber - 1) > 0 ? (currentCardsInParade.size() - cardNumber - 1) : 0;
-
-        // Print out the safe cards (those that can be neglected based on the rules)
-        //Remove later
-        // System.out.println("Safe cards:");
-        // for (int i = toCount; i < currentCardsInParade.size() - 1; i++) {
-        //     System.out.println(currentCardsInParade.get(i));
-        // }
+    
         // Process the cards to remove (based on color and value comparisons)
         if (toCount > 0) {
             if (cardPlayedByPlayer.getValue() == 0) {
+                // If the played card is 0, remove all cards up to toCount
                 for (int i = 0; i < toCount; i++) {
                     cardsToRemove.add(currentCardsInParade.get(i));
                 }
             } else {
+                // Otherwise, remove cards based on color and value
                 for (int i = 0; i < toCount; i++) {
                     Card card = currentCardsInParade.get(i);
-                    //Player will receive cards that have the same colour as the played card or cards that have lower values
-                    if ((card.getColor().equals(cardPlayedByPlayer.getColor()) || cardPlayedByPlayer.getValue() >= card.getValue()) && !card.equals(cardPlayedByPlayer)) {
-                        // Add card to the removal list
+                    if (card.getColor().equals(cardPlayedByPlayer.getColor()) || cardPlayedByPlayer.getValue() >= card.getValue()) {
                         cardsToRemove.add(card);
                     }
                 }
             }
-
-            // if (!cardsToRemove.isEmpty()) {
-            //     System.out.println(name + " gets " + cardsToRemove);
-            // } else {
-            //     System.out.println(name + " gets no cards.");
-            // }
-            // Remove the cards safely from the parade and add them to openCards
-            currentCardsInParade.removeAll(cardsToRemove);
+        }
+    
+        // Print the result of the card removal
+        if (!cardsToRemove.isEmpty()) {
+            System.out.print(name + " receives: ");
             for (Card card : cardsToRemove) {
-                openCards.computeIfAbsent(card.getColor(), key -> new ArrayList<>()).add(card);
+                System.out.print(card + " ");
             }
+            System.out.println();
+        } else {
+            System.out.println(name + " receives no cards this round.");
+        }
+    
+        // Remove the cards from the parade and add them to openCards
+        currentCardsInParade.removeAll(cardsToRemove);
+        for (Card card : cardsToRemove) {
+            openCards.computeIfAbsent(card.getColor(), key -> new ArrayList<>()).add(card);
         }
     }
-        // Draw a single card from the deck
+    // Draw a single card from the deck
+
     public void drawCardFromDeck(Deck deck) {
         Card card = deck.removeCardFromDeck();
         closedCards.add(card);
@@ -90,23 +94,24 @@ public abstract class Player {
     public void showOpenCards() {
         if (openCards.isEmpty()) {
             System.out.println(name + " has no open cards.");
-            return;
-        }
+        } else {
+            System.out.println(name + "'s Open Cards:");
+            for (Map.Entry<String, ArrayList<Card>> entry : openCards.entrySet()) {
+                String color = entry.getKey();
+                List<Card> cards = entry.getValue();
     
-        System.out.println(name + "'s Open Cards:");
-        for (Map.Entry<String, ArrayList<Card>> entry : openCards.entrySet()) {
-            String color = entry.getKey();
-            List<Card> cards = entry.getValue();
+                // Print color name first
+                System.out.print(color + " cards: ");
     
-            // Print color name first
-            System.out.print(color + " cards: ");
-    
-            // Print all cards for this color
-            for (int i = 0; i < cards.size(); i++) {
-                System.out.print(cards.get(i)); 
-                if (i < cards.size() - 1) System.out.print(", ");
+                // Print all cards for this color
+                for (int i = 0; i < cards.size(); i++) {
+                    System.out.print(cards.get(i));
+                    if (i < cards.size() - 1) {
+                        System.out.print(", ");
+                    }
+                }
+                System.out.println();
             }
-            System.out.println();
         }
         System.out.println();
     }

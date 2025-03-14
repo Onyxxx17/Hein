@@ -5,7 +5,7 @@ import utils.*;
 
 public class Tester {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Scanner sc = new Scanner(System.in);
         // GameUtil.welcomeMessage();
         // GameUtil.pressEnterToContinue(sc);
@@ -19,7 +19,11 @@ public class Tester {
         Helper.flush();
         Player firstPlayer = GameUtil.decideStartingPlayer(players);
         GameUtil.rearrangePlayersList(players, firstPlayer);
-
+        
+        //Resolves the issue with the input buffer dice rolling animation
+        sc.nextLine();
+        GameUtil.pressEnterToContinue(sc);
+        Helper.flush();
         //Can use the below in GameManager Class
         //Give initial 5 cards to each player
         // Start the game
