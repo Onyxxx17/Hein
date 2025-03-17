@@ -23,7 +23,7 @@ public class Tester {
         
         //Resolves the issue with the input buffer dice rolling animation
         sc.nextLine();
-        // GameUtil.pressEnterToContinue(sc);
+        GameUtil.pressEnterToContinue(sc);
         //Helper.flush();
         //Give initial 5 cards to each player: = dealCards() in gameManager
         // Start the game
@@ -59,9 +59,9 @@ public class Tester {
                 player.drawCardFromDeck(deck);
                 player.showOpenCards();
                 GameUtil.pressEnterToContinue(sc);
-                // if (player instanceof Human) {
-                //     sc.nextLine();
-                // }
+                if (player instanceof Human) {
+                    sc.nextLine();
+                }
                 // Helper.flush();
             }    
         }
