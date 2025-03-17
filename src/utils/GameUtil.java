@@ -8,16 +8,17 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class GameUtil {
-    private static final int DELAY_DURATION = 100;
+    private static final int DELAY_DURATION = 45;
+
     public static void welcomeMessage() {
-        Helper.typewrite("Welcome to the Parade Card Game!\n", DELAY_DURATION);
+        Helper.typewrite("Welcome to the Parade Card Game!", DELAY_DURATION);
         Helper.typewrite("Remember Players! The rule is simple. Score as low as possible. Good Luck!\n", DELAY_DURATION);
     }
 
     public static void pressEnterToContinue(Scanner scanner) {
         System.out.print("Press Enter to continue...");
         scanner.nextLine(); // Waits for the user to press Enter
-        //scanner.nextLine();
+        scanner.nextLine();
     }
 
     public static int askForNumberOfPlayers(Scanner scanner) {

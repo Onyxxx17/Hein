@@ -10,7 +10,6 @@ public class GameManager {
     
 
     public GameManager(ArrayList<Player> players) {
-        
         this.players = players;
         this.deck = new Deck();
         
@@ -25,20 +24,26 @@ public class GameManager {
         
     }
 
-    public boolean checkEndGame() {
+    public boolean checkEndGame() { // false by default --> boolean checkEndGame = false,, if true, then trigger end game
+        //System.out.println("Checking end game..."); // check if method is working
         if (deck.isEmpty()) {
             return true;
         }
+
         for (Player p : players) {
-            boolean allHaveCards = true;
+            boolean haveAllColour = false;
             for (List<Card> list : p.getOpenCards().values()) { 
                 if (list.isEmpty()) { 
-                    allHaveCards = false;   
+                    haveAllColour = false;
                     break;
                 } 
             } 
-   if (allHaveCards) return true;
-  }
+
+            if (haveAllColour) {
+                return true;
+            }
+        }
+
         return false;
     }
 
