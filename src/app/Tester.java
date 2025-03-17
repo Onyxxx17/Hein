@@ -23,7 +23,7 @@ public class Tester {
         //Resolves the issue with the input buffer dice rolling animation
         sc.nextLine();
         GameUtil.pressEnterToContinue(sc);
-        Helper.flush();
+        //Helper.flush();
         //Can use the below in GameManager Class
         //Give initial 5 cards to each player
         // Start the game
@@ -53,7 +53,7 @@ public class Tester {
             if (player instanceof Human) {
                 sc.nextLine();
             }
-            Helper.flush();
+            //Helper.flush();
         }
 
         //Code below should happen when the end game is reached
@@ -73,7 +73,7 @@ public class Tester {
             if (player instanceof Human) {
                 sc.nextLine();
             }
-            Helper.flush();
+            //Helper.flush();
         }
 
         System.out.println("Adding two cards to open cards for final play.\n");
@@ -85,10 +85,10 @@ public class Tester {
             if (player instanceof Human) {
                 sc.nextLine();
             }
-            Helper.flush();
+            //Helper.flush();
         }
 
-        Helper.flush();
+        //Helper.flush();
         for (Player player : players) {
             player.showOpenCards();
         }
