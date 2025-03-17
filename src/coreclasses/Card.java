@@ -20,6 +20,7 @@ public class Card {
         this.value = value;
     }
 
+    // Get methods
     /** Returns the card's value. */
     public int getValue() {
         return value;
@@ -28,6 +29,11 @@ public class Card {
     /* Returns the card's color. */
     public String getColor() {
         return color;
+    }
+
+    // Set methods
+    public void setValue(int value) {
+        this.value = value;
     }
 
     /**

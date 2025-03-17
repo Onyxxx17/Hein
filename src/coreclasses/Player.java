@@ -145,4 +145,13 @@ public abstract class Player {
         return openCards;
     }
 
+    public int getScore() {
+        return score;
+    }
+    
+//Setter Methods
+    public void setScore(int score) {
+        this.score = score;
+    }
+
 }

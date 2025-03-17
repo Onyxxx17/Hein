@@ -48,4 +48,8 @@ public class Deck {
     public Boolean isEmpty() {
         return cards.isEmpty();
     }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
 }
