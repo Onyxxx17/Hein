@@ -2,6 +2,7 @@ package utils;
 
 import coreclasses.*;
 import exceptions.*;
+import gameplay.RollDice;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -18,7 +19,6 @@ public class GameUtil {
     public static void pressEnterToContinue(Scanner scanner) {
         System.out.print("Press Enter to continue...");
         scanner.nextLine(); // Waits for the user to press Enter
-        scanner.nextLine();
     }
 
     public static int askForNumberOfPlayers(Scanner scanner) {
