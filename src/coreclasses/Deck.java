@@ -17,7 +17,7 @@ public class Deck {
     public Deck() {
         this.cards = new ArrayList<>();
         for (String color : colors) {
-            for (int i = 0; i <= 10; i++) { // Adding cards numbered 0 to 10
+            for (int i = 0; i <= 4; i++) { // Adding cards numbered 0 to 10
                 cards.add(new Card(color, i));
             }
         }
@@ -37,17 +37,20 @@ public class Deck {
      * @return The removed card from the deck.
      */
     public Card removeCardFromDeck() {
-        return cards.remove(cards.size() - 1);
+        if (!cards.isEmpty()) {
+            return cards.remove(cards.size() - 1);
+        }
+        return null; // Return null if the deck is empty
     }
 
-    /**
-     * Checks if the deck is empty.
-     *
-     * @return true if the deck is empty, false otherwise.
-     */
-    public Boolean isEmpty() {
-        return cards.isEmpty();
-    }
+    // /**
+    //  * Checks if the deck is empty.
+    //  *
+    //  * @return true if the deck is empty, false otherwise.
+    //  */
+    // public Boolean isEmpty() {
+    //     return cards.size() == 0;
+    // }
 
     public ArrayList<Card> getCards() {
         return cards;

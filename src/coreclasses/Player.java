@@ -87,7 +87,13 @@ public abstract class Player {
      * @param deck The deck from which the card is drawn.
      */
     public void drawCardFromDeck(Deck deck) {
-        closedCards.add(deck.removeCardFromDeck());
+
+        //Does nothing when the deck became empty
+        if (!deck.getCards().isEmpty()) {
+            closedCards.add(deck.removeCardFromDeck());
+        } else{
+            System.out.println("The deck is empty. It should end right now");
+        }
     }
 
     // ============================ Display Methods ============================

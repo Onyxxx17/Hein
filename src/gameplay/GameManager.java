@@ -13,9 +13,9 @@ public class GameManager {
     private Deck deck;
     private static final String[] colors = {"Blue", "Green", "Grey", "Orange", "Purple", "Red"};
 
-    public GameManager(ArrayList<Player> players) {
+    public GameManager(ArrayList<Player> players, Deck deck) {
         this.players = players;
-        this.deck = new Deck();
+        this.deck = deck;
 
     }
 
@@ -30,7 +30,7 @@ public class GameManager {
 
     public boolean checkEndGame() { // false by default --> boolean checkEndGame = false,, if true, then trigger end game
         //System.out.println("Checking end game..."); // check if method is working
-        if (deck.isEmpty()) {
+        if (deck == null || deck.getCards() == null || deck.getCards().isEmpty()) {
             System.out.println("No more cards are left in the deck");
             return true;
         }
@@ -138,19 +138,51 @@ public class GameManager {
                 continue;
             }
 
-            for (Player p : maxPlayers) // if (maxPlayers.size() > 1) {
-            //     System.out.print(p.getName());
-            //     if (p != maxPlayers.get(maxPlayers.size() - 1)) {
-            //         System.out.println(", ");
-            //     }
-            // } else {
-            //     System.out.print(p.getName() + " ");
-            // }
-            {
+            for (Player p : maxPlayers) {
+                // if (maxPlayers.size() > 1) {
+                //     System.out.print(p.getName());
+                //     if (p != maxPlayers.get(maxPlayers.size() - 1)) {
+                //         System.out.println(", ");
+                //     }
+                // } else {
+                //     System.out.print(p.getName() + " ");
+                // }
                 for (Card card : p.getOpenCards().get(c)) {
                     System.out.println(card + "'s value is set to 1");
                     card.setValue(1);
                 }
+            }
+        }
+
+        for (Player p : players) {
+            System.out.println("\n" + p.getName() + " open cards after flipping:");
+            for (String color : colors) {
+                List<Card> openCards = p.getOpenCards().getOrDefault(color, new ArrayList<>());
+                System.out.print(color + " cards: ");
+
+                if (openCards.isEmpty()) {
+                    System.out.print("No Cards");
+                }
+                
+                for (int i = 0; i < openCards.size(); i++) {
+                    Card card = openCards.get(i);
+                    if(card.getValue() == 1) {
+                        System.out.print("[" + color + "] ");
+
+                        if (i != openCards.size() - 1){
+                            System.out.print("-- ");
+                        }
+                    } else {
+                        System.out.print("[" + color + " " + card.getValue() + "] ");
+
+                        if (i != openCards.size() - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                }
+
+                System.out.println();
+
             }
         }
     }

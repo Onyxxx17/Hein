@@ -1,13 +1,18 @@
-package app;
+package gameplay;
 
-import coreclasses.*;
-import gameplay.*;
-import java.util.*;
-import utils.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Tester {
+import coreclasses.Deck;
+import coreclasses.Human;
+import coreclasses.Parade;
+import coreclasses.Player;
+import utils.GameUtil;
+import utils.Helper;
 
-    public static void main(String[] args) throws InterruptedException {
+public class GameControl {
+    
+     public static void main(String[] args) throws InterruptedException {
         Scanner sc = new Scanner(System.in);
         // GameUtil.welcomeMessage();
         // GameUtil.pressEnterToContinue(sc);
@@ -133,5 +138,4 @@ public class Tester {
         // Close the scanner
         sc.close();
     }
-
 }
