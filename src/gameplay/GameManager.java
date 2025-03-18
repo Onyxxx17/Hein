@@ -66,13 +66,15 @@ public class GameManager {
                 continue;
             }
 
-            int numCards = p.getOpenCards().get(colour).size();
+            int numCards = p.getOpenCards().get(colour).size(); // suppose player 1 has 2 blue cards, numCards = 2
             if (players.size() == 2)  {
                 if (numCards >= max + 2) {
                     max = numCards;
                     playersOut.clear(); // reset as a new max is found
                     playersOut.add(p); // add that player to the player with max card 
-                }
+                } else if (numCards == max) {
+                    continue; // need to fix, both dont flip
+                } 
             } else { // handling > 2 players (no special rule)
                 if (numCards >= max) {
                     max = numCards;
@@ -104,12 +106,43 @@ public class GameManager {
                     card.setValue(1);
                 }
             }
-            
+        }
+
+        for (Player p : players) {
+            System.out.println("\n" + p.getName() + " open cards after flipping:");
+            for (String color : colors) {
+                List<Card> openCards = p.getOpenCards().getOrDefault(color, new ArrayList<>());
+                System.out.print(color + " cards: ");
+
+                if (openCards.isEmpty()) {
+                    System.out.print("No Cards");
+                }
+                
+                for (int i = 0; i < openCards.size(); i++) {
+                    Card card = openCards.get(i);
+                    if(card.getValue() == 1) {
+                        System.out.print("[" + color + "] ");
+
+                        if (i != openCards.size() - 1){
+                            System.out.print("-- ");
+                        }
+                    } else {
+                        System.out.print("[" + color + " " + card.getValue() + "] ");
+
+                        if (i != openCards.size() - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                }
+
+                System.out.println();
+
+            }
         }
     }
 
     public void calcScore(ArrayList<Player> player) {
-        String[] colors = { "Blue", "Green", "Grey", "Orange", "Purple", "Red" };        
+        String[] colors = { "Blue", "Green", "Grey", "Orange", "Purple", "Red" };
 
         for (Player p : player) {
             int totalScore = 0;
