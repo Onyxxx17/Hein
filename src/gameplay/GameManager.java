@@ -62,6 +62,12 @@ public class GameManager {
     public ArrayList<Player> checkPlayerWithMaxCards(String colour) {
         int max = 0;
         ArrayList<Player> playersOut = new ArrayList<>();
+        Boolean isAllSameNoOfCards = true;
+
+        int firstCards = 0;
+        if (players.get(0).getOpenCards() != null && players.get(0).getOpenCards().containsKey(colour)) {
+            firstCards = players.get(0).getOpenCards().get(colour).size();
+        }
 
         for (Player p : players) {
             if (p == null || p.getOpenCards() == null || !p.getOpenCards().containsKey(colour)) {
@@ -69,6 +75,11 @@ public class GameManager {
             }
 
             int numCards = p.getOpenCards().get(colour).size();
+
+            //Checking if all players have the same number of cards
+            if (firstCards != numCards) {
+                isAllSameNoOfCards = false;
+            }
             // handling > 2 players (no special rule)
             if (numCards > max) {
                 max = numCards;
@@ -83,9 +94,6 @@ public class GameManager {
         if (players.size() == 2) {
             Boolean player1Contains = players.get(0).getOpenCards().containsKey(colour);
             Boolean player2Contains = players.get(1).getOpenCards().containsKey(colour);
-
-            int cards0 = 0;
-            int cards1 = 0;
 
             // Handle cases where one or both players don't have the colour
             if (!player1Contains && !player2Contains) {
@@ -103,8 +111,8 @@ public class GameManager {
                 }
             } else {
                 // Both players have cards of the given colour
-                cards0 = players.get(0).getOpenCards().get(colour).size();
-                cards1 = players.get(1).getOpenCards().get(colour).size();
+                int cards0 = players.get(0).getOpenCards().get(colour).size();
+                int cards1 = players.get(1).getOpenCards().get(colour).size();
                 int difference = Math.abs(cards0 - cards1);
 
                 if (difference < 2) {
@@ -112,6 +120,11 @@ public class GameManager {
                     playersOut.clear();
                 }
             }
+        }
+
+        if (isAllSameNoOfCards) {
+            System.out.println("All players have the same number of cards. No cards flipped for " + colour);
+            playersOut.clear();// removeAll if all the players have the same
         }
         return playersOut;
     }
@@ -125,22 +138,23 @@ public class GameManager {
                 continue;
             }
 
-            for (Player p : maxPlayers) 
-                // if (maxPlayers.size() > 1) {
-                //     System.out.print(p.getName());
-                //     if (p != maxPlayers.get(maxPlayers.size() - 1)) {
-                //         System.out.println(", ");
-                //     }
-                // } else {
-                //     System.out.print(p.getName() + " ");
-                // }
+            for (Player p : maxPlayers) // if (maxPlayers.size() > 1) {
+            //     System.out.print(p.getName());
+            //     if (p != maxPlayers.get(maxPlayers.size() - 1)) {
+            //         System.out.println(", ");
+            //     }
+            // } else {
+            //     System.out.print(p.getName() + " ");
+            // }
+            {
                 for (Card card : p.getOpenCards().get(c)) {
                     System.out.println(card + "'s value is set to 1");
                     card.setValue(1);
                 }
             }
-
         }
+
+    }
 
     public Player decideWinner() {
 
