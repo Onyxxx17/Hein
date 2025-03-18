@@ -152,8 +152,8 @@ public class GameManager {
                     card.setValue(1);
                 }
             }
-
         }
+    }
 
     public Player decideWinner() {
 
