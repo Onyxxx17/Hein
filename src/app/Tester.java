@@ -109,8 +109,10 @@ public class Tester {
 
         System.out.println("Flipping cards based on majority rules...");
         gameManager.flipCards();
+        // Helper.flush()
 
-        System.out.println("Calculating Final Scores... \n");
+        System.out.println("\nCalculating Final Scores... \n"); // add in animation, repeat blinking at the "..."
+        // add in loading spinner?
 
         Player winner = gameManager.decideWinner();
         System.out.println("\n" + winner.getName() + " is the Final Winner!!");
