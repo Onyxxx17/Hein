@@ -4,70 +4,71 @@ import java.util.*;
 
 public abstract class Player {
 
+    // ============================ Attributes ============================
     protected String name;
-    protected ArrayList<Card> closedCards;
-    protected Map<String, ArrayList<Card>> openCards;
+    protected ArrayList<Card> closedCards; // Cards in hand
+    protected Map<String, ArrayList<Card>> openCards; // Open cards grouped by color
     protected int score = 0;
 
+    // ============================ Constructor ============================
     public Player(String name) {
         this.name = name;
         this.closedCards = new ArrayList<>();
         this.openCards = new HashMap<>();
     }
 
-    public String getName() {
-        return name;
-    }
-
+    // ============================ Abstract Methods ============================
     public abstract void playCard(Parade parade, Scanner scanner);
-
     public abstract void finalPlay(Parade parade, Scanner scanner);
 
-    //Initilize closedCards
-    //Not sure if this can be applied in GameManager. This is Temporary
-    public void InitialClosedCards(Deck d) {
+    // ============================ Card Initialization ============================
+    /**
+     * Initializes the player's closed cards by drawing 5 cards from the deck.
+     *
+     * @param deck The deck to draw cards from.
+     */
+    public void initializeClosedCards(Deck deck) {
         for (int i = 0; i < 5; i++) {
-            Card card = d.removeCardFromDeck();
-            closedCards.add(card);
+            closedCards.add(deck.removeCardFromDeck());
         }
     }
 
-    // Method to draw cards to openCards from the parade based on playedCard(Last Card in Parade)'s card
+    // ============================ Parade Interaction ============================
+
+    /**
+     * Draws cards from the parade based on the last played card.
+     * Cards are added to the player's open cards if they match the color
+     * or have a lower value than the played card.
+     *
+     * @param parade The parade from which cards are drawn.
+     */
     public void drawCardsFromParade(Parade parade) {
         ArrayList<Card> currentCardsInParade = parade.getCards();
         if (currentCardsInParade.isEmpty()) {
             System.out.println(name + " receives no cards this round (parade is empty).");
             return;
         }
-    
-        Card cardPlayedByPlayer = currentCardsInParade.get(currentCardsInParade.size() - 1);
-    
-        // Create a list to store cards to be removed (prevents ConcurrentModificationException)
+
+        Card playedCard = currentCardsInParade.get(currentCardsInParade.size() - 1);
         ArrayList<Card> cardsToRemove = new ArrayList<>();
-    
-        // Check the value of the player's card in parade
-        int cardNumber = cardPlayedByPlayer.getValue();
-        int toCount = (currentCardsInParade.size() - cardNumber - 1) > 0 ? (currentCardsInParade.size() - cardNumber - 1) : 0;
-    
-        // Process the cards to remove (based on color and value comparisons)
-        if (toCount > 0) {
-            if (cardPlayedByPlayer.getValue() == 0) {
-                // If the played card is 0, remove all cards up to toCount
-                for (int i = 0; i < toCount; i++) {
-                    cardsToRemove.add(currentCardsInParade.get(i));
-                }
-            } else {
-                // Otherwise, remove cards based on color and value
-                for (int i = 0; i < toCount; i++) {
-                    Card card = currentCardsInParade.get(i);
-                    if (card.getColor().equals(cardPlayedByPlayer.getColor()) || cardPlayedByPlayer.getValue() >= card.getValue()) {
-                        cardsToRemove.add(card);
-                    }
-                }
+
+        // Calculate index range for card selection
+        int toCount = Math.max(currentCardsInParade.size() - playedCard.getValue() - 1, 0);
+
+        for (int i = 0; i < toCount; i++) {
+            Card card = currentCardsInParade.get(i);
+            if (card.getColor().equals(playedCard.getColor()) || playedCard.getValue() >= card.getValue()) {
+                cardsToRemove.add(card);
             }
         }
-    
-        // Print the result of the card removal
+
+        // Remove cards from parade and add them to openCards
+        currentCardsInParade.removeAll(cardsToRemove);
+        for (Card card : cardsToRemove) {
+            openCards.computeIfAbsent(card.getColor(), key -> new ArrayList<>()).add(card);
+        }
+
+        // Display results
         if (!cardsToRemove.isEmpty()) {
             System.out.print(name + " receives: ");
             for (Card card : cardsToRemove) {
@@ -77,65 +78,72 @@ public abstract class Player {
         } else {
             System.out.println(name + " receives no cards this round.");
         }
-    
-        // Remove the cards from the parade and add them to openCards
-        currentCardsInParade.removeAll(cardsToRemove);
-        for (Card card : cardsToRemove) {
-            openCards.computeIfAbsent(card.getColor(), key -> new ArrayList<>()).add(card);
-        }
     }
-    // Draw a single card from the deck
 
+    // ============================ Deck Interaction ============================
+    /**
+     * Draws a single card from the deck and adds it to closed cards.
+     *
+     * @param deck The deck from which the card is drawn.
+     */
     public void drawCardFromDeck(Deck deck) {
-        Card card = deck.removeCardFromDeck();
-        closedCards.add(card);
+        closedCards.add(deck.removeCardFromDeck());
     }
 
+    // ============================ Display Methods ============================
+    /**
+     * Displays the player's open cards grouped by color.
+     */
     public void showOpenCards() {
         if (openCards.isEmpty()) {
             System.out.println(name + " has no open cards.");
-        } else {
-            System.out.println(name + "'s Open Cards:");
-            for (Map.Entry<String, ArrayList<Card>> entry : openCards.entrySet()) {
-                String color = entry.getKey();
-                List<Card> cards = entry.getValue();
-    
-                // Print color name first
-                System.out.print(color + " cards: ");
-    
-                // Print all cards for this color
-                for (int i = 0; i < cards.size(); i++) {
-                    System.out.print(cards.get(i));
-                    if (i < cards.size() - 1) {
-                        System.out.print(", ");
-                    }
+            return;
+        }
+
+        System.out.println(name + "'s Open Cards:");
+        for (Map.Entry<String, ArrayList<Card>> entry : openCards.entrySet()) {
+            System.out.print(entry.getKey() + " cards: ");
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                System.out.print(entry.getValue().get(i));
+                if (i < entry.getValue().size() - 1) {
+                    System.out.print(", ");
                 }
-                System.out.println();
             }
+            System.out.println();
         }
         System.out.println();
     }
-//Calculation Methods
 
-    // Calculate score based on openCards
+    // ============================ Score Calculation ============================
+    /**
+     * Calculates the player's score based on the total value of open cards.
+     */
     public void calculateScore() {
-        for (Map.Entry<String, ArrayList<Card>> entry : openCards.entrySet()) {
-            for (Card card : entry.getValue()) {
+        score = 0;
+        for (ArrayList<Card> cards : openCards.values()) {
+            for (Card card : cards) {
                 score += card.getValue();
             }
         }
     }
 
-    // Count total number of cards in openCards
+    /**
+     * Counts the total number of cards in the player's open cards.
+     *
+     * @return The total count of open cards.
+     */
     public int getColorCount() {
-
         int totalCount = 0;
         for (ArrayList<Card> cards : openCards.values()) {
             totalCount += cards.size();
         }
         return totalCount;
     }
-//Getter methods
+
+    // ============================ Getter Methods ============================
+    public String getName() {
+        return name;
+    }
 
     public ArrayList<Card> getClosedCards() {
         return closedCards;
@@ -148,10 +156,9 @@ public abstract class Player {
     public int getScore() {
         return score;
     }
-    
-//Setter Methods
+
+    // ============================ Setter Methods ============================
     public void setScore(int score) {
         this.score = score;
     }
-
 }

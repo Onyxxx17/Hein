@@ -1,8 +1,8 @@
 package app;
 import coreclasses.*;
+import gameplay.*;
 import java.util.*;
 import utils.*;
-import gameplay.*;
 
 public class Tester {
 
@@ -30,12 +30,13 @@ public class Tester {
 
         Deck deck = new Deck();
         deck.shuffle();
-        Parade parade = new Parade();
-        parade.add5Cards(deck);
+        System.out.println("Deck size before initializing Parade: " + deck.size());
+        Parade parade = new Parade(deck);
+        System.out.println("Deck size after initializing Parade: " + deck.size());
         GameManager gameManager = new GameManager(players);
-        
+        System.out.println("Currrent Deck : "+ deck.getCards().size() + " cards");
         for (Player player : players) { 
-            player.InitialClosedCards(deck);
+            player.initializeClosedCards(deck);
         }
 
         while (!gameManager.checkEndGame()) { // while checkEndGame = false
@@ -44,6 +45,7 @@ public class Tester {
             // System.out.println("End game check: " + gameManager.checkEndGame()); --> to double check 
 
             for (Player player : players) {
+                System.out.println("Currrent Deck : "+ deck.getCards().size() + " cards");
                 parade.showParade();
                 System.out.println("\n --------- " + player.getName() + "'s Turn ---------");
 
@@ -52,15 +54,15 @@ public class Tester {
                     h.showClosedCards();
                 }
                 player.playCard(parade, sc);
-                if (parade.getCards().isEmpty()) {
-                    parade.add5Cards(deck);
-                }
                 player.drawCardsFromParade(parade);
                 player.drawCardFromDeck(deck);
                 player.showOpenCards();
                 GameUtil.pressEnterToContinue(sc);
                 if (player instanceof Human) {
                     sc.nextLine();
+                }
+                if(player.getOpenCards().size() == 6) {
+                    break;
                 }
                 // Helper.flush();
             }    
@@ -101,12 +103,16 @@ public class Tester {
         // for (Player player : players) {
         //     player.showOpenCards();
         // }
+        for(Player player : players) {
+            player.showOpenCards();
+        }
 
         System.out.println("Flipping cards based on majority rules...");
         gameManager.flipCards();
+        // Helper.flush()
 
-        System.out.println("Calculating Final Scores... \n");
-        gameManager.calcScore(players);
+        System.out.println("\nCalculating Final Scores... \n"); // add in animation, repeat blinking at the "..."
+        // add in loading spinner?
 
         Player winner = gameManager.decideWinner();
         System.out.println("\n" + winner.getName() + " is the Final Winner!!");

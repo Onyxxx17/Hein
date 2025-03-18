@@ -8,7 +8,7 @@ public class Deck {
     private static final String[] colors = { "Blue", "Green", "Grey", "Orange", "Purple", "Red" };
 
     // List to hold all cards in the deck
-    private ArrayList<Card> cards;
+    private final ArrayList<Card> cards;
 
     /**
      * Constructor to initialize the deck with cards of different colors and values.
