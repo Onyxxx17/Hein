@@ -1,42 +1,24 @@
-// package app;
-// import coreclasses.*;
-// import exceptions.InvalidPlayerCountException;
-// import java.util.*;
-// import utils.GameUtil;
-// public class Main {
+package app;
+import coreclasses.*;
+import gameplay.*;
+import java.util.*;
+import utils.*;
+public class Main {
 
-//     public static void main(String[] args) {
-//         GameUtil scanner = new GameUtil();
-//         scanner.welcomeMessage();
-//         int playerCount = scanner.askForNumberOfPlayers();
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int playerCount = GameUtil.askForNumberOfPlayers(new Scanner(System.in));
 
-//         // Game start message
-//         System.out.println("Starting the game with " + playerCount + " players...");
-
-//         //List of players (Human vs Computer)
-//         ArrayList<Player> players = GameUtil.createPlayers(playerCount);
-//         // Start the game
-//         Deck deck = new Deck();
-//         deck.shuffle();
-//         Parade parade = new Parade();
-
-//         //Give initial 5 cards to each player
-//         for (Player player : players) {
-//             player.InitialClosedCards(deck);
-//         }
-
-//         parade.initialParade(deck);
-
-//         for (Player player : players) {
-//             parade.showParade();
-//             if(player instanceof Human) {
-//                 ((Human) player).showCards();
-//             }
-//             player.playCard(parade);
-//             player.drawCardsFromParade(parade);
-//             player.drawCardFromDeck(deck);
-//         }
-//         // Close the scanner
-//         scanner.close();
-//     }
-// }
+        // List of players (Human vs Computer)
+        ArrayList<Player> players = GameUtil.createPlayers(playerCount, sc);
+        Deck deck = new Deck();
+        GameManager gameManager = new GameManager(players, deck);
+        GameControl game = new GameControl(gameManager,sc);
+        try {
+            game.startGame();
+        } catch (InterruptedException e) {
+            System.out.println("System interrupted!");
+        }
+        sc.close();
+    }
+}

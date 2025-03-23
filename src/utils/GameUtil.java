@@ -9,6 +9,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class GameUtil {
+
     private static final int DELAY_DURATION = 45;
 
     public static void welcomeMessage() {
@@ -99,24 +100,24 @@ public class GameUtil {
         Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.", 45);
         Thread.sleep(1000);
         ArrayList<Player> contenders = new ArrayList<>(players);
-    
+
         while (contenders.size() > 1) {
             System.out.println("\nRolling to decide the starting player... 🎲");
-    
+
             int maxRoll = 0; // To track the highest roll
             HashMap<Integer, ArrayList<Player>> rollMap = new HashMap<>(); // Map roll values to players
-    
+
             // Each contender rolls the dice
             for (Player player : contenders) {
                 try {
                     int roll = RollDice.roll(); // Get a random dice roll (1-6)
                     RollDice.animateRoll(player.getName(), roll); // Display rolling animation
                     System.out.println(player.getName() + " rolled " + roll); // Display the roll value
-    
+
                     // Store players based on their rolled value
                     rollMap.putIfAbsent(roll, new ArrayList<>());
                     rollMap.get(roll).add(player);
-    
+
                     // Update maxRoll if this roll is the highest so far
                     maxRoll = Math.max(maxRoll, roll);
                 } catch (InterruptedException e) {
@@ -124,23 +125,22 @@ public class GameUtil {
                     System.out.println("Animation interrupted for player: " + player.getName());
                     Thread.currentThread().interrupt();
                     // Continue execution instead of breaking
-                    continue;
                 }
             }
-    
+
             // Get only the players who rolled the highest value
             contenders = rollMap.get(maxRoll);
-    
+
             // If multiple players rolled the highest, they will reroll
             if (contenders.size() > 1) {
                 System.out.println("\nTie between players scoring " + maxRoll + "! Rerolling for these players...");
             }
         }
-    
+
         // The final remaining player is the starting player
         Player startingPlayer = contenders.get(0);
         System.out.println("\n" + startingPlayer.getName() + " got the highest roll! " + startingPlayer.getName() + " goes first! ✨");
-    
+
         return startingPlayer;
     }
 
@@ -149,7 +149,7 @@ public class GameUtil {
         if (startingIndex == -1) {
             return; // Starting player not found in the list (should not happen but added just in case)
         }
-    
+
         // Create a new list with the starting player and the rest in order
         ArrayList<Player> rearrangedList = new ArrayList<>();
         for (int i = startingIndex; i < players.size(); i++) {
@@ -158,7 +158,7 @@ public class GameUtil {
         for (int i = 0; i < startingIndex; i++) {
             rearrangedList.add(players.get(i));
         }
-    
+
         // Update the original players list
         players.clear();
         players.addAll(rearrangedList);
