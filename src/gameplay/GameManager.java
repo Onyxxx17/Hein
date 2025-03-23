@@ -191,7 +191,6 @@ public class GameManager {
 
         for (Player player : players) {
             player.calculateScore();
-            System.out.println(player.getName() + "'s score: " + player.getScore());
         }
         Collections.sort(players, new PlayerComparator());
 
