@@ -166,7 +166,7 @@ public class GameManager {
                 
                 for (int i = 0; i < openCards.size(); i++) {
                     Card card = openCards.get(i);
-                    if(card.getValue() == 1) {
+                    if(card.getValue() == 1) { // debug here
                         System.out.print("[" + color + "] ");
 
                         if (i != openCards.size() - 1){
