@@ -128,7 +128,9 @@ public class Tester {
         // add in loading spinner?
 
         Player winner = gameManager.decideWinner();
-        System.out.println("\n" + winner.getName() + " is the Final Winner!!");
+
+        Thread.sleep(1000);
+        Podium.displayPodium(players);
 
         // Close the scanner
         sc.close();
