@@ -4,7 +4,7 @@ import java.util.*;
 public class Computer extends Player {
 
     // Random number generator for AI decision-making
-    private static final Random random = new Random();
+    private static final Random random = new Random(); // final should be uppercase?
 
     /**
      * Constructor for the Computer player.
