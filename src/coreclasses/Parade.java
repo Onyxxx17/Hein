@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Parade {
 
-    private final ArrayList<Card> cards;
+    private final ArrayList<Card> CARDS;
 
     /**
      * Constructor for Parade. Initializes the parade with 6 cards from the
@@ -14,7 +14,7 @@ public class Parade {
      * parade.
      */
     public Parade() {
-        this.cards = new ArrayList<>();
+        this.CARDS = new ArrayList<>();
         // for (int i = 0; i <= 5; i++) { // Adds 6 cards to the parade
         //     Card card = deck.removeCardFromDeck();
         //     cards.add(card);
@@ -24,7 +24,7 @@ public class Parade {
     public void initializeParade(Deck deck) {
         for (int i = 0; i <= 5; i++) { // Adds 6 cards to the parade
             Card card = deck.removeCardFromDeck();
-            cards.add(card);
+            CARDS.add(card);
         }
     }
     /**
@@ -33,7 +33,7 @@ public class Parade {
      * @param card The card to be added.
      */
     public void addCard(Card card) {
-        cards.add(card);
+        CARDS.add(card);
     }
 
     /**
@@ -42,7 +42,7 @@ public class Parade {
      * @return true if there are no cards in the parade, false otherwise.
      */
     public boolean isEmpty() {
-        return cards.isEmpty();
+        return CARDS.isEmpty();
     }
 
     /**
@@ -52,8 +52,8 @@ public class Parade {
      * @return The removed card if the index is valid, otherwise returns null.
      */
     public Card removeCard(int index) {
-        if (index >= 0 && index < cards.size()) {
-            return cards.remove(index);
+        if (index >= 0 && index < CARDS.size()) {
+            return CARDS.remove(index);
         }
         return null; // Invalid index
     }
@@ -63,7 +63,7 @@ public class Parade {
      */
     public void showParade() {
         System.out.print("Current Parade: ");
-        for (Card card : cards) {
+        for (Card card : CARDS) {
             System.out.print(card + " "); // Uses color formatting from toString()
         }
         System.out.println();
@@ -75,6 +75,6 @@ public class Parade {
      * @return The ArrayList of cards in the parade.
      */
     public ArrayList<Card> getCards() {
-        return cards;
+        return CARDS;
     }
 }

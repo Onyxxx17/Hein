@@ -10,11 +10,11 @@ import utils.*;
  */
 public class GameControl {
 
-    private final GameManager gameManager;
-    private final Deck deck;
-    private final Parade parade = new Parade();
-    private final ArrayList<Player> players;
-    private final Scanner sc;
+    private final GameManager GAMEMANAGER;
+    private final Deck DECK;
+    private final Parade PARADE = new Parade();
+    private final ArrayList<Player> PLAYERS;
+    private final Scanner SC;
 
     /**
      * Creates a new GameControl instance with the specified game manager and input scanner.
@@ -23,10 +23,10 @@ public class GameControl {
      * @param sc The scanner used for user input
      */
     public GameControl(GameManager gameManager, Scanner sc) {
-        this.gameManager = gameManager;
-        this.deck = gameManager.getDeck();
-        this.players = gameManager.getPlayers();
-        this.sc = sc;
+        this.GAMEMANAGER = gameManager;
+        this.DECK = gameManager.getDeck();
+        this.PLAYERS = gameManager.getPlayers();
+        this.SC = sc;
     }
 
     /**
@@ -39,9 +39,9 @@ public class GameControl {
         initializeGame();
         boolean gameEnds = false;
         while (!gameEnds) {
-            for (Player player : players) {
+            for (Player player : PLAYERS) {
                 playTurn(player);
-                if (gameManager.checkEndGame()) {
+                if (GAMEMANAGER.checkEndGame()) {
                     gameEnds = true;
                     System.out.println("Game Over!");
                     break;
@@ -58,25 +58,25 @@ public class GameControl {
      * @throws InterruptedException If thread operations are interrupted
      */
     public void initializeGame() throws InterruptedException {
-        System.out.println("Total players: " + players.size());
-        deck.shuffle();
-        System.out.println("Current Deck: " + deck.getCards().size() + " cards");
+        System.out.println("Total players: " + PLAYERS.size());
+        DECK.shuffle();
+        System.out.println("Current Deck: " + DECK.getCards().size() + " cards");
 
         // Decide starting player
-        Player firstPlayer = GameUtil.decideStartingPlayer(players);
-        GameUtil.rearrangePlayersList(players, firstPlayer);
+        Player firstPlayer = GameUtil.decideStartingPlayer(PLAYERS);
+        GameUtil.rearrangePlayersList(PLAYERS, firstPlayer);
 
         // Resolves the issue with the input buffer dice rolling animation
-        sc.nextLine();
-        GameUtil.pressEnterToContinue(sc);
+        SC.nextLine();
+        GameUtil.pressEnterToContinue(SC);
         
         dealCardstoPlayers();
 
         // Initialize Parade
-        parade.initializeParade(deck);
-        System.out.println("Deck size after initializing Parade: " + deck.size());
-        System.out.println("Current Deck: " + deck.getCards().size() + " cards");
-        parade.showParade();
+        PARADE.initializeParade(DECK);
+        System.out.println("Deck size after initializing Parade: " + DECK.size());
+        System.out.println("Current Deck: " + DECK.getCards().size() + " cards");
+        PARADE.showParade();
     }
 
     /**
@@ -92,13 +92,13 @@ public class GameControl {
             ((Human) player).showClosedCards();
         }
 
-        player.playCard(parade, sc);
-        player.drawCardsFromParade(parade);
-        player.drawCardFromDeck(deck);
+        player.playCard(PARADE, SC);
+        player.drawCardsFromParade(PARADE);
+        player.drawCardFromDeck(DECK);
         player.showOpenCards();
 
         if (player instanceof Human) {
-            GameUtil.pressEnterToContinue(sc);
+            GameUtil.pressEnterToContinue(SC);
         }
     }
 
@@ -109,19 +109,31 @@ public class GameControl {
     public void handleEndGame() {
         System.out.println("\nEnd Game Condition Triggered!!! Everyone plays one last round!\n");
         //Last round without drawing from deck
-        for (Player player : players) {
-            parade.showParade();
+        for (Player player : PLAYERS) {
+            PARADE.showParade();
             System.out.println(player.getName() + "'s Turn");
             if (player instanceof Human human) {
                 human.showClosedCards();
             }
-            player.playCard(parade, sc);
-            player.drawCardsFromParade(parade);
+            player.playCard(PARADE, SC);
+            player.drawCardsFromParade(PARADE);
             player.showOpenCards();
-            GameUtil.pressEnterToContinue(sc);
+            GameUtil.pressEnterToContinue(SC);
         }
 
         finalPlay();
+    }
+
+    /**
+     * Deals 5 initial cards to each player from the deck.
+     * Called during game initialization.
+     */
+    public void dealCardstoPlayers() {
+        for (Player player : PLAYERS) {
+            for (int i = 0; i < 5; i++) {
+                player.drawCardFromDeck(DECK);
+            }
+        }
     }
 
     /**
@@ -130,11 +142,11 @@ public class GameControl {
      */
     private void finalPlay() {
         System.out.println("Adding two cards to open cards for final play.\n");
-        for (Player player : players) {
+        for (Player player : PLAYERS) {
             System.out.println(player.getName() + "'s Turn");
-            player.finalPlay(parade, sc);
+            player.finalPlay(PARADE, SC);
             player.showOpenCards();
-            GameUtil.pressEnterToContinue(sc);
+            GameUtil.pressEnterToContinue(SC);
         }
         concludeGame();
     }
@@ -146,11 +158,11 @@ public class GameControl {
      */
     private void concludeGame() {
         System.out.println("Flipping cards based on majority rules...");
-        gameManager.flipCards();
+        GAMEMANAGER.flipCards();
 
         System.out.println("\nCalculating Final Scores... \n");
 
-        Player winner = gameManager.decideWinner();
+        Player winner = GAMEMANAGER.decideWinner();
 
         try {
             Thread.sleep(1000);
@@ -158,19 +170,9 @@ public class GameControl {
             Thread.currentThread().interrupt();
         }
 
-        Podium.displayPodium(players);
-        sc.close();
+        Podium.displayPodium(PLAYERS);
+        SC.close();
     }
     
-    /**
-     * Deals 5 initial cards to each player from the deck.
-     * Called during game initialization.
-     */
-    public void dealCardstoPlayers() {
-        for (Player player : players) {
-            for (int i = 0; i < 5; i++) {
-                player.drawCardFromDeck(deck);
-            }
-        }
-    }
+    
 }

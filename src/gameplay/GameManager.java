@@ -75,23 +75,23 @@ public class GameManager {
      * specified color, or an empty list if no player qualifies for card
      * flipping
      */
-    public ArrayList<Player> checkPlayerWithMaxCards(String colour) {
+    public ArrayList<Player> checkPlayerWithMaxCards(String color) {
         int max = 0;
         ArrayList<Player> playersOut = new ArrayList<>();
         Boolean isAllSameNoOfCards = true;
 
         int firstCards = 0;
-        if (players.get(0).getOpenCards() != null && players.get(0).getOpenCards().containsKey(colour)) {
-            firstCards = players.get(0).getOpenCards().get(colour).size();
+        if (players.get(0).getOpenCards() != null && players.get(0).getOpenCards().containsKey(color)) {
+            firstCards = players.get(0).getOpenCards().get(color).size();
         }
 
         // Find players with maximum cards of the given color
         for (Player p : players) {
-            if (p == null || p.getOpenCards() == null || !p.getOpenCards().containsKey(colour)) {
+            if (p == null || p.getOpenCards() == null || !p.getOpenCards().containsKey(color)) {
                 continue;
             }
 
-            int numCards = p.getOpenCards().get(colour).size();
+            int numCards = p.getOpenCards().get(color).size();
 
             if (firstCards != numCards) {
                 isAllSameNoOfCards = false;
@@ -105,16 +105,16 @@ public class GameManager {
                 playersOut.add(p);
             }
         }
-        System.out.println("Max cards for " + colour + " is " + max);
+        System.out.println("Max cards for " + color + " is " + max);
 
         // Special rule for two-player game
         if (players.size() == 2) {
-            check2PlayerConditions(colour, playersOut);
+            check2PlayerConditions(color, playersOut);
         }
 
         // No flipping if all players have the same number of cards
         if (isAllSameNoOfCards) {
-            System.out.println("All players have the same number of cards. No cards flipped for " + colour);
+            System.out.println("All players have the same number of cards. No cards flipped for " + color);
             playersOut.clear();
         }
         return playersOut;
@@ -128,27 +128,27 @@ public class GameManager {
  * @param colour The color being evaluated
  * @param playersOut The list of players who currently qualify for card flipping (may be modified by this method)
  */
-public void check2PlayerConditions(String colour, ArrayList<Player> playersOut) {
-    Boolean player1Contains = players.get(0).getOpenCards().containsKey(colour);
-    Boolean player2Contains = players.get(1).getOpenCards().containsKey(colour);
+public void check2PlayerConditions(String color, ArrayList<Player> playersOut) {
+    Boolean player1Contains = players.get(0).getOpenCards().containsKey(color);
+    Boolean player2Contains = players.get(1).getOpenCards().containsKey(color);
 
     // Handle various cases for the two-player variant
     if (!player1Contains && !player2Contains) {
-        System.out.println("Neither player has any " + colour + " cards.");
+        System.out.println("Neither player has any " + color + " cards.");
         playersOut.clear();
     } else if (!player1Contains || !player2Contains) {
-        // One player has no cards of the given colour
-        if (!player1Contains && players.get(1).getOpenCards().get(colour).size() == 1) {
-            System.out.println("Player 1 has no " + colour + " cards, and Player 2 has only 1 card. Difference is not enough.");
+        // One player has no cards of the given color
+        if (!player1Contains && players.get(1).getOpenCards().get(color).size() == 1) {
+            System.out.println("Player 1 has no " + color + " cards, and Player 2 has only 1 card. Difference is not enough.");
             playersOut.clear();
-        } else if (!player2Contains && players.get(0).getOpenCards().get(colour).size() == 1) {
-            System.out.println("Player 2 has no " + colour + " cards, and Player 1 has only 1 card. Difference is not enough.");
+        } else if (!player2Contains && players.get(0).getOpenCards().get(color).size() == 1) {
+            System.out.println("Player 2 has no " + color + " cards, and Player 1 has only 1 card. Difference is not enough.");
             playersOut.clear();
         }
     } else {
         // Both players have cards of the given colour
-        int cards0 = players.get(0).getOpenCards().get(colour).size();
-        int cards1 = players.get(1).getOpenCards().get(colour).size();
+        int cards0 = players.get(0).getOpenCards().get(color).size();
+        int cards1 = players.get(1).getOpenCards().get(color).size();
         int difference = Math.abs(cards0 - cards1);
 
         if (difference < MIN_DIFFERENCE_FOR_TWO_PLAYERS) {
