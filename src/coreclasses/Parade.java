@@ -13,8 +13,15 @@ public class Parade {
      * @param deck The deck from which cards are drawn to form the initial
      * parade.
      */
-    public Parade(Deck deck) {
+    public Parade() {
         this.cards = new ArrayList<>();
+        // for (int i = 0; i <= 5; i++) { // Adds 6 cards to the parade
+        //     Card card = deck.removeCardFromDeck();
+        //     cards.add(card);
+        // }
+    }
+
+    public void initializeParade(Deck deck) {
         for (int i = 0; i <= 5; i++) { // Adds 6 cards to the parade
             Card card = deck.removeCardFromDeck();
             cards.add(card);
