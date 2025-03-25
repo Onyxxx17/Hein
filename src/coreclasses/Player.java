@@ -163,6 +163,14 @@ public abstract class Player {
         return score;
     }
 
+    public int getTotalOpenCards() {
+        int totalCards = 0;
+        for (List<Card> cards : this.getOpenCards().values()) {
+            totalCards += cards.size();
+        }
+        return totalCards;
+    }
+
     // ============================ Setter Methods ============================
     public void setScore(int score) {
         this.score = score;

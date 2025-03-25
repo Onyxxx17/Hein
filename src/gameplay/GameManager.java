@@ -3,6 +3,7 @@ package gameplay;
 import coreclasses.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,11 +88,10 @@ public class GameManager {
 
         // Find players with maximum cards of the given color
         for (Player p : players) {
-            if (p == null || p.getOpenCards() == null || !p.getOpenCards().containsKey(color)) {
-                continue;
+            int numCards = 0;
+            if (p.getOpenCards() != null && p.getOpenCards().containsKey(color)) {
+                numCards = p.getOpenCards().get(color).size();
             }
-
-            int numCards = p.getOpenCards().get(color).size();
 
             if (firstCards != numCards) {
                 isAllSameNoOfCards = false;
@@ -121,42 +121,44 @@ public class GameManager {
     }
 
     /**
- * Applies special rules for the two-player game variant to determine card flipping eligibility.
- * In a two-player game, cards are only flipped if the difference in card count is at least 2,
- * with special handling for cases where one or both players have no cards of a color.
- *
- * @param colour The color being evaluated
- * @param playersOut The list of players who currently qualify for card flipping (may be modified by this method)
- */
-public void check2PlayerConditions(String color, ArrayList<Player> playersOut) {
-    Boolean player1Contains = players.get(0).getOpenCards().containsKey(color);
-    Boolean player2Contains = players.get(1).getOpenCards().containsKey(color);
+     * Applies special rules for the two-player game variant to determine card
+     * flipping eligibility. In a two-player game, cards are only flipped if the
+     * difference in card count is at least 2, with special handling for cases
+     * where one or both players have no cards of a color.
+     *
+     * @param colour The color being evaluated
+     * @param playersOut The list of players who currently qualify for card
+     * flipping (may be modified by this method)
+     */
+    public void check2PlayerConditions(String color, ArrayList<Player> playersOut) {
+        Boolean player1Contains = players.get(0).getOpenCards().containsKey(color);
+        Boolean player2Contains = players.get(1).getOpenCards().containsKey(color);
 
-    // Handle various cases for the two-player variant
-    if (!player1Contains && !player2Contains) {
-        System.out.println("Neither player has any " + color + " cards.");
-        playersOut.clear();
-    } else if (!player1Contains || !player2Contains) {
-        // One player has no cards of the given color
-        if (!player1Contains && players.get(1).getOpenCards().get(color).size() == 1) {
-            System.out.println("Player 1 has no " + color + " cards, and Player 2 has only 1 card. Difference is not enough.");
+        // Handle various cases for the two-player variant
+        if (!player1Contains && !player2Contains) {
+            System.out.println("Neither player has any " + color + " cards.");
             playersOut.clear();
-        } else if (!player2Contains && players.get(0).getOpenCards().get(color).size() == 1) {
-            System.out.println("Player 2 has no " + color + " cards, and Player 1 has only 1 card. Difference is not enough.");
-            playersOut.clear();
-        }
-    } else {
-        // Both players have cards of the given colour
-        int cards0 = players.get(0).getOpenCards().get(color).size();
-        int cards1 = players.get(1).getOpenCards().get(color).size();
-        int difference = Math.abs(cards0 - cards1);
+        } else if (!player1Contains || !player2Contains) {
+            // One player has no cards of the given color
+            if (!player1Contains && players.get(1).getOpenCards().get(color).size() == 1) {
+                System.out.println("Player 1 has no " + color + " cards, and Player 2 has only 1 card. Difference is not enough.");
+                playersOut.clear();
+            } else if (!player2Contains && players.get(0).getOpenCards().get(color).size() == 1) {
+                System.out.println("Player 2 has no " + color + " cards, and Player 1 has only 1 card. Difference is not enough.");
+                playersOut.clear();
+            }
+        } else {
+            // Both players have cards of the given colour
+            int cards0 = players.get(0).getOpenCards().get(color).size();
+            int cards1 = players.get(1).getOpenCards().get(color).size();
+            int difference = Math.abs(cards0 - cards1);
 
-        if (difference < MIN_DIFFERENCE_FOR_TWO_PLAYERS) {
-            System.out.println("The difference between the two players is not enough to flip cards. It needs to be at least 2.");
-            playersOut.clear();
+            if (difference < MIN_DIFFERENCE_FOR_TWO_PLAYERS) {
+                System.out.println("The difference between the two players is not enough to flip cards. It needs to be at least 2.");
+                playersOut.clear();
+            }
         }
     }
-}
 
     /**
      * Flips cards for players with the majority of each color according to the
@@ -166,23 +168,36 @@ public void check2PlayerConditions(String color, ArrayList<Player> playersOut) {
      */
     public void flipCards() {
         // For each color, find players with the most cards and flip those cards
-        for (String c : Deck.CARD_COLORS) {
-            ArrayList<Player> maxPlayers = checkPlayerWithMaxCards(c);
+        Map<Player, ArrayList<Card>> flippedCards = new HashMap<>();
+
+        for (String color : Deck.CARD_COLORS) {
+            ArrayList<Player> maxPlayers = checkPlayerWithMaxCards(color);
 
             if (maxPlayers.isEmpty()) {
                 continue;
             }
 
             // Flip cards (set value to 1) for players with most cards of this color
-            for (Player p : maxPlayers) {
-                for (Card card : p.getOpenCards().get(c)) {
+            for (Player player : maxPlayers) {
+                ArrayList<Card> cardsToFlip = player.getOpenCards().get(color);
+
+                // Initialize the list for the player if not already present
+                if (!flippedCards.containsKey(player)) {
+                    flippedCards.put(player, new ArrayList<>());
+                }
+
+                // Add the flipped cards to the player's list
+                for (Card card : cardsToFlip) {
                     System.out.println(card + "'s value is set to 1");
                     card.setValue(FLIPPED_CARD_VALUE);
+                    flippedCards.get(player).add(card);
                 }
             }
         }
+        showFlippedCards(flippedCards);
+    }
 
-        // Display all players' cards after flipping
+    public void showFlippedCards(Map<Player, ArrayList<Card>> flippedCards) {
         for (Player p : players) {
             System.out.println("\n" + p.getName() + " open cards after flipping:");
             for (String color : Deck.CARD_COLORS) {
@@ -195,7 +210,8 @@ public void check2PlayerConditions(String color, ArrayList<Player> playersOut) {
 
                 for (int i = 0; i < openCards.size(); i++) {
                     Card card = openCards.get(i);
-                    if (card.getValue() == 1) {
+                    boolean contains = isCardFlipped(card, flippedCards);
+                    if (card.getValue() == 1 && contains) {
                         System.out.print("[" + color + "] ");
 
                         if (i != openCards.size() - 1) {
@@ -214,6 +230,15 @@ public void check2PlayerConditions(String color, ArrayList<Player> playersOut) {
         }
     }
 
+    public boolean isCardFlipped(Card cardToCheck, Map<Player, ArrayList<Card>> flippedCards) {
+        for (ArrayList<Card> cards : flippedCards.values()) {
+            if (cards.contains(cardToCheck)) {
+                return true; // Card found in the HashMap
+            }
+        }
+        return false; // Card not found
+    }
+
     /**
      * Determines the winner of the game based on player scores. Calculates each
      * player's score and sorts players using a PlayerComparator.
@@ -222,21 +247,47 @@ public void check2PlayerConditions(String color, ArrayList<Player> playersOut) {
      */
     public Player decideWinner() {
         for (Player player : players) {
-            player.calculateScore();
+            // player.calculateScore();
+            player.setScore(20);
         }
         // Sort players using PlayerComparator (presumably sorts by score)
         Collections.sort(players, new PlayerComparator());
 
+        List<Player> potentialWinners = new ArrayList<>();
+
+        // Add the first player (highest score after sorting)
+        potentialWinners.add(players.get(0));
+
+        // Check subsequent players for same score
+        for (int i = 1; i < players.size(); i++) {
+            if (players.get(i).getScore() == potentialWinners.get(0).getScore()) {
+                potentialWinners.add(players.get(i));
+            } else {
+                break; // No more players with same score
+            }
+        }
+
+        if(potentialWinners.size() > 1){
+            System.out.println("There are " + potentialWinners.size() + " players with the same highest score");
+            System.out.println("The winner will be decided based on 2 conditions ");
+            System.out.println("1. The player with the least collected cards");
+            System.out.println("2. If the number of cards are the same, the player with the least number of colors will win\n");
+            for(Player p:players){
+                System.out.println(p.getName() + "'s collected cards :");
+                System.out.println("Total cards : " + p.getTotalOpenCards() + " cards\n");
+                System.out.println("Total colors : " + p.getOpenCards().size() + " colors\n");
+            }
+
+        }
         // Winner will be at index 0 after sorting
         Player winner = players.get(0);
         return winner;
     }
-
-    /**
-     * Gets the list of players in the game.
-     *
-     * @return ArrayList of players
-     */
+        /**
+         * Gets the list of players in the game.
+         *
+         * @return ArrayList of players
+         */
     public ArrayList<Player> getPlayers() {
         return players;
     }
@@ -249,4 +300,5 @@ public void check2PlayerConditions(String color, ArrayList<Player> playersOut) {
     public Deck getDeck() {
         return deck;
     }
+
 }

@@ -1,1 +1,1 @@
-javac -d tempclasses -cp src src/app/Tester.java
+javac -d tempclasses -cp src src/app/Main..java

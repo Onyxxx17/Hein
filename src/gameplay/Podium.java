@@ -73,7 +73,7 @@ public class Podium {
         
         // Display winner message
         System.out.println("\n🎉 CONGRATULATIONS 🎉");
-        System.out.println("🏆 " + players.get(0).getName().toUpperCase() + " WINS THE GAME! 🏆");
+        System.out.println("🏆 " + players.get(0).getName() + " WINS THE GAME! 🏆");
         System.out.println("\nThanks for playing Parade!");
         System.out.println("===============================");
     }
