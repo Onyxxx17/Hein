@@ -88,8 +88,16 @@ public class GameControl {
      *
      * @param player The player whose turn is being processed
      */
+
+    public static void print_turn(String player_name) {
+        System.out.println("\n" + "=".repeat(40));
+        System.out.println("🌟 " + player_name + "'s Turn");
+        System.out.println("=".repeat(40));
+        System.out.println();
+    }
+
     public void playTurn(Player player) {
-        System.out.println("\n --------- " + player.getName() + "'s Turn ---------");
+        print_turn(player.getName());
 
         if (player instanceof Human) {
             ((Human) player).showClosedCards();
@@ -114,7 +122,7 @@ public class GameControl {
         //Last round without drawing from deck
         for (Player player : PLAYERS) {
             PARADE.showParade();
-            System.out.println(player.getName() + "'s Turn");
+            print_turn(player.getName());
             if (player instanceof Human human) {
                 human.showClosedCards();
             }
@@ -146,7 +154,7 @@ public class GameControl {
     private void finalPlay() {
         System.out.println("Adding two cards to open cards for final play.\n");
         for (Player player : PLAYERS) {
-            System.out.println(player.getName() + "'s Turn");
+            print_turn(player.getName());
             player.finalPlay(PARADE, SC);
             player.showOpenCards();
             GameUtil.pressEnterToContinue(SC);

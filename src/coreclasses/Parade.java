@@ -62,7 +62,7 @@ public class Parade {
      * Displays the current parade of cards.
      */
     public void showParade() {
-        System.out.print("Current Parade: ");
+        System.out.print("🎭 Current Parade: ");
         for (Card card : CARDS) {
             System.out.print(card + " "); // Uses color formatting from toString()
         }

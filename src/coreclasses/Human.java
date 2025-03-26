@@ -103,7 +103,7 @@ public class Human extends Player {
      * Displays the player's current hand of closed cards.
      */
     public void showClosedCards() {
-        System.out.println("You have: ");
+        System.out.println("🎴 You have: ");
         for (int i = 0; i < closedCards.size(); i++) {
             System.out.printf("[%d] %s  ", i + 1, closedCards.get(i));
         }
