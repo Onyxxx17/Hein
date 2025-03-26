@@ -55,7 +55,7 @@ public class Tester {
                 // Display current game state
                 System.out.println("Current Deck: " + deck.getCards().size() + " cards");
                 parade.showParade();
-                System.out.println("\n --------- " + player.getName() + "'s Turn ---------");
+                GameControl.print_turn(player.getName());
 
                 if (player instanceof Human) {
                     ((Human) player).showClosedCards();
@@ -85,7 +85,7 @@ public class Tester {
         System.out.println("\nEnd Game Condition Triggered!!! Everyone plays one last round!\n");
         for (Player player : players) {
             parade.showParade();
-            System.out.println(player.getName() + "'s Turn");
+            GameControl.print_turn(player.getName());
             if (player instanceof Human) {
                 Human h = (Human) player;
                 h.showClosedCards();
@@ -102,7 +102,7 @@ public class Tester {
 
         System.out.println("Adding two cards to open cards for final play.\n");
         for (Player player : players) {
-            System.out.println(player.getName() + "'s Turn");
+            GameControl.print_turn(player.getName());
             player.finalPlay(parade, sc);
             player.showOpenCards();
             GameUtil.pressEnterToContinue(sc);

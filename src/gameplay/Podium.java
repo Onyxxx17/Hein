@@ -3,12 +3,12 @@ package gameplay;
 import coreclasses.Player;
 import java.util.ArrayList;
 
-/**
+/*
  * Displays a podium of top players at the end of the game like Kahoot
  */
 public class Podium {
     
-    /**
+    /*
      * Displays the podium with player rankings based on their scores.
      * List of players sorted by score (lowest to highest for Parade game)
      */
@@ -78,7 +78,7 @@ public class Podium {
         System.out.println("===============================");
     }
     
-    /**
+    /*
      * Gets the first letter/initial of a name for the podium display
      */
     private static String getInitial(String name) {

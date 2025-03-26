@@ -1,16 +1,22 @@
 package gameplay;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import coreclasses.Deck;
 import coreclasses.Human;
 import coreclasses.Parade;
 import coreclasses.Player;
+import java.util.ArrayList;
+import java.util.Scanner;
 import utils.GameUtil;
 import utils.Helper;
 
 public class GameControl {
+
+    public static void print_turn(String player_name) {
+        System.out.println("\n" + "=".repeat(40));
+        System.out.println("🌟 " + player_name + "'s Turn");
+        System.out.println("=".repeat(40));
+        System.out.println();
+    }
     
      public static void main(String[] args) throws InterruptedException {
         Scanner sc = new Scanner(System.in);
@@ -60,7 +66,7 @@ public class GameControl {
                 // Display current game state
                 System.out.println("Current Deck: " + deck.getCards().size() + " cards");
                 parade.showParade();
-                System.out.println("\n --------- " + player.getName() + "'s Turn ---------");
+                print_turn(player.getName());
 
                 if (player instanceof Human) {
                     ((Human) player).showClosedCards();
@@ -90,7 +96,7 @@ public class GameControl {
         System.out.println("\nEnd Game Condition Triggered!!! Everyone plays one last round!\n");
         for (Player player : players) {
             parade.showParade();
-            System.out.println(player.getName() + "'s Turn");
+            print_turn(player.getName());
             if (player instanceof Human) {
                 Human h = (Human) player;
                 h.showClosedCards();
@@ -107,7 +113,7 @@ public class GameControl {
 
         System.out.println("Adding two cards to open cards for final play.\n");
         for (Player player : players) {
-            System.out.println(player.getName() + "'s Turn");
+            print_turn(player.getName());
             player.finalPlay(parade, sc);
             player.showOpenCards();
             GameUtil.pressEnterToContinue(sc);
