@@ -13,10 +13,10 @@ Player with the lowest score wins.
 |            Installation & Setup             |
 ----------------------------------------------
 
-JDK 8(?) or higher, and able to read simple English to follow the instructions given
+JDK 8 or higher, and able to read simple English to follow the instructions given
 
-Compilation: javac -d tempclasses -cp src src/app/Tester.java
-Running:     java -cp tempclasses app.Tester
+Compilation: javac -d tempclasses -cp src src/app/Main.java
+Running:     java -cp tempclasses app.Main
 
 
 ----------------------------------------------
@@ -61,6 +61,9 @@ End Game Condition
     --> A player collects all 6 colours
 [] Player discard 2 cards from their hand and add to their collection
 [] Player with the lowest score wins
+    --> If players have the same score, the winner will be decided based on 2 conditions:
+         1. The player with the least collected cards, followed by
+         2. The player with the least number of colors 
 
 
 ----------------------------------------------
@@ -74,7 +77,7 @@ The game is organized and structured into different classes, each handling a spe
 Main entry point for the game
 
 
-[Coreclasses]
+[Core]
 1. Card
 Represents a single playing card, stores the colour and the value of the card
 
@@ -103,8 +106,20 @@ Customed exception to handle invalid player type input, when a player is neither
 
 
 [Gameplay]
-1. GameManager
-Controls the flow, turns, and win condition of the game, checks whether end game condition is trigerred
+1. GameControl
+Controls the game flow, manages game initialization, turn processing, and game conclusion
+
+2. GameManager
+Manages the core game rules, win conditions, and state for the Parade card game. Handles logic for determining game end, card flipping, and winner selection
+
+3. PlayerComparator
+Compares score and total number of cards of each players
+
+4. Podium
+Displays a podium of top players at the end of the game like Kahoot
+
+5. RollDice
+Prompt user to randomly roll a dice, decide which player to go first
 
 
 [Utils]
