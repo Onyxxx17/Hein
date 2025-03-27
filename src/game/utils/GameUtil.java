@@ -1,12 +1,14 @@
-package utils;
+package game.utils;
 
-import coreclasses.*;
-import exceptions.*;
-import gameplay.RollDice;
+import game.exceptions.*;
+import game.core.*;
+import game.gameplay.RollDice;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
 
 public class GameUtil {
 

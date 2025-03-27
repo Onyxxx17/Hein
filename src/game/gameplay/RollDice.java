@@ -1,4 +1,4 @@
-package gameplay;
+package game.gameplay;
 import java.util.Random;
 
 public class RollDice {

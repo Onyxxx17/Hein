@@ -1,12 +1,17 @@
-package gameplay;
+package game.gameplay;
 
-import coreclasses.*;
 import java.util.*;
-import utils.*;
+
+import game.core.Deck;
+import game.core.Human;
+import game.core.Parade;
+import game.core.Player;
+import game.utils.*;
 
 /**
- * Controls the game flow, manages game initialization, turn processing, and game conclusion.
- * This class orchestrates the entire lifecycle of a game session.
+ * Controls the game flow, manages game initialization, turn processing, and
+ * game conclusion. This class orchestrates the entire lifecycle of a game
+ * session.
  */
 public class GameControl {
 
@@ -17,7 +22,8 @@ public class GameControl {
     private final Scanner SC;
 
     /**
-     * Creates a new GameControl instance with the specified game manager and input scanner.
+     * Creates a new GameControl instance with the specified game manager and
+     * input scanner.
      *
      * @param gameManager The game manager that handles game rules and state
      * @param sc The scanner used for user input
@@ -30,8 +36,9 @@ public class GameControl {
     }
 
     /**
-     * Starts and manages the game loop until an end condition is reached.
-     * Each player takes turns until the game ends, then handles final game procedures.
+     * Starts and manages the game loop until an end condition is reached. Each
+     * player takes turns until the game ends, then handles final game
+     * procedures.
      *
      * @throws InterruptedException If thread operations are interrupted
      */
@@ -48,7 +55,7 @@ public class GameControl {
                 }
             }
         }
-        handleEndGame(); 
+        handleEndGame();
     }
 
     /**
@@ -69,7 +76,7 @@ public class GameControl {
         // Resolves the issue with the input buffer dice rolling animation
         SC.nextLine();
         GameUtil.pressEnterToContinue(SC);
-        
+
         dealCardstoPlayers();
 
         // Initialize Parade
@@ -80,8 +87,8 @@ public class GameControl {
     }
 
     /**
-     * Processes a single player's turn, including playing a card, drawing cards from 
-     * the parade, and drawing a card from the deck.
+     * Processes a single player's turn, including playing a card, drawing cards
+     * from the parade, and drawing a card from the deck.
      *
      * @param player The player whose turn is being processed
      */
@@ -125,8 +132,8 @@ public class GameControl {
     }
 
     /**
-     * Deals 5 initial cards to each player from the deck.
-     * Called during game initialization.
+     * Deals 5 initial cards to each player from the deck. Called during game
+     * initialization.
      */
     public void dealCardstoPlayers() {
         for (Player player : PLAYERS) {
@@ -137,8 +144,8 @@ public class GameControl {
     }
 
     /**
-     * Processes the final plays where each player adds remaining cards to their open cards.
-     * This is the last phase before concluding the game.
+     * Processes the final plays where each player adds remaining cards to their
+     * open cards. This is the last phase before concluding the game.
      */
     private void finalPlay() {
         System.out.println("Adding two cards to open cards for final play.\n");
@@ -148,13 +155,16 @@ public class GameControl {
             player.showOpenCards();
             GameUtil.pressEnterToContinue(SC);
         }
+        for (Player player : PLAYERS) {
+            player.showOpenCards();
+        }
         concludeGame();
     }
 
     /**
-     * Concludes the game by flipping cards based on majority rules,
-     * calculating final scores, determining the winner, and displaying results.
-     * Closes the scanner when done.
+     * Concludes the game by flipping cards based on majority rules, calculating
+     * final scores, determining the winner, and displaying results. Closes the
+     * scanner when done.
      */
     private void concludeGame() {
         System.out.println("Flipping cards based on majority rules...");
@@ -173,6 +183,5 @@ public class GameControl {
         Podium.displayPodium(PLAYERS);
         SC.close();
     }
-    
-    
+
 }

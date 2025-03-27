@@ -1,10 +1,14 @@
-package gameplay;
-import coreclasses.*;
+package game.gameplay;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import game.core.*;
+import game.utils.GameUtil;
+
 /**
  * Manages the core game rules, win conditions, and state for the Parade card
  * game. Handles logic for determining game end, card flipping, and winner
@@ -16,6 +20,7 @@ public class GameManager {
     private static final int TOTAL_COLORS = 6;
     private static final int MIN_DIFFERENCE_FOR_TWO_PLAYERS = 2;
     private static final int FLIPPED_CARD_VALUE = 1;
+
     /**
      * Creates a new GameManager with the specified players and deck.
      *
@@ -56,6 +61,7 @@ public class GameManager {
         }
         return false;
     }
+
     /**
      * Determines which player(s) have the maximum number of cards of a given
      * color. Implements special rules for the two-player game variant where the
@@ -63,8 +69,8 @@ public class GameManager {
      *
      * @param colour The color to check
      * @return A list of players who have the maximum number of cards of the
-     * specified color, or an empty list if no player qualifies for card
-     * flipping
+     *         specified color, or an empty list if no player qualifies for card
+     *         flipping
      */
     public ArrayList<Player> checkPlayerWithMaxCards(String color) {
         int max = 0;
@@ -96,22 +102,23 @@ public class GameManager {
         if (players.size() == 2) {
             check2PlayerConditions(color, playersOut);
         }
-// No flipping if all players have the same number of cards
+        // No flipping if all players have the same number of cards
         if (isAllSameNoOfCards) {
             System.out.println("All players have the same number of cards. No cards flipped for " + color);
             playersOut.clear();
         }
         return playersOut;
     }
+
     /**
      * Applies special rules for the two-player game variant to determine card
      * flipping eligibility. In a two-player game, cards are only flipped if the
      * difference in card count is at least 2, with special handling for cases
      * where one or both players have no cards of a color.
      *
-     * @param colour The color being evaluated
+     * @param colour     The color being evaluated
      * @param playersOut The list of players who currently qualify for card
-     * flipping (may be modified by this method)
+     *                   flipping (may be modified by this method)
      */
     public void check2PlayerConditions(String color, ArrayList<Player> playersOut) {
         Boolean player1Contains = players.get(0).getOpenCards().containsKey(color);
@@ -123,10 +130,12 @@ public class GameManager {
         } else if (!player1Contains || !player2Contains) {
             // One player has no cards of the given color
             if (!player1Contains && players.get(1).getOpenCards().get(color).size() == 1) {
-                System.out.println("Player 1 has no " + color + " cards, and Player 2 has only 1 card. Difference is not enough.");
+                System.out.println(
+                        "Player 1 has no " + color + " cards, and Player 2 has only 1 card. Difference is not enough.");
                 playersOut.clear();
             } else if (!player2Contains && players.get(0).getOpenCards().get(color).size() == 1) {
-                System.out.println("Player 2 has no " + color + " cards, and Player 1 has only 1 card. Difference is not enough.");
+                System.out.println(
+                        "Player 2 has no " + color + " cards, and Player 1 has only 1 card. Difference is not enough.");
                 playersOut.clear();
             }
         } else {
@@ -135,11 +144,13 @@ public class GameManager {
             int cards1 = players.get(1).getOpenCards().get(color).size();
             int difference = Math.abs(cards0 - cards1);
             if (difference < MIN_DIFFERENCE_FOR_TWO_PLAYERS) {
-                System.out.println("The difference between the two players is not enough to flip cards. It needs to be at least 2.");
+                System.out.println(
+                        "The difference between the two players is not enough to flip cards. It needs to be at least 2.");
                 playersOut.clear();
             }
         }
     }
+
     /**
      * Flips cards for players with the majority of each color according to the
      * game rules. When a player's card is flipped, its value is reduced to 1
@@ -149,8 +160,10 @@ public class GameManager {
     public void flipCards() {
         // For each color, find players with the most cards and flip those cards
         Map<Player, ArrayList<Card>> flippedCards = new HashMap<>();
+
         for (String color : Deck.CARD_COLORS) {
             ArrayList<Player> maxPlayers = checkPlayerWithMaxCards(color);
+
             if (maxPlayers.isEmpty()) {
                 continue;
             }
@@ -172,7 +185,7 @@ public class GameManager {
         showFlippedCards(flippedCards);
     }
 
-public void showFlippedCards(Map<Player,ArrayList<Card>>flippedCards){
+    public void showFlippedCards(Map<Player, ArrayList<Card>> flippedCards) {
         for (Player p : players) {
             System.out.println("\n" + p.getName() + " open cards after flipping:");
             for (String color : Deck.CARD_COLORS) {
@@ -201,6 +214,7 @@ public void showFlippedCards(Map<Player,ArrayList<Card>>flippedCards){
             }
         }
     }
+
     public boolean isCardFlipped(Card cardToCheck, Map<Player, ArrayList<Card>> flippedCards) {
         for (ArrayList<Card> cards : flippedCards.values()) {
             if (cards.contains(cardToCheck)) {
@@ -209,6 +223,7 @@ public void showFlippedCards(Map<Player,ArrayList<Card>>flippedCards){
         }
         return false; // Card not found
     }
+
     /**
      * Determines the winner of the game based on player scores. Calculates each
      * player's score and sorts players using a PlayerComparator.
@@ -217,14 +232,44 @@ public void showFlippedCards(Map<Player,ArrayList<Card>>flippedCards){
      */
     public Player decideWinner() {
         for (Player player : players) {
-            player.calculateScore();
+            // player.calculateScore();
+            player.setScore(20);
         }
         // Sort players using PlayerComparator (presumably sorts by score)
         Collections.sort(players, new PlayerComparator());
+
+        List<Player> potentialWinners = new ArrayList<>();
+
+        // Add the first player (highest score after sorting)
+        potentialWinners.add(players.get(0));
+
+        // Check subsequent players for same score
+        for (int i = 1; i < players.size(); i++) {
+            if (players.get(i).getScore() == potentialWinners.get(0).getScore()) {
+                potentialWinners.add(players.get(i));
+            } else {
+                break; // No more players with same score
+            }
+        }
+
+        if (potentialWinners.size() > 1) {
+            System.out.println("There are " + potentialWinners.size() + " players with the same highest score");
+            System.out.println("The winner will be decided based on 2 conditions ");
+            System.out.println("1. The player with the least collected cards");
+            System.out.println(
+                    "2. If the number of cards are the same, the player with the least number of colors will win\n");
+            for (Player p : players) {
+                System.out.println(p.getName() + "'s collected cards :");
+                System.out.println("Total cards : " + p.getTotalOpenCards() + " cards\n");
+                System.out.println("Total colors : " + p.getOpenCards().size() + " colors\n");
+            }
+
+        }
         // Winner will be at index 0 after sorting
         Player winner = players.get(0);
         return winner;
     }
+
     /**
      * Gets the list of players in the game.
      *
@@ -233,6 +278,7 @@ public void showFlippedCards(Map<Player,ArrayList<Card>>flippedCards){
     public ArrayList<Player> getPlayers() {
         return players;
     }
+
     /**
      * Gets the deck being used in the game.
      *
@@ -241,4 +287,5 @@ public void showFlippedCards(Map<Player,ArrayList<Card>>flippedCards){
     public Deck getDeck() {
         return deck;
     }
+
 }

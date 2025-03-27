@@ -1,4 +1,4 @@
-package coreclasses;
+package game.core;
 import java.util.*;
 
 public class Computer extends Player {

@@ -1,7 +1,8 @@
-package gameplay;
+package game.gameplay;
 
-import coreclasses.Player;
 import java.util.ArrayList;
+
+import game.core.Player;
 
 /**
  * Displays a podium of top players at the end of the game like Kahoot
@@ -73,7 +74,7 @@ public class Podium {
         
         // Display winner message
         System.out.println("\n🎉 CONGRATULATIONS 🎉");
-        System.out.println("🏆 " + players.get(0).getName().toUpperCase() + " WINS THE GAME! 🏆");
+        System.out.println("🏆 " + players.get(0).getName() + " WINS THE GAME! 🏆");
         System.out.println("\nThanks for playing Parade!");
         System.out.println("===============================");
     }

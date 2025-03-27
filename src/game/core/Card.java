@@ -1,6 +1,6 @@
-package coreclasses;
+package game.core;
 
-import utils.Helper;
+import game.utils.Helper;
 
 /**
  * Represents a playing card with a color and value.

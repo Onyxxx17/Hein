@@ -1,4 +1,4 @@
-package exceptions;
+package game.exceptions;
 
 public class InvalidPlayerCountException extends Exception {
     public InvalidPlayerCountException(String message) {

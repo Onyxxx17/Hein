@@ -1,24 +1,29 @@
 package app;
-import coreclasses.*;
-import gameplay.*;
+
 import java.util.*;
-import utils.*;
+
+import game.core.Deck;
+import game.core.Player;
+import game.gameplay.GameControl;
+import game.gameplay.GameManager;
+import game.utils.GameUtil;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Scanner sc = new Scanner(System.in);
         int playerCount = GameUtil.askForNumberOfPlayers(new Scanner(System.in));
 
-        // List of players (Human vs Computer)
+        // Preparing to start game by assigning players and creating a deck of cards
         ArrayList<Player> players = GameUtil.createPlayers(playerCount, sc);
         Deck deck = new Deck();
+
+        // Setting up the game flow
         GameManager gameManager = new GameManager(players, deck);
         GameControl game = new GameControl(gameManager,sc);
-        try {
-            game.startGame();
-        } catch (InterruptedException e) {
-            System.out.println("System interrupted!");
-        }
+
+        // Starting the game
+        game.startGame();
         sc.close();
     }
 }

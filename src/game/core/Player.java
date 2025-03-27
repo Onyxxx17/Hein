@@ -1,4 +1,4 @@
-package coreclasses;
+package game.core;
 
 import java.util.*;
 
@@ -161,6 +161,14 @@ public abstract class Player {
 
     public int getScore() {
         return score;
+    }
+
+    public int getTotalOpenCards() {
+        int totalCards = 0;
+        for (List<Card> cards : this.getOpenCards().values()) {
+            totalCards += cards.size();
+        }
+        return totalCards;
     }
 
     // ============================ Setter Methods ============================

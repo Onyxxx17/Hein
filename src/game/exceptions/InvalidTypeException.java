@@ -1,4 +1,4 @@
-package exceptions;
+package game.exceptions;
 
 public class InvalidTypeException extends Exception{
     public InvalidTypeException(String message) {
