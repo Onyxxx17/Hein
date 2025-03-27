@@ -72,12 +72,12 @@ End Game Condition
 
 The game is organized and structured into different classes, each handling a specific aspect of the game logic.
 
-[App]
+[src/app]
 1. Main
 Main entry point for the game
 
 
-[Core]
+[src/game/core]
 1. Card
 Represents a single playing card, stores the colour and the value of the card
 
@@ -97,7 +97,7 @@ Simulates an AI player that acts as a human player and handles the computer's pl
 Representing human player, prompting users for input, allowing them to interact along the game by selecting cards to play
 
 
-[Exceptions]
+[src/game/exceptions]
 1. InvalidPlayerCountException
 Customed exception to handle invalid player count input, ensuring user input is between 2 to 6
 
@@ -105,7 +105,7 @@ Customed exception to handle invalid player count input, ensuring user input is 
 Customed exception to handle invalid player type input, when a player is neither a human or computer
 
 
-[Gameplay]
+[src/game/gameplay]
 1. GameControl
 Controls the game flow, manages game initialization, turn processing, and game conclusion
 
@@ -122,7 +122,7 @@ Displays a podium of top players at the end of the game like Kahoot
 Prompt user to randomly roll a dice, decide which player to go first
 
 
-[Utils]
+[src/game/utils]
 1. GameUtils
 Includes functions to display welcome message, validate user input, and provides utility for game initialization
 
