@@ -78,26 +78,4 @@ public class Helper {
             default: return "\u001B[0m"; // Reset (Default color)
         }
     }
-
-    public static void progressBar() throws InterruptedException {
-        int total = 30;
-        for (int i = 0; i <= total; i++) {
-            String bar = "=".repeat(i) + " ".repeat(total - i);
-            System.out.print("\r[" + bar + "] " + (i * 100 / total) + "%");
-            Thread.sleep(100);
-        }
-        System.out.println("\nComplete!");
-    }
-
-    public static void loading(){
-        try {
-            for (int i = 0; i < 3; i++) {
-                System.out.print(".");
-                Thread.sleep(500);
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            System.err.println("Thread was interrupted.");
-        }
-    }
 }

@@ -106,7 +106,7 @@ public abstract class Player {
             return;
         }
 
-        System.out.println("🎴 " + name + "'s Open Cards:");
+        System.out.println(name + "'s Open Cards:");
         for (Map.Entry<String, ArrayList<Card>> entry : openCards.entrySet()) {
             System.out.print(entry.getKey() + " cards: ");
             for (int i = 0; i < entry.getValue().size(); i++) {
