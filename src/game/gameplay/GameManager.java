@@ -1,13 +1,11 @@
 package game.gameplay;
 
+import game.core.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import game.core.*;
-import game.utils.GameUtil;
 
 /**
  * Manages the core game rules, win conditions, and state for the Parade card
@@ -232,8 +230,8 @@ public class GameManager {
      */
     public Player decideWinner() {
         for (Player player : players) {
-            // player.calculateScore();
-            player.setScore(20);
+            player.calculateScore();
+            // player.setScore(20);
         }
         // Sort players using PlayerComparator (presumably sorts by score)
         Collections.sort(players, new PlayerComparator());
@@ -259,8 +257,8 @@ public class GameManager {
             System.out.println(
                     "2. If the number of cards are the same, the player with the least number of colors will win\n");
             for (Player p : players) {
-                System.out.println(p.getName() + "'s collected cards :");
-                System.out.println("Total cards : " + p.getTotalOpenCards() + " cards\n");
+                System.out.println(p.getName() + "collected");
+                System.out.println("Total cards : " + p.getTotalOpenCards() + " cards");
                 System.out.println("Total colors : " + p.getOpenCards().size() + " colors\n");
             }
 

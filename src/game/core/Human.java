@@ -28,6 +28,7 @@ public class Human extends Player {
         }
 
         int index = 0;
+        System.out.println();
         while (true) {
             try {
                 // Prompt the player to select a card
@@ -38,11 +39,11 @@ public class Human extends Player {
                 if (index >= 1 && index <= closedCards.size()) {
                     break; // Valid choice, exit loop
                 } else {
-                    System.out.println("Invalid choice! Enter a number between 1 and " + closedCards.size() + ".");
+                    System.out.println("Invalid choice! Enter a number between 1 and " + closedCards.size() + ".\n");
                 }
             } catch (InputMismatchException e) {
                 // Handle non-integer input
-                System.out.println("Invalid input! Please enter a number.");
+                System.out.println("Invalid input! Please enter a number.\n");
                 scanner.next(); // Consume the invalid input to prevent an infinite loop
             }
         }
@@ -103,7 +104,7 @@ public class Human extends Player {
      * Displays the player's current hand of closed cards.
      */
     public void showClosedCards() {
-        System.out.println("You have: ");
+        System.out.println("🎴 You have: ");
         for (int i = 0; i < closedCards.size(); i++) {
             System.out.printf("[%d] %s  ", i + 1, closedCards.get(i));
         }

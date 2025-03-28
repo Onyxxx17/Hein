@@ -1,4 +1,5 @@
 package game.core;
+import game.utils.Helper;
 import java.util.*;
 
 public class Computer extends Player {
@@ -35,7 +36,9 @@ public class Computer extends Player {
 
         // Add the selected card to the parade
         parade.addCard(selectedCard);
-        System.out.println(name + " played: " + selectedCard);
+        System.out.print(name + " is thinking");
+        Helper.loading();
+        System.out.println("\n" + name + " played: " + selectedCard);
     }
 
     /**
@@ -57,6 +60,7 @@ public class Computer extends Player {
             Card selectedCard = closedCards.remove(index); // Remove the selected card
 
             // Add the selected card to open cards
+            System.out.println(name + " played: " + selectedCard);
             System.out.println(selectedCard + " is added to " + name + "'s Open Cards!\n");
             openCards.computeIfAbsent(selectedCard.getColor(), key -> new ArrayList<>()).add(selectedCard);
         }
