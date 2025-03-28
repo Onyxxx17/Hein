@@ -36,6 +36,26 @@ public class Card {
         this.value = value;
     }
 
+        // Maps colour to a corresponding colour emoji
+        private String colorToEmoji (String color) {
+            switch(color.toLowerCase()) {
+                case "red":
+                    return "🔴";
+                case "green":
+                    return "🟢";
+                case "purple":
+                    return "🟣";
+                case "grey":
+                    return "🔘";
+                case "orange":
+                    return "🟠";
+                case "blue":
+                    return "🔵";
+                default:
+                    return "🃏";
+            }
+        }
+
     /**
      * Checks if this card is equal to another card based on color and value.
      * 
@@ -48,6 +68,6 @@ public class Card {
 
     @Override
     public String toString() {
-        return Helper.getColorCode(color) + "[" + color + " " + value + "]" + "\u001B[0m";
+        return colorToEmoji(color) + Helper.getColorCode(color) + "[" + color + " " + value + "]" + "\u001B[0m";
     }
 }

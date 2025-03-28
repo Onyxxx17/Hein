@@ -1,12 +1,11 @@
 package game.gameplay;
 
-import java.util.*;
-
 import game.core.Deck;
 import game.core.Human;
 import game.core.Parade;
 import game.core.Player;
 import game.utils.*;
+import java.util.*;
 
 /**
  * Controls the game flow, manages game initialization, turn processing, and
@@ -86,6 +85,33 @@ public class GameControl {
         PARADE.showParade();
     }
 
+        /**
+     * Prints a formatted turn indicator for the given player.
+     * The output is visually separated by a line of "=" symbols
+     * to make it stand out in the console.
+     * 
+     * Example output for "Alice":
+     * 
+     * ========================================
+     * 🌟 Alice's Turn
+     * ========================================
+     * 
+     * @param player_name The name of the player whose turn it is.
+     */
+    public static void printTurn(String player_name) {
+        // Print a newline for better readability in console output
+        System.out.println("\n" + "=".repeat(40));
+
+        // Print the player's turn with a star emoji for emphasis
+        System.out.println("🌟 " + player_name + "'s Turn");
+
+        // Print another separator line for visual clarity
+        System.out.println("=".repeat(40));
+
+        // Print an extra newline to create spacing before the next output
+        System.out.println();
+    }
+
     /**
      * Processes a single player's turn, including playing a card, drawing cards
      * from the parade, and drawing a card from the deck.
@@ -118,7 +144,7 @@ public class GameControl {
         //Last round without drawing from deck
         for (Player player : PLAYERS) {
             PARADE.showParade();
-            System.out.println(player.getName() + "'s Turn");
+            printTurn(player.getName());
             if (player instanceof Human human) {
                 human.showClosedCards();
             }
@@ -150,7 +176,7 @@ public class GameControl {
     private void finalPlay() {
         System.out.println("Adding two cards to open cards for final play.\n");
         for (Player player : PLAYERS) {
-            System.out.println(player.getName() + "'s Turn");
+            printTurn(player.getName());
             player.finalPlay(PARADE, SC);
             player.showOpenCards();
             GameUtil.pressEnterToContinue(SC);
