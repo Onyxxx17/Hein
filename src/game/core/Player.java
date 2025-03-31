@@ -1,6 +1,7 @@
 package game.core;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class Player {
 
@@ -8,17 +9,19 @@ public abstract class Player {
     protected String name;
     protected ArrayList<Card> closedCards; // Cards in hand
     protected Map<String, ArrayList<Card>> openCards; // Open cards grouped by color
-    protected int score = 0;
+    protected int score;
 
     // ============================ Constructor ============================
     public Player(String name) {
         this.name = name;
         this.closedCards = new ArrayList<>();
         this.openCards = new HashMap<>();
+        score = 0;
     }
 
     // ============================ Abstract Methods ============================
     public abstract void playCard(Parade parade, Scanner scanner);
+
     public abstract void finalPlay(Parade parade, Scanner scanner);
 
     // ============================ Card Initialization ============================
@@ -34,11 +37,10 @@ public abstract class Player {
     }
 
     // ============================ Parade Interaction ============================
-
     /**
-     * Draws cards from the parade based on the last played card.
-     * Cards are added to the player's open cards if they match the color
-     * or have a lower value than the played card.
+     * Draws cards from the parade based on the last played card. Cards are
+     * added to the player's open cards if they match the color or have a lower
+     * value than the played card.
      *
      * @param parade The parade from which cards are drawn.
      */
@@ -70,14 +72,33 @@ public abstract class Player {
 
         // Display results
         if (!cardsToRemove.isEmpty()) {
-            System.out.print(name + " receives: ");
-            for (Card card : cardsToRemove) {
-                System.out.print(card + " ");
+            System.out.println(name + " receives:");
+
+            // Set display mode to ASCII art for the received cards
+            Card.setDisplayMode(false);
+
+            // Prepare card lines (7 lines for standard ASCII card)
+            StringBuilder[] cardLines = new StringBuilder[7];
+            for (int i = 0; i < cardLines.length; i++) {
+                cardLines[i] = new StringBuilder();
             }
-            System.out.println();
+
+            // Build each line of the card display
+            for (Card card : cardsToRemove) {
+                String[] cardParts = card.toString().split("\n");
+                for (int i = 0; i < cardParts.length; i++) {
+                    cardLines[i].append(cardParts[i]).append("   ");
+                }
+            }
+
+            // Print the assembled card lines
+            for (StringBuilder line : cardLines) {
+                System.out.println(line.toString());
+            }
         } else {
             System.out.println(name + " receives no cards this round.");
         }
+
     }
 
     // ============================ Deck Interaction ============================
@@ -91,8 +112,6 @@ public abstract class Player {
         //Does nothing when the deck became empty
         if (!deck.getCards().isEmpty()) {
             closedCards.add(deck.removeCardFromDeck());
-        } else{
-            System.out.println("The deck is empty. It should end right now");
         }
     }
 
@@ -102,21 +121,18 @@ public abstract class Player {
      */
     public void showOpenCards() {
         if (openCards.isEmpty()) {
-            System.out.println(name + " has no open cards.");
+            System.out.println(name + " has no open cards.\n");
             return;
         }
-
+        Card.setDisplayMode(true);
         System.out.println("🎴 " + name + "'s Open Cards:");
-        for (Map.Entry<String, ArrayList<Card>> entry : openCards.entrySet()) {
-            System.out.print(entry.getKey() + " cards: ");
-            for (int i = 0; i < entry.getValue().size(); i++) {
-                System.out.print(entry.getValue().get(i));
-                if (i < entry.getValue().size() - 1) {
-                    System.out.print(", ");
-                }
-            }
-            System.out.println();
-        }
+        openCards.forEach((color, cards)
+                -> System.out.println(color + " cards: "
+                        + cards.stream()
+                                .map(Card::toString)
+                                .collect(Collectors.joining(", "))
+                )
+        );
         System.out.println();
     }
 
@@ -125,7 +141,6 @@ public abstract class Player {
      * Calculates the player's score based on the total value of open cards.
      */
     public void calculateScore() {
-        score = 0;
         for (ArrayList<Card> cards : openCards.values()) {
             for (Card card : cards) {
                 score += card.getValue();

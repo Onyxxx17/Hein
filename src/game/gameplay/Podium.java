@@ -1,8 +1,8 @@
 package game.gameplay;
 
-import java.util.ArrayList;
-
 import game.core.Player;
+import game.utils.Helper;
+import java.util.ArrayList;
 
 /**
  * Displays a podium of top players at the end of the game like Kahoot
@@ -13,14 +13,17 @@ public class Podium {
      * Displays the podium with player rankings based on their scores.
      * List of players sorted by score (lowest to highest for Parade game)
      */
-    public static void displayPodium(ArrayList<Player> players) {
-        if (players == null || players.isEmpty()) {
-            System.out.println("No players to display on the podium.");
-            return;
-        }
+    public static void displayPodium(ArrayList<Player> players) throws InterruptedException {
+        // if (players == null || players.isEmpty()) {
+        //     System.out.println("No players to display on the podium.");
+        //     return;
+        // }
         
         // Clear the console for a cleaner display
-        System.out.println("\n\n");
+        System.out.print("\nCalculating Final Scores");
+        Helper.loading();
+        Thread.sleep(500);
+        System.out.println("\n");
         
         System.out.println("===============================");
         System.out.println("        FINAL RESULTS         ");
@@ -60,12 +63,18 @@ public class Podium {
             Player player = players.get(i);
             String medal = "";
             
-            if (i == 0) {
-              medal = "🥇";
-            } else if (i == 1) {
-              medal = "🥈";
-            } else if (i == 2) {
-              medal = "🥉";
+            switch (i) {
+                case 0:
+                    medal = "🥇";
+                    break;
+                case 1:
+                    medal = "🥈";
+                    break;
+                case 2:
+                    medal = "🥉";
+                    break;
+                default:
+                    break;
             }
             
             System.out.printf("%s #%d: %s - %d points%n", 

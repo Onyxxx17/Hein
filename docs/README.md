@@ -13,10 +13,10 @@ Player with the lowest score wins.
 |            Installation & Setup             |
 ----------------------------------------------
 
-JDK 8(?) or higher, and able to read simple English to follow the instructions given
+JDK 8 or higher, and able to read simple English to follow the instructions given
 
-Compilation: javac -d tempclasses -cp src src/app/Tester.java
-Running:     java -cp tempclasses app.Tester
+Compilation: javac -d tempclasses -cp src src/app/Main.java
+Running:     java -cp tempclasses app.Main
 
 
 ----------------------------------------------
@@ -61,6 +61,9 @@ End Game Condition
     --> A player collects all 6 colours
 [] Player discard 2 cards from their hand and add to their collection
 [] Player with the lowest score wins
+    --> If players have the same score, the winner will be decided based on 2 conditions:
+         1. The player with the least collected cards, followed by
+         2. The player with the least number of colors 
 
 
 ----------------------------------------------
@@ -69,32 +72,20 @@ End Game Condition
 
 The game is organized and structured into different classes, each handling a specific aspect of the game logic.
 
-[App]
+[src/app]
 1. Main
 Main entry point for the game
 
 
-[Coreclasses]
+[src/game/core]
 1. Card
 Represents a single playing card, stores the colour and the value of the card
 
-2. Deck
-Manages the shuffling and distribution of the cards, provides the drawing pile for players 
-
-3. Parade
-Represents the cards on the table, handles card placement and removal 
-
-4.Player
-Manages players' hand and collections of cards, score and calculate player's total score based on the open cards
-
-5. Computer
-Simulates an AI player that acts as a human player and handles the computer's player card selection during gameplay 
-
-6. Human
+@@ -97,15 +97,15 @@
 Representing human player, prompting users for input, allowing them to interact along the game by selecting cards to play
 
 
-[Exceptions]
+[src/game/exceptions]
 1. InvalidPlayerCountException
 Customed exception to handle invalid player count input, ensuring user input is between 2 to 6
 
@@ -102,12 +93,15 @@ Customed exception to handle invalid player count input, ensuring user input is 
 Customed exception to handle invalid player type input, when a player is neither a human or computer
 
 
-[Gameplay]
-1. GameManager
-Controls the flow, turns, and win condition of the game, checks whether end game condition is trigerred
+[src/game/gameplay]
+1. GameControl
+Controls the game flow, manages game initialization, turn processing, and game conclusion
+
+@@ -122,28 +122,28 @@
+Prompt user to randomly roll a dice, decide which player to go first
 
 
-[Utils]
+[src/game/utils]
 1. GameUtils
 Includes functions to display welcome message, validate user input, and provides utility for game initialization
 
@@ -124,9 +118,6 @@ Provides utility methods for game, for instance, clearing the console, displayin
 👤 Kiara Kuldeep Desai
 👤 Loh Kai Xing
 👤 Trisha Pratik Chaudhry
-
-
-
 
 
 

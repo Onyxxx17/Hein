@@ -13,8 +13,9 @@ import java.util.Map;
  * selection.
  */
 public class GameManager {
-    private ArrayList<Player> players;
-    private Deck deck;
+
+    private final ArrayList<Player> players;
+    private final Deck deck;
     private static final int TOTAL_COLORS = 6;
     private static final int MIN_DIFFERENCE_FOR_TWO_PLAYERS = 2;
     private static final int FLIPPED_CARD_VALUE = 1;
@@ -29,6 +30,7 @@ public class GameManager {
         this.players = players;
         this.deck = deck;
     }
+
     /**
      * Checks if the game has reached an end condition. The game ends when
      * either: 1. The deck is empty, or 2. A player has collected at least one
@@ -67,8 +69,8 @@ public class GameManager {
      *
      * @param colour The color to check
      * @return A list of players who have the maximum number of cards of the
-     *         specified color, or an empty list if no player qualifies for card
-     *         flipping
+     * specified color, or an empty list if no player qualifies for card
+     * flipping
      */
     public ArrayList<Player> checkPlayerWithMaxCards(String color) {
         int max = 0;
@@ -114,9 +116,9 @@ public class GameManager {
      * difference in card count is at least 2, with special handling for cases
      * where one or both players have no cards of a color.
      *
-     * @param colour     The color being evaluated
+     * @param colour The color being evaluated
      * @param playersOut The list of players who currently qualify for card
-     *                   flipping (may be modified by this method)
+     * flipping (may be modified by this method)
      */
     public void check2PlayerConditions(String color, ArrayList<Player> playersOut) {
         Boolean player1Contains = players.get(0).getOpenCards().containsKey(color);
@@ -141,7 +143,7 @@ public class GameManager {
             int cards0 = players.get(0).getOpenCards().get(color).size();
             int cards1 = players.get(1).getOpenCards().get(color).size();
             int difference = Math.abs(cards0 - cards1);
-            if (difference < MIN_DIFFERENCE_FOR_TWO_PLAYERS) {
+            if (difference < MIN_DIFFERENCE_FOR_TWO_PLAYERS && difference != 0) {
                 System.out.println(
                         "The difference between the two players is not enough to flip cards. It needs to be at least 2.");
                 playersOut.clear();
@@ -162,9 +164,8 @@ public class GameManager {
         for (String color : Deck.CARD_COLORS) {
             ArrayList<Player> maxPlayers = checkPlayerWithMaxCards(color);
 
-            if (maxPlayers.isEmpty()) {
-                continue;
-            }
+            displayMaxPlayersForColor(color, maxPlayers);
+
             // Flip cards (set value to 1) for players with most cards of this color
             for (Player player : maxPlayers) {
                 ArrayList<Card> cardsToFlip = player.getOpenCards().get(color);
@@ -174,7 +175,7 @@ public class GameManager {
                 }
                 // Add the flipped cards to the player's list
                 for (Card card : cardsToFlip) {
-                    System.out.println(card + "'s value is set to 1");
+                    // System.out.println(card + "'s value is set to 1");
                     card.setValue(FLIPPED_CARD_VALUE);
                     flippedCards.get(player).add(card);
                 }
@@ -205,7 +206,7 @@ public class GameManager {
                     }
 
                     if (i != openCards.size() - 1) {
-                        System.out.print(contains ? " -- " : ", ");
+                        System.out.print(contains ? " -- " : "");
                     }
                 }
                 System.out.println();
@@ -222,33 +223,43 @@ public class GameManager {
         return false; // Card not found
     }
 
-    /**
-     * Determines the winner of the game based on player scores. Calculates each
-     * player's score and sorts players using a PlayerComparator.
-     *
-     * @return The winning player (player with the highest score)
-     */
-    public Player decideWinner() {
-        for (Player player : players) {
-            player.calculateScore();
-            // player.setScore(20);
-        }
-        // Sort players using PlayerComparator (presumably sorts by score)
-        Collections.sort(players, new PlayerComparator());
+    public static void displayMaxPlayersForColor(String color, List<Player> maxPlayers) {
+        String colorCode = Card.getColorCode(color); // Get the color code for the given color
 
+        // If there are no players with the most cards of this color
+        if (maxPlayers.isEmpty()) {
+            System.out.println("🎭 Player(s) with most " + colorCode + color + " cards: \u001B[0mNone\n");
+            return;
+        }
+
+        // Display the players with the most cards of this color
+        System.out.print("🎉 Player(s) with most " + colorCode + color + " cards: \u001B[0m");
+
+        for (int i = 0; i < maxPlayers.size(); i++) {
+            System.out.print("\u001B[1m" + maxPlayers.get(i).getName() + "\u001B[0m"); // Bold player name
+
+            // Add a comma if there are more players
+            if (i != maxPlayers.size() - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println(" 🎉\n"); // End with an emoji for a fun effect
+    }
+
+    public void calculateFinalScores() {
+        // Consolidated scoring logic
+        for (Player p : players) {
+            p.calculateScore();
+            System.out.println(p.getName() + " final score: " + p.getScore());
+        }
+    }
+    
+    public void determineWinner() {
+        Collections.sort(players, new PlayerComparator());
         List<Player> potentialWinners = new ArrayList<>();
 
         // Add the first player (highest score after sorting)
         potentialWinners.add(players.get(0));
-
-        // Check subsequent players for same score
-        for (int i = 1; i < players.size(); i++) {
-            if (players.get(i).getScore() == potentialWinners.get(0).getScore()) {
-                potentialWinners.add(players.get(i));
-            } else {
-                break; // No more players with same score
-            }
-        }
 
         if (potentialWinners.size() > 1) {
             System.out.println("There are " + potentialWinners.size() + " players with the same highest score");
@@ -263,9 +274,6 @@ public class GameManager {
             }
 
         }
-        // Winner will be at index 0 after sorting
-        Player winner = players.get(0);
-        return winner;
     }
 
     /**

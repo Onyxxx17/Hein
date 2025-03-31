@@ -19,7 +19,7 @@ public class Human extends Player {
      * @param parade The parade where the card will be added.
      * @param scanner Scanner object for user input.
      */
-    //@Override
+    @Override
     public void playCard(Parade parade, Scanner scanner) {
         // Ensure the player has cards to play
         if (closedCards.isEmpty()) {
@@ -51,7 +51,8 @@ public class Human extends Player {
         // Remove the selected card from the player's hand and add it to the parade
         Card selectedCard = closedCards.remove(index - 1);
         parade.addCard(selectedCard);
-        System.out.println(name + " played: " + selectedCard);
+        System.out.println(name + " played: ");
+        System.out.println(selectedCard);
     }
 
     /**
@@ -62,7 +63,7 @@ public class Human extends Player {
      * consistency).
      * @param scanner Scanner object for user input.
      */
-    //@Override
+    @Override
     public void finalPlay(Parade parade, Scanner scanner) {
         // Display the player's hand before making selections
         showClosedCards();
@@ -84,6 +85,7 @@ public class Human extends Player {
 
                 // Validate input range
                 if (index >= 1 && index <= closedCards.size()) {
+                    Card.setDisplayMode(true);
                     // Remove the selected card and add it to open cards
                     Card selectedCard = closedCards.remove(index - 1);
                     openCards.computeIfAbsent(selectedCard.getColor(), key -> new ArrayList<>()).add(selectedCard);
@@ -101,13 +103,37 @@ public class Human extends Player {
     }
 
     /**
-     * Displays the player's current hand of closed cards.
+     * Displays the player's closed cards in ASCII art format arranged
+     * horizontally, with selection numbers above each card.
      */
     public void showClosedCards() {
-        System.out.println("🎴 You have: ");
+        Card.setDisplayMode(false); // Ensure ASCII art mode
+
+        System.out.println("🎴 Your hand:");
+
+        // Print selection numbers above each card
         for (int i = 0; i < closedCards.size(); i++) {
-            System.out.printf("[%d] %s  ", i + 1, closedCards.get(i));
+            System.out.printf("    [%d]      ", i + 1);
         }
-        System.out.println(); // Move to the next line after displaying all cards
+        System.out.println();
+
+        // Prepare card lines (7 lines for standard ASCII card)
+        StringBuilder[] cardLines = new StringBuilder[7];
+        for (int i = 0; i < cardLines.length; i++) {
+            cardLines[i] = new StringBuilder();
+        }
+
+        // Populate each line with card parts
+        for (Card card : closedCards) {
+            String[] cardParts = card.toString().split("\n");
+            for (int i = 0; i < cardParts.length; i++) {
+                cardLines[i].append(cardParts[i]).append("   ");
+            }
+        }
+
+        // Print the assembled card lines
+        for (StringBuilder line : cardLines) {
+            System.out.println(line.toString());
+        }
     }
 }

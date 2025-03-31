@@ -3,10 +3,7 @@ package game.utils;
 import game.core.*;
 import game.exceptions.*;
 import game.gameplay.RollDice;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class GameUtil {
 
@@ -14,7 +11,7 @@ public class GameUtil {
 
     public static void welcomeMessage(Scanner scanner) {
         Helper.flush();
-        AsciiArt.welcomeArt();
+        AsciiArt.printBanner();
         String border = "****************************************";
 
         System.out.println("\n" + border);
@@ -51,7 +48,7 @@ public class GameUtil {
                 // Validate player count
                 if (playerCount < 2 || playerCount > 6) {
                     throw new InvalidPlayerCountException(
-                            "\n❌ Invalid player count! This game requires 2 to 6 players.\n"
+                            "❌ Invalid player count! This game requires 2 to 6 players.\n"
                     );
                 }
 
@@ -64,7 +61,7 @@ public class GameUtil {
                 System.out.println(e.getMessage());
 
             } catch (InputMismatchException e) {
-                System.out.println("\n❌ Invalid input! Please enter a valid number.\n");
+                System.out.println("❌ Invalid input! Please enter a valid number.\n");
 
                 // Clear the input buffer
                 scanner.next();
@@ -75,7 +72,7 @@ public class GameUtil {
 
     public static ArrayList<Player> createPlayers(int numPlayers, Scanner scanner) {
         ArrayList<Player> players = new ArrayList<>();
-
+        ArrayList<String> names = new ArrayList<>();
         int humanCount = 0;
         int botIndex = 1;
 
@@ -83,43 +80,19 @@ public class GameUtil {
         System.out.println("=".repeat(40));
 
         for (int i = 1; i <= numPlayers; i++) {
-            while (true) {
-                try {
-                    System.out.print("\n🎮 Is Player " + i + " (H)uman or (C)omputer? ");
-                    String type = scanner.next().toUpperCase();
+            String type = getPlayerType(scanner, i);
+            boolean isHuman = type.equals("H") || type.equals("HUMAN");
 
-                    switch (type) {
-                        case "HUMAN":
-                        case "H":
-                            System.out.print("📝 Enter player name: ");
-                            String name = scanner.next();
-                            players.add(new Human(name));
-                            humanCount++;
-                            System.out.println("✅ " + name + " has joined as a Human!");
-                            break;
-
-                        case "COMPUTER":
-                        case "C":
-                            // Check if there are no human players
-                            if (i == numPlayers && humanCount == 0) {
-                                System.out.println("\n❌ There must be at least one human player to start the game!");
-                                i--; // Retry current player setup
-                            } else {
-                                // Add a bot
-                                String botName = "Bot " + botIndex++;
-                                players.add(new Computer(botName));
-                                System.out.println("🤖 " + botName + " has joined as a Computer!");
-                            }
-                            break;
-
-                        default:
-                            throw new InvalidTypeException(
-                                    "\n❌ Invalid choice! Please enter 'H' or 'Human', or 'C' or 'Computer'.\n"
-                            );
-                    }
-                    break;
-                } catch (InvalidTypeException e) {
-                    System.out.println(e.getMessage());
+            if (isHuman) {
+                handleHumanPlayer(scanner, names, players);
+                humanCount++;
+            } else {
+                if (humanCount == 0 && i == numPlayers) {
+                   System.out.println("❌ There must be at least one human player!");
+                    i--;
+                } else{
+                    handleComputerPlayer(players, names, botIndex);
+                    botIndex++;
                 }
             }
         }
@@ -128,6 +101,92 @@ public class GameUtil {
         System.out.println("=".repeat(40));
 
         return players;
+    }
+
+    private static String getPlayerType(Scanner scanner, int playerNumber) {
+        String type = "";
+        while (true) {
+            System.out.print("\n🎮 Is Player " + playerNumber + " (H)uman or (C)omputer? ");
+            type = scanner.next().toUpperCase();
+
+            if (type.matches("H|C|HUMAN|COMPUTER")) {
+                scanner.nextLine(); // Clear buffer
+                return type;
+            }
+            System.out.println("❌ Invalid choice! Please enter ['H' or 'HUMAN'] or ['C' or 'COMPUTER'].\n");
+        }
+    }
+
+    private static void handleHumanPlayer(Scanner scanner, ArrayList<String> names,
+            ArrayList<Player> players) {
+        String name;
+        while (true) {
+            System.out.print("📝 Enter player name: ");
+            name = scanner.nextLine().trim();
+
+            if (!isValidName(name)) {
+                System.out.println("❌ Name must be at least 3 characters long and contain one letter.\n");
+                continue;
+            }
+
+            if (checkNameWithBot(name)) {
+                System.out.println("❌ Name cannot start with 'bot'. If your name contains 'bot', it must be at least 6 characters long.\n");
+                continue;
+            }
+
+            if (names.contains(name.toLowerCase())) {
+                System.out.println("❌ Name already taken by another player. Please choose a different name.\n");
+                continue;
+            }
+
+            break; // Valid name
+        }
+
+        names.add(name.toLowerCase());
+        players.add(new Human(name));
+        System.out.println("✅ " + name + " has joined the game!");
+    }
+
+    private static void handleComputerPlayer(ArrayList<Player> players, ArrayList<String> names,int botIndex) {
+
+        String botName = "Bot " + botIndex;
+        names.add(botName.toLowerCase());
+        players.add(new Computer(botName));
+        System.out.println("🤖 " + botName + " has joined the game!");
+    }
+
+    public static boolean isValidName(String name) {
+        // Ensure name is at least 3 characters long
+        if (name.length() < 3) {
+            return false;
+        }
+
+        // Check if the name contains at least one letter (A-Z or a-z)
+        boolean containsLetter = false;
+        for (int i = 0; i < name.length(); i++) {
+            if (Character.isLetter(name.charAt(i))) {
+                containsLetter = true;
+                break;
+            }
+        }
+
+        // If it doesn't contain a letter, return false
+        return containsLetter;
+    }
+
+    /**
+     * Checks if the given player name contains "bot" as a substring, if the
+     * name contains bot, it must be at least 5 characters long to be valid
+     *
+     * @param name the player name to check
+     * @return true if the name contains "bot", false otherwise
+     */
+    public static boolean checkNameWithBot(String name) {
+        String first3letters = name.toLowerCase().substring(0, 3);
+        if (first3letters.equals("bot")) {
+            return !(name.length() > 5);
+        }
+        return false;
     }
 
     public static Player decideStartingPlayer(ArrayList<Player> players) throws InterruptedException {

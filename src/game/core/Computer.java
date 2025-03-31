@@ -1,4 +1,5 @@
 package game.core;
+
 import game.utils.Helper;
 import java.util.*;
 
@@ -17,10 +18,12 @@ public class Computer extends Player {
     }
 
     /**
-     * Allows the computer player to randomly play a card from its hand into the parade.
+     * Allows the computer player to randomly play a card from its hand into the
+     * parade.
      *
-     * @param parade  The parade where the card will be added.
-     * @param scanner Scanner object (not used, but kept for consistency with Human player).
+     * @param parade The parade where the card will be added.
+     * @param scanner Scanner object (not used, but kept for consistency with
+     * Human player).
      */
     @Override
     public void playCard(Parade parade, Scanner scanner) {
@@ -38,29 +41,39 @@ public class Computer extends Player {
         parade.addCard(selectedCard);
         System.out.print(name + " is thinking");
         Helper.loading();
-        System.out.println("\n" + name + " played: " + selectedCard);
+        System.out.println("\n" + name + " played: ");
+        System.out.println(selectedCard);
     }
 
     /**
-     * Allows the computer to randomly select two cards from its hand to move to open cards before scoring.
+     * Allows the computer to randomly select two cards from its hand to move to
+     * open cards before scoring.
      *
-     * @param parade  The parade object (not used here but passed for consistency).
+     * @param parade The parade object (not used here but passed for
+     * consistency).
      * @param scanner Scanner object (not used for the computer player).
      */
     @Override
     public void finalPlay(Parade parade, Scanner scanner) {
         // Select two random cards from closedCards
         for (int i = 0; i < 2; i++) {
+
+            Card.setDisplayMode(false);
             if (closedCards.isEmpty()) {
                 System.out.println(name + " has no more cards to move to open cards.");
                 return;
             }
-            
+
             int index = RANDOM.nextInt(closedCards.size());
             Card selectedCard = closedCards.remove(index); // Remove the selected card
 
             // Add the selected card to open cards
-            System.out.println(name + " played: " + selectedCard);
+            System.out.print(name + " is thinking");
+            Helper.loading();
+            System.out.println("\n" + name + " played: ");
+            System.out.println(selectedCard);
+
+            Card.setDisplayMode(true);
             System.out.println(selectedCard + " is added to " + name + "'s Open Cards!\n");
             openCards.computeIfAbsent(selectedCard.getColor(), key -> new ArrayList<>()).add(selectedCard);
         }
