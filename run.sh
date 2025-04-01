@@ -1,1 +1,1 @@
-java -cp tempclasses app.Main
+java -cp classes app.Main
