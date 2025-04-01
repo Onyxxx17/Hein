@@ -206,7 +206,7 @@ public class GameControl {
     private void concludeGame() {
         showCards(players);
         System.out.println("Final scoring phase...");
-
+        gameManager.flipCards();
         // Delegate ALL scoring to GameManager
         gameManager.calculateFinalScores();
         gameManager.determineWinner();
