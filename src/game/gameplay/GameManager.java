@@ -1,6 +1,7 @@
 package game.gameplay;
 
 import game.core.*;
+import game.utils.Helper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,11 +15,11 @@ import java.util.Map;
  */
 public class GameManager {
 
-    private final ArrayList<Player> players;
-    private final Deck deck;
-    private static final int TOTAL_COLORS = 6;
-    private static final int MIN_DIFFERENCE_FOR_TWO_PLAYERS = 2;
-    private static final int FLIPPED_CARD_VALUE = 1;
+    private final ArrayList<Player> players; // List of players participating in the game
+    private final Deck deck; // The deck of cards used in the game
+    private static final int TOTAL_COLORS = 6; // Number of unique colors in the game
+    private static final int MIN_DIFFERENCE_FOR_TWO_PLAYERS = 2; // Minimum card count difference for two-player flipping
+    private static final int FLIPPED_CARD_VALUE = 1; // Value assigned to flipped cards
 
     /**
      * Creates a new GameManager with the specified players and deck.
@@ -32,9 +33,9 @@ public class GameManager {
     }
 
     /**
-     * Checks if the game has reached an end condition. The game ends when
-     * either: 1. The deck is empty, or 2. A player has collected at least one
-     * card of each color
+     * Checks if the game has reached an end condition. The game ends when: 1.
+     * The deck is empty 2. A player has collected at least one card of each
+     * color
      *
      * @return true if the game should end, false otherwise
      */
@@ -46,15 +47,15 @@ public class GameManager {
         for (Player p : players) {
             Map<String, ArrayList<Card>> openCards = p.getOpenCards();
             if (openCards.size() == TOTAL_COLORS) {
-                boolean haveAllColour = true;
-                for (List<Card> list : p.getOpenCards().values()) {
+                boolean haveAllColors = true;
+                for (List<Card> list : openCards.values()) {
                     if (list.isEmpty()) {
-                        haveAllColour = false;
+                        haveAllColors = false;
                         break;
                     }
                 }
-                if (haveAllColour) {
-                    System.out.println(p.getName() + " has collected all 6 colour cards!!");
+                if (haveAllColors) {
+                    System.out.println("\n‼️" + p.getName() + " has collected all 6 color cards ‼️\n");
                     return true;
                 }
             }
@@ -64,28 +65,26 @@ public class GameManager {
 
     /**
      * Determines which player(s) have the maximum number of cards of a given
-     * color. Implements special rules for the two-player game variant where the
-     * difference in card count must be at least 2 for card flipping to occur.
+     * color. Implements special rules for two-player games where the difference
+     * in count must be at least 2 for flipping.
      *
-     * @param colour The color to check
-     * @return A list of players who have the maximum number of cards of the
-     * specified color, or an empty list if no player qualifies for card
-     * flipping
+     * @param color The color to check
+     * @return A list of players with the maximum number of cards of the
+     * specified color
      */
     public ArrayList<Player> checkPlayerWithMaxCards(String color) {
         int max = 0;
         ArrayList<Player> playersOut = new ArrayList<>();
-        Boolean isAllSameNoOfCards = true;
+        boolean isAllSameNoOfCards = true;
         int firstCards = 0;
+
         if (players.get(0).getOpenCards() != null && players.get(0).getOpenCards().containsKey(color)) {
             firstCards = players.get(0).getOpenCards().get(color).size();
         }
-        // Find players with maximum cards of the given color
+
+        // Find players with the most cards of the given color
         for (Player p : players) {
-            int numCards = 0;
-            if (p.getOpenCards() != null && p.getOpenCards().containsKey(color)) {
-                numCards = p.getOpenCards().get(color).size();
-            }
+            int numCards = p.getOpenCards().getOrDefault(color, new ArrayList<>()).size();
             if (firstCards != numCards) {
                 isAllSameNoOfCards = false;
             }
@@ -97,85 +96,60 @@ public class GameManager {
                 playersOut.add(p);
             }
         }
+
         System.out.println("Max cards for " + color + " is " + max);
+
         // Special rule for two-player game
         if (players.size() == 2) {
             check2PlayerConditions(color, playersOut);
         }
+
         // No flipping if all players have the same number of cards
         if (isAllSameNoOfCards) {
             System.out.println("All players have the same number of cards. No cards flipped for " + color);
             playersOut.clear();
         }
+
         return playersOut;
     }
 
     /**
-     * Applies special rules for the two-player game variant to determine card
-     * flipping eligibility. In a two-player game, cards are only flipped if the
-     * difference in card count is at least 2, with special handling for cases
-     * where one or both players have no cards of a color.
+     * Applies special rules for two-player games when determining card
+     * flipping. Cards are only flipped if the difference in count is at least
+     * 2.
      *
-     * @param colour The color being evaluated
-     * @param playersOut The list of players who currently qualify for card
-     * flipping (may be modified by this method)
+     * @param color The color being evaluated
+     * @param playersOut The list of players who may qualify for flipping
      */
     public void check2PlayerConditions(String color, ArrayList<Player> playersOut) {
-        Boolean player1Contains = players.get(0).getOpenCards().containsKey(color);
-        Boolean player2Contains = players.get(1).getOpenCards().containsKey(color);
-        // Handle various cases for the two-player variant
-        if (!player1Contains && !player2Contains) {
-            System.out.println("Neither player has any " + color + " cards.");
+        Player player1 = players.get(0);
+        Player player2 = players.get(1);
+
+        int count1 = player1.getOpenCards().getOrDefault(color, new ArrayList<>()).size();
+        int count2 = player2.getOpenCards().getOrDefault(color, new ArrayList<>()).size();
+        int difference = Math.abs(count1 - count2);
+
+        if (difference < MIN_DIFFERENCE_FOR_TWO_PLAYERS && difference != 0) {
+            System.out.println("The difference between the two players is not enough to flip cards. It needs to be at least 2.");
             playersOut.clear();
-        } else if (!player1Contains || !player2Contains) {
-            // One player has no cards of the given color
-            if (!player1Contains && players.get(1).getOpenCards().get(color).size() == 1) {
-                System.out.println(
-                        "Player 1 has no " + color + " cards, and Player 2 has only 1 card. Difference is not enough.");
-                playersOut.clear();
-            } else if (!player2Contains && players.get(0).getOpenCards().get(color).size() == 1) {
-                System.out.println(
-                        "Player 2 has no " + color + " cards, and Player 1 has only 1 card. Difference is not enough.");
-                playersOut.clear();
-            }
-        } else {
-            // Both players have cards of the given colour
-            int cards0 = players.get(0).getOpenCards().get(color).size();
-            int cards1 = players.get(1).getOpenCards().get(color).size();
-            int difference = Math.abs(cards0 - cards1);
-            if (difference < MIN_DIFFERENCE_FOR_TWO_PLAYERS && difference != 0) {
-                System.out.println(
-                        "The difference between the two players is not enough to flip cards. It needs to be at least 2.");
-                playersOut.clear();
-            }
         }
     }
 
     /**
      * Flips cards for players with the majority of each color according to the
-     * game rules. When a player's card is flipped, its value is reduced to 1
-     * point. After flipping, displays each player's open cards with their
-     * updated values.
+     * game rules.
      */
     public void flipCards() {
-        // For each color, find players with the most cards and flip those cards
         Map<Player, ArrayList<Card>> flippedCards = new HashMap<>();
 
         for (String color : Deck.CARD_COLORS) {
             ArrayList<Player> maxPlayers = checkPlayerWithMaxCards(color);
+            displayMaxPlayersForColor(color, players);
 
-            displayMaxPlayersForColor(color, maxPlayers);
-
-            // Flip cards (set value to 1) for players with most cards of this color
             for (Player player : maxPlayers) {
                 ArrayList<Card> cardsToFlip = player.getOpenCards().get(color);
-                // Initialize the list for the player if not already present
-                if (!flippedCards.containsKey(player)) {
-                    flippedCards.put(player, new ArrayList<>());
-                }
-                // Add the flipped cards to the player's list
+                flippedCards.putIfAbsent(player, new ArrayList<>());
                 for (Card card : cardsToFlip) {
-                    // System.out.println(card + "'s value is set to 1");
                     card.setValue(FLIPPED_CARD_VALUE);
                     flippedCards.get(player).add(card);
                 }
@@ -184,6 +158,11 @@ public class GameManager {
         showFlippedCards(flippedCards);
     }
 
+    /**
+     * Displays flipped cards after applying game rules.
+     *
+     * @param flippedCards A mapping of players to their flipped cards
+     */
     public void showFlippedCards(Map<Player, ArrayList<Card>> flippedCards) {
         for (Player p : players) {
             System.out.println("\n" + p.getName() + " open cards after flipping:");
@@ -193,20 +172,12 @@ public class GameManager {
                 if (openCards.isEmpty()) {
                     System.out.print("No Cards");
                 }
-                for (int i = 0; i < openCards.size(); i++) {
-                    Card card = openCards.get(i);
-                    boolean contains = isCardFlipped(card, flippedCards);
+                for (Card card : openCards) {
+                    boolean contains = flippedCards.getOrDefault(p, new ArrayList<>()).contains(card);
                     if (card.getValue() == 1 && contains) {
                         System.out.print("[" + color + "] ");
                     } else {
-                        System.out.print(card);
-                        if (i != openCards.size() - 1) {
-                            System.out.print(", ");
-                        }
-                    }
-
-                    if (i != openCards.size() - 1) {
-                        System.out.print(contains ? " -- " : "");
+                        System.out.print(card + " ");
                     }
                 }
                 System.out.println();
@@ -214,66 +185,73 @@ public class GameManager {
         }
     }
 
-    public boolean isCardFlipped(Card cardToCheck, Map<Player, ArrayList<Card>> flippedCards) {
-        for (ArrayList<Card> cards : flippedCards.values()) {
-            if (cards.contains(cardToCheck)) {
-                return true; // Card found in the HashMap
-            }
-        }
-        return false; // Card not found
-    }
-
-    public static void displayMaxPlayersForColor(String color, List<Player> maxPlayers) {
+    public void displayMaxPlayersForColor(String color, List<Player> maxPlayers) {
         String colorCode = Card.getColorCode(color); // Get the color code for the given color
 
-        // If there are no players with the most cards of this color
         if (maxPlayers.isEmpty()) {
-            System.out.println("🎭 Player(s) with most " + colorCode + color + " cards: \u001B[0mNone\n");
+            displayNoMaxPlayersForColor(color);
             return;
         }
 
-        // Display the players with the most cards of this color
-        System.out.print("🎉 Player(s) with most " + colorCode + color + " cards: \u001B[0m");
+        displayMaxPlayersForColorList(color, maxPlayers, colorCode);
+    }
 
+    public void displayNoMaxPlayersForColor(String color) {
+        System.out.println("🎭 Player(s) with most " + Card.getColorCode(color) + color + " cards: \u001B[0mNone\n");
+    }
+
+    public void displayMaxPlayersForColorList(String color, List<Player> maxPlayers, String colorCode) {
+        System.out.print("🎉 Player(s) that will flip " + colorCode + color + " cards: \u001B[0m");
         for (int i = 0; i < maxPlayers.size(); i++) {
-            System.out.print("\u001B[1m" + maxPlayers.get(i).getName() + "\u001B[0m"); // Bold player name
-
-            // Add a comma if there are more players
+            System.out.print("\u001B[1m" + maxPlayers.get(i).getName() + "\u001B[0m");
             if (i != maxPlayers.size() - 1) {
                 System.out.print(", ");
             }
         }
-        System.out.println(" 🎉\n"); // End with an emoji for a fun effect
+        System.out.println(" 🎉\n");
+        Helper.sleep(1200);
     }
 
+    /**
+     * Calculates final scores for all players.
+     */
     public void calculateFinalScores() {
-        // Consolidated scoring logic
-        for (Player p : players) {
-            p.calculateScore();
-            System.out.println(p.getName() + " final score: " + p.getScore());
+        for (Player player : players) {
+            player.calculateScore();
         }
     }
-    
+
+    /**
+     * Determines the winner based on scores and tiebreaker rules.
+     */
     public void determineWinner() {
         Collections.sort(players, new PlayerComparator());
-        List<Player> potentialWinners = new ArrayList<>();
-
-        // Add the first player (highest score after sorting)
-        potentialWinners.add(players.get(0));
+        ArrayList<Player> potentialWinners = addPotentialWinners();
 
         if (potentialWinners.size() > 1) {
-            System.out.println("There are " + potentialWinners.size() + " players with the same highest score");
-            System.out.println("The winner will be decided based on 2 conditions ");
-            System.out.println("1. The player with the least collected cards");
-            System.out.println(
-                    "2. If the number of cards are the same, the player with the least number of colors will win\n");
+            System.out.println("There are multiple players with the highest score. Tiebreaker rules apply.");
             for (Player p : players) {
-                System.out.println(p.getName() + "collected");
+                System.out.println(p.getName() + " collected");
                 System.out.println("Total cards : " + p.getTotalOpenCards() + " cards");
                 System.out.println("Total colors : " + p.getOpenCards().size() + " colors\n");
             }
-
         }
+    }
+
+    /**
+     * Adds players with the highest scores to the list of potential winners.
+     *
+     * @return List of players who may be the winner
+     */
+    public ArrayList<Player> addPotentialWinners() {
+        ArrayList<Player> potentialWinners = new ArrayList<>();
+        potentialWinners.add(players.get(0));
+        for (int i = 1; i < players.size(); i++) {
+            if (players.get(i).getScore() == players.get(0).getScore()) {
+                potentialWinners.add(players.get(i));
+            }
+        }
+        return potentialWinners;
     }
 
     /**

@@ -38,7 +38,7 @@ public class GameControl {
      *
      * @throws InterruptedException If thread operations are interrupted
      */
-    public void startGame() throws InterruptedException {
+    public void startGame() {
         initializeGame();
         boolean gameEnds = false;
         while (!gameEnds) {
@@ -69,9 +69,8 @@ public class GameControl {
      * Sets up the game by shuffling the deck, determining the starting player,
      * dealing initial cards, and initializing the parade.
      *
-     * @throws InterruptedException If thread operations are interrupted
      */
-    public void initializeGame() throws InterruptedException {
+    public void initializeGame() {
         // Decide starting player
         Player firstPlayer = GameUtil.decideStartingPlayer(players);
         GameUtil.rearrangePlayersList(players, firstPlayer);
@@ -83,28 +82,30 @@ public class GameControl {
         // Show who is shuffling the deck
         System.out.print("\n🎮 " + firstPlayer.getName() + " is shuffling the deck");
         Helper.loading();    // Assuming Helper.loading handles a loading animation or dots
-        Thread.sleep(1000);  // Pause for dramatic effect
+        // Helper.sleep(1000);  // Pause for dramatic effect
         System.out.println("\n✅ Done!");
-        Thread.sleep(500);   // Short pause after shuffling
+        Helper.sleep(500);   // Short pause after shuffling
 
         // Shuffle the deck
         deck.shuffle();
 
         // Deal 5 cards to each player
-        System.out.println("\n🎴 Cards are being dealt...");
-        Thread.sleep(1000); // Pause before dealing
+        System.out.print("\n🎴 Cards are being dealt");
+        Helper.loading();
+        Helper.sleep(1000); // Pause before dealing
         dealCardstoPlayers(); // Deal cards to players
-        Thread.sleep(500); // Pause after dealing
+        Helper.sleep(500); // Pause after dealing
 
         // Initialize Parade
-        System.out.println("\n✨ Initializing Parade...");
-        Thread.sleep(1000); // Pause for dramatic effect
+        System.out.print("\n✨ Initializing Parade");
+        Helper.loading();
+        Helper.sleep(1000); // Pause for dramatic effect
         parade.initializeParade(deck);
 
         // Show Parade
         System.out.println("\n🎉 Parade has been initialized with 6 cards!\n");
         parade.showParade();
-        Thread.sleep(1000); // Pause to give players a moment to admire the parade
+        Helper.sleep(1000); // Pause to give players a moment to admire the parade
 
         // Wait for user to continue to next stage
         GameUtil.pressEnterToContinue(scanner);
@@ -126,19 +127,11 @@ public class GameControl {
     public void playTurn(Player player) {
         Helper.flush();
         System.out.println("Current Deck: " + deck.getCards().size() + " cards\n");
-        showCards(players);
+        displayOpenCards(players);
         parade.showParade();
         printTurn(player.getName());
-
-        if (player instanceof Human) {
-            ((Human) player).showClosedCards();
-        }
-
         player.playCard(parade, scanner);
-        try {
-            Thread.sleep(800);
-        } catch (InterruptedException e) {
-        }
+        Helper.sleep(800);
         player.drawCardsFromParade(parade);
 
     }
@@ -148,9 +141,11 @@ public class GameControl {
      * Each player plays one last round without drawing from the deck.
      */
     public void handleEndGame() {
-        System.out.println("\nEnd Game Condition Triggered!!! Everyone plays one last round!\n");
+        
         //Last round without drawing from deck
         for (Player player : players) {
+            Helper.printBox("🚨 Last Round 🚨");
+            Helper.sleep(1000);
             playTurn(player);
             if (player instanceof Human) {
                 scanner.nextLine();
@@ -159,7 +154,7 @@ public class GameControl {
             Helper.flush();
         }
 
-        finalPlay();
+        addFinalTwoCards();
     }
 
     /**
@@ -179,11 +174,13 @@ public class GameControl {
      * Processes the final plays where each player adds remaining cards to their
      * open cards. This is the last phase before concluding the game.
      */
-    private void finalPlay() {
-        System.out.println("Adding two cards to open cards for final play.\n");
+    private void addFinalTwoCards() {
+
         for (Player player : players) {
             Helper.flush();
-            showCards(players);
+            Helper.printBox("🎴 Add 2 Cards to Open Cards");
+            Helper.sleep(1000);
+            displayOpenCards(players);
             printTurn(player.getName());
             player.finalPlay(parade, scanner);
             if (player instanceof Human) {
@@ -201,22 +198,26 @@ public class GameControl {
      */
     // In GameControl
     private void concludeGame() {
-        showCards(players);
-        System.out.println("Final scoring phase...");
+        Helper.flush();
+        Helper.printBox("🐧 Open Cards Before Flipping");
+        Helper.sleep(1000);
+
+        displayOpenCards(players);
+
+        Helper.printBox("🃏 Flipping Cards");
+        Helper.sleep(1000);
+
         gameManager.flipCards();
-        // Delegate ALL scoring to GameManager
+        Helper.typewrite("\n✅ Final Scores Have Been Calculated! ✅\n", 30);
         GameUtil.pressEnterToContinue(scanner);
+        Helper.flush();
+
         gameManager.calculateFinalScores();
         gameManager.determineWinner();
-
-        try {
-            Podium.displayPodium(players);
-        } catch (InterruptedException e) {
-        }
-        
+        Podium.displayPodium(players);
     }
 
-    public void showCards(ArrayList<Player> players) {
+    public void displayOpenCards(ArrayList<Player> players) {
         for (Player player : players) {
             player.showOpenCards();
         }
