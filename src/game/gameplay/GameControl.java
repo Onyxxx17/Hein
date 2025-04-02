@@ -1,9 +1,6 @@
 package game.gameplay;
 
-import game.core.Deck;
-import game.core.Human;
-import game.core.Parade;
-import game.core.Player;
+import game.core.*;
 import game.utils.*;
 import java.util.*;
 
@@ -119,9 +116,9 @@ public class GameControl {
      *
      * @param player The player whose turn is being processed
      */
-    public static void printTurn(String player_name) {
+    public static void printTurn(String playerName) {
         System.out.println("\n" + "=".repeat(40));
-        System.out.println("🌟 " + player_name + "'s Turn");
+        System.out.println("🌟 " + playerName + "'s Turn");
         System.out.println("=".repeat(40));
         System.out.println();
     }

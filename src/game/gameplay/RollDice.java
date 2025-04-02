@@ -2,7 +2,7 @@ package game.gameplay;
 import java.util.Random;
 
 public class RollDice {
-    private static final Random RAND = new Random();
+    private static final Random rand = new Random();
     private static final String[] DICE_FACES = {
         """
         +-------+
@@ -49,7 +49,7 @@ public class RollDice {
 
     public static int roll() {
         // Range of values {1, 2, 3, 4, 5, 6}
-        return RAND.nextInt(6) + 1;
+        return rand.nextInt(6) + 1;
     }
 
     public static String getDiceFace(int value) {

@@ -6,7 +6,7 @@ import java.util.*;
 public class Computer extends Player {
 
     // Random number generator for AI decision-making
-    private static final Random RANDOM = new Random(); // final should be uppercase?
+    private static final Random random = new Random(); // final should be uppercase?
 
     /**
      * Constructor for the Computer player.
@@ -34,7 +34,7 @@ public class Computer extends Player {
         }
 
         // Select a random card from closedCards
-        int index = RANDOM.nextInt(closedCards.size());
+        int index = random.nextInt(closedCards.size());
         Card selectedCard = closedCards.remove(index); // Remove the selected card
 
         // Add the selected card to the parade
@@ -64,7 +64,7 @@ public class Computer extends Player {
                 return;
             }
 
-            int index = RANDOM.nextInt(closedCards.size());
+            int index = random.nextInt(closedCards.size());
             Card selectedCard = closedCards.remove(index); // Remove the selected card
 
             // Add the selected card to open cards
