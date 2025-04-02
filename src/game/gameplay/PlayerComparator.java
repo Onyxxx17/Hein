@@ -1,24 +1,21 @@
 package game.gameplay;
 
-import java.util.Comparator;
-
 import game.core.Player;
+import java.util.Comparator;
 
 public class PlayerComparator implements Comparator<Player> {
 
     @Override
-    public int compare(Player o1, Player o2) {
-        int result = Integer.compare(o1.getScore(), o2.getScore());
-        if (result == 0) {
-            int totalCards1 = o1.getTotalOpenCards();
-            int totalCards2 = o2.getTotalOpenCards();
-            result = Integer.compare(totalCards1, totalCards2); // Lower card count wins
-            if (result == 0) {
-                result = Integer.compare(o1.getOpenCards().size(), o2.getOpenCards().size());
-                return result; // Lower card count wins
-            }
-        }
-        return result;
-    }
+    public int compare(Player p1, Player p2) {
+        // Primary: Compare by score (lower score wins)
+        int result = Integer.compare(p1.getScore(), p2.getScore());
+        if (result != 0) return result;
 
+        // Secondary: Compare by total open cards (lower card count wins)
+        result = Integer.compare(p1.getTotalOpenCards(), p2.getTotalOpenCards());
+        if (result != 0) return result;
+
+        // Tertiary: Compare by open cards list size (lower colors wins)
+        return Integer.compare(p1.getOpenCards().size(), p2.getOpenCards().size());
+    }
 }

@@ -1,8 +1,10 @@
 package game.core;
 
+import java.util.Objects;
+
 /**
  * Represents a playing card with a color and numerical value. Cards can be
- * compared for equality and formatted with color-specific emojis for display.
+ * compared for equality and displayed in either simple or ASCII art format.
  */
 public class Card {
 
@@ -10,24 +12,29 @@ public class Card {
     /**
      * The color of the card (e.g., "red", "blue").
      */
-    public String color;
+    private final String color;
 
     /**
      * The numerical value of the card.
      */
-    public int value;
+    private int value;
 
     /**
      * Flag to determine if cards should render in simple format (true) or ASCII
-     * art (false)
+     * art (false).
      */
     private static boolean simpleDisplayMode = false;
+
+    /**
+     * ANSI escape code for resetting text formatting.
+     */
     private static final String RESET = "\u001B[0m";
+
     // ============================ Constructor ============================
     /**
      * Creates a card with the specified color and value.
      *
-     * @param color The color of the card (case-sensitive).
+     * @param color The color of the card (case-insensitive).
      * @param value The numerical value of the card.
      */
     public Card(String color, int value) {
@@ -35,93 +42,99 @@ public class Card {
         this.value = value;
     }
 
-    // ============================ Getter Methods ============================
-    /**
-     * Returns the numerical value of the card.
-     *
-     * @return The card's value.
-     */
+    // ============================ Getters & Setters ============================
     public int getValue() {
         return value;
     }
 
-    /**
-     * Returns the color of the card.
-     *
-     * @return The card's color as a string.
-     */
     public String getColor() {
         return color;
     }
 
-    // ============================ Setter Methods ============================
-    /**
-     * Updates the numerical value of the card.
-     *
-     * @param value The new value to assign.
-     */
     public void setValue(int value) {
         this.value = value;
     }
 
-    /**
-     * Sets the display mode for all cards.
-     *
-     * @param simpleMode true for color+value+emoji, false for ASCII art
-     */
     public static void setDisplayMode(boolean simpleMode) {
         simpleDisplayMode = simpleMode;
     }
 
     // ============================ Core Methods ============================
     /**
-     * Compares this card with another for equality based on color and value.
+     * Checks if two cards are equal based on their color and value.
      *
-     * @param c The card to compare against.
+     * @param obj The object to compare against.
      * @return {@code true} if both color and value match, {@code false}
      * otherwise.
      */
-    public boolean equals(Card c) {
-        return this.color.equals(c.getColor()) && this.value == c.getValue();
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Card card)) {
+            return false;
+        }
+        return value == card.value && Objects.equals(color.toLowerCase(), card.color.toLowerCase());
     }
 
     // ============================ Helper Methods ============================
     /**
-     * Converts a color name to its corresponding Unicode emoji
-     * (case-insensitive). Unrecognized colors return a joker emoji (🃏).
+     * Converts a color name to its corresponding Unicode emoji.
      *
      * @param color The color name to convert.
      * @return The emoji string representing the color.
      */
-    private String colorToEmoji(String color) {
-        switch (color.toLowerCase()) {
-            case "red":
-                return "🔴";
-            case "green":
-                return "🟢";
-            case "purple":
-                return "🟣";
-            case "grey":
-                return "🔘";
-            case "orange":
-                return "🟠";
-            case "blue":
-                return "🔵";
-            default:
-                return "🃏";
-        }
+    private static String colorToEmoji(String color) {
+        return switch (color.toLowerCase()) {
+            case "red" ->
+                "🔴";
+            case "green" ->
+                "🟢";
+            case "purple" ->
+                "🟣";
+            case "grey" ->
+                "🔘";
+            case "orange" ->
+                "🟠";
+            case "blue" ->
+                "🔵";
+            default ->
+                "🃏";
+        };
     }
+
+    /**
+     * Returns the ANSI color code for a given color.
+     *
+     * @param color The color name.
+     * @return The ANSI escape code for that color.
+     */
     public static String getColorCode(String color) {
-        switch (color.toLowerCase()) {
-            case "blue": return "\u001B[34m"; // Blue
-            case "green": return "\u001B[32m"; // Green
-            case "grey": return "\u001B[37m"; // Grey
-            case "orange": return "\u001B[38;5;214m"; // Orange (ANSI extended color code)
-            case "purple": return "\u001B[35m"; // Purple
-            case "red": return "\u001B[31m"; // Red
-            default: return "\u001B[0m"; // Reset (Default color)
-        }
+        return switch (color.toLowerCase()) {
+            case "blue" ->
+                "\u001B[34m";
+            case "green" ->
+                "\u001B[32m";
+            case "grey" ->
+                "\u001B[37m";
+            case "orange" ->
+                "\u001B[38;5;214m";
+            case "purple" ->
+                "\u001B[35m";
+            case "red" ->
+                "\u001B[31m";
+            default ->
+                RESET;
+        };
     }
+
+    /**
+     * Gets the animal emoji associated with a card color.
+     *
+     * @param color The color of the card.
+     * @return A string representing the animal emoji.
+     */
     private String getAnimalArt(String color) {
         String colorCode = getColorCode(color);
         return switch (color.toLowerCase()) {
@@ -142,22 +155,32 @@ public class Card {
         };
     }
 
-    // ============================ Enhanced toString() ============================
+    // ============================ Display Methods ============================
+    /**
+     * Returns a string representation of the card.
+     *
+     * @return The string representation, either simple format or ASCII art.
+     */
     @Override
     public String toString() {
-        if (simpleDisplayMode) {
-            return getSimpleRepresentation();
-        } else {
-            return getAsciiArtRepresentation();
-        }
+        return simpleDisplayMode ? getSimpleRepresentation() : getAsciiArtRepresentation();
     }
 
-// ============================ Display Helpers ============================
+    /**
+     * Returns the simple text representation of the card.
+     *
+     * @return A formatted string with emoji and color.
+     */
     private String getSimpleRepresentation() {
-        return colorToEmoji(color) + " ["
-                + getColorCode(color) + color + " " + value + "]\033[0m";
+        return String.format("%s [%s%s %d%s]",
+                colorToEmoji(color), getColorCode(color), color, value, RESET);
     }
 
+    /**
+     * Returns the ASCII art representation of the card.
+     *
+     * @return A multi-line string representing the card.
+     */
     private String getAsciiArtRepresentation() {
         String colorCode = getColorCode(color);
         String reset = "\033[0m";
@@ -178,5 +201,4 @@ public class Card {
                 cardBottom
         );
     }
-
 }

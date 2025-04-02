@@ -13,21 +13,13 @@ public class Podium {
      * Displays the podium with player rankings based on their scores.
      * List of players sorted by score (lowest to highest for Parade game)
      */
-    public static void displayPodium(ArrayList<Player> players) throws InterruptedException {
-        // if (players == null || players.isEmpty()) {
-        //     System.out.println("No players to display on the podium.");
-        //     return;
-        // }
-        
-        // Clear the console for a cleaner display
-        System.out.print("\nCalculating Final Scores");
-        Helper.loading();
-        Thread.sleep(500);
-        System.out.println("\n");
+    public static void displayPodium(ArrayList<Player> players) {
         
         System.out.println("===============================");
         System.out.println("        FINAL RESULTS         ");
         System.out.println("===============================");
+
+        Helper.sleep(500);
         
         // Display simple ASCII podium
         System.out.println("\n       PODIUM       ");

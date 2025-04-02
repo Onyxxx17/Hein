@@ -9,7 +9,16 @@ public class GameUtil {
 
     private static final int DELAY_DURATION = 45;
 
+    /**
+     * Prints a welcome message, showing the banner and introducing the game.
+     * Includes a brief reminder of the game rules and prompts the user to press
+     * Enter to continue.
+     *
+     * @param scanner The Scanner object for user input.
+     */
     public static void welcomeMessage(Scanner scanner) {
+        Helper.flush();
+        Helper.progressBar();
         Helper.flush();
         AsciiArt.printBanner();
         String border = "****************************************";
@@ -27,17 +36,27 @@ public class GameUtil {
         Helper.flush();
     }
 
+    /**
+     * Waits for the user to press Enter to continue the game. The user is
+     * prompted to press Enter to continue.
+     *
+     * @param scanner The scanner object for user input.
+     */
     public static void pressEnterToContinue(Scanner scanner) {
         System.out.print("\n👉 Press Enter to continue...");
         scanner.nextLine(); // Waits for the user to press Enter
     }
 
+    /**
+     * Prompts the user for the number of players and validates the input.
+     *
+     * @param scanner The scanner object for user input.
+     * @return The number of players to play the game with.
+     */
     public static int askForNumberOfPlayers(Scanner scanner) {
         int playerCount = 0;
 
-        System.out.println("=".repeat(40));
-        System.out.println("🎲 WELCOME TO THE GAME SETUP 🎲");
-        System.out.println("=".repeat(40));
+        Helper.printBox("🎲 WELCOME TO THE GAME SETUP 🎲");
         // Input loop for player count
         while (true) {
             try {
@@ -70,6 +89,16 @@ public class GameUtil {
         return playerCount;
     }
 
+    /**
+     * Creates a list of players with the specified number of players.
+     *
+     * Handles setting up each player by asking for their type (human or
+     * computer) and name.
+     *
+     * @param numPlayers The number of players
+     * @param scanner The scanner object for user input
+     * @return The list of players
+     */
     public static ArrayList<Player> createPlayers(int numPlayers, Scanner scanner) {
         ArrayList<Player> players = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
@@ -88,9 +117,9 @@ public class GameUtil {
                 humanCount++;
             } else {
                 if (humanCount == 0 && i == numPlayers) {
-                   System.out.println("❌ There must be at least one human player!");
+                    System.out.println("❌ There must be at least one human player!");
                     i--;
-                } else{
+                } else {
                     handleComputerPlayer(players, names, botIndex);
                     botIndex++;
                 }
@@ -103,6 +132,13 @@ public class GameUtil {
         return players;
     }
 
+    /**
+     * Gets the type of the player (human or computer) from the user.
+     *
+     * @param scanner The scanner object to read user input
+     * @param playerNumber The number of the player to be set up
+     * @return The type of the player as a string, either "HUMAN" or "COMPUTER"
+     */
     private static String getPlayerType(Scanner scanner, int playerNumber) {
         String type = "";
         while (true) {
@@ -117,6 +153,16 @@ public class GameUtil {
         }
     }
 
+    /**
+     * Handles the setup of a human player.
+     *
+     * Prompts user for input, validates the input, and adds the player to the
+     * list of players.
+     *
+     * @param scanner Scanner for user input.
+     * @param names List of player names to add the new name to.
+     * @param players List of players to add the new player to.
+     */
     private static void handleHumanPlayer(Scanner scanner, ArrayList<String> names,
             ArrayList<Player> players) {
         String name;
@@ -147,7 +193,17 @@ public class GameUtil {
         System.out.println("✅ " + name + " has joined the game!");
     }
 
-    private static void handleComputerPlayer(ArrayList<Player> players, ArrayList<String> names,int botIndex) {
+    /**
+     * Handles the setup of a computer player.
+     *
+     * Generates a bot name, adds it to the list of player names, and adds a
+     * Computer player to the list of players.
+     *
+     * @param players The list of players to add the new computer player to.
+     * @param names The list of player names to add the bot name to.
+     * @param botIndex The index of the bot (used for generating the bot name).
+     */
+    private static void handleComputerPlayer(ArrayList<Player> players, ArrayList<String> names, int botIndex) {
 
         String botName = "Bot " + botIndex;
         names.add(botName.toLowerCase());
@@ -155,6 +211,15 @@ public class GameUtil {
         System.out.println("🤖 " + botName + " has joined the game!");
     }
 
+    /**
+     * Checks if a given name is valid.
+     *
+     * A name is valid if it is at least 3 characters long and contains at least
+     * one letter (A-Z or a-z).
+     *
+     * @param name The name to check
+     * @return true if the name is valid, false otherwise
+     */
     public static boolean isValidName(String name) {
         // Ensure name is at least 3 characters long
         if (name.length() < 3) {
@@ -189,9 +254,19 @@ public class GameUtil {
         return false;
     }
 
-    public static Player decideStartingPlayer(ArrayList<Player> players) throws InterruptedException {
+    /**
+     * Decides the starting player by simulating a dice roll for each player.
+     * Each player rolls a dice, and the player with the highest roll becomes
+     * the starting player. In case of a tie, only the tied players reroll until
+     * a single winner is determined.
+     *
+     * @param players List of players participating in the game
+     * @return The player who will start the game
+     *
+     */
+    public static Player decideStartingPlayer(ArrayList<Player> players) {
         Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.", 45);
-        Thread.sleep(1000);
+        Helper.sleep(1000);
         ArrayList<Player> contenders = new ArrayList<>(players);
 
         while (contenders.size() > 1) {
@@ -237,6 +312,15 @@ public class GameUtil {
         return startingPlayer;
     }
 
+    /**
+     * Rearranges the given list of players such that the given starting player
+     * is the first element in the list, and the rest of the players remain in
+     * order.
+     *
+     * @param players the list of players to be rearranged
+     * @param startingPlayer the player that should be the first element in the
+     * list
+     */
     public static void rearrangePlayersList(ArrayList<Player> players, Player startingPlayer) {
         int startingIndex = players.indexOf(startingPlayer);
         if (startingIndex == -1) {
