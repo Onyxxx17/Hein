@@ -141,7 +141,7 @@ public class GameControl {
      * Each player plays one last round without drawing from the deck.
      */
     public void handleEndGame() {
-        
+
         //Last round without drawing from deck
         for (Player player : players) {
             Helper.printBox("🚨 Last Round 🚨");
@@ -151,7 +151,6 @@ public class GameControl {
                 scanner.nextLine();
             }
             GameUtil.pressEnterToContinue(scanner);
-            Helper.flush();
         }
 
         addFinalTwoCards();
@@ -210,7 +209,7 @@ public class GameControl {
         gameManager.flipCards();
         Helper.typewrite("\n✅ Final Scores Have Been Calculated! ✅\n", 30);
         GameUtil.pressEnterToContinue(scanner);
-        Helper.flush();
+        //Helper.flush();
 
         gameManager.calculateFinalScores();
         gameManager.determineWinner();

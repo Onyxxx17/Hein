@@ -201,14 +201,16 @@ public class GameManager {
     }
 
     public void displayMaxPlayersForColorList(String color, List<Player> maxPlayers, String colorCode) {
+        
         System.out.print("🎉 Player(s) that will flip " + colorCode + color + " cards: \u001B[0m");
-        for (int i = 0; i < maxPlayers.size(); i++) {
-            System.out.print("\u001B[1m" + maxPlayers.get(i).getName() + "\u001B[0m");
-            if (i != maxPlayers.size() - 1) {
-                System.out.print(", ");
+            for (int i = 0; i < maxPlayers.size(); i++) {
+                System.out.print("\u001B[1m" + maxPlayers.get(i).getName() + "\u001B[0m");
+                if (i != maxPlayers.size() - 1) {
+                    System.out.print(", ");
+                }
             }
-        }
         System.out.println(" 🎉\n");
+        
         Helper.sleep(1200);
     }
 
