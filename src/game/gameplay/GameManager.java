@@ -1,12 +1,9 @@
 package game.gameplay;
 
 import game.core.*;
-import game.utils.Helper;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import game.renderer.*;
+import game.utils.Constants;
+import java.util.*;
 
 /**
  * Manages the core game rules, win conditions, and state for the Parade card
@@ -41,7 +38,7 @@ public class GameManager {
      */
     public boolean checkEndGame() {
         if (deck == null || deck.getCards() == null || deck.getCards().isEmpty()) {
-            System.out.println("No more cards are left in the deck");
+            GameRenderer.showDeckEmpty();
             return true;
         }
         for (Player p : players) {
@@ -55,7 +52,7 @@ public class GameManager {
                     }
                 }
                 if (haveAllColors) {
-                    System.out.println("\n‼️" + p.getName() + " has collected all 6 color cards ‼️\n");
+                    GameRenderer.showAllColorsCollected(p);
                     return true;
                 }
             }
@@ -97,7 +94,7 @@ public class GameManager {
             }
         }
 
-        System.out.println("Max cards for " + color + " is " + max);
+        GameRenderer.logMaxCardsForColor(color, max);
 
         // Special rule for two-player game
         if (players.size() == 2) {
@@ -106,7 +103,7 @@ public class GameManager {
 
         // No flipping if all players have the same number of cards
         if (isAllSameNoOfCards) {
-            System.out.println("All players have the same number of cards. No cards flipped for " + color);
+            GameRenderer.logNoFlippingDueToTie(color);
             playersOut.clear();
         }
 
@@ -130,7 +127,7 @@ public class GameManager {
         int difference = Math.abs(count1 - count2);
 
         if (difference < MIN_DIFFERENCE_FOR_TWO_PLAYERS && difference != 0) {
-            System.out.println("The difference between the two players is not enough to flip cards. It needs to be at least 2.");
+            GameRenderer.show2PlayerRules();
             playersOut.clear();
         }
     }
@@ -139,12 +136,12 @@ public class GameManager {
      * Flips cards for players with the majority of each color according to the
      * game rules.
      */
-    public void flipCards() {
+    public Map<Player, ArrayList<Card>> flipCards() { // void flipCards() {
         Map<Player, ArrayList<Card>> flippedCards = new HashMap<>();
 
-        for (String color : Deck.CARD_COLORS) {
+        for (String color : Constants.COLORS) {
             ArrayList<Player> maxPlayers = checkPlayerWithMaxCards(color);
-            displayMaxPlayersForColor(color, players);
+            GameRenderer.displayMaxPlayersForColor(color, maxPlayers);
 
             for (Player player : maxPlayers) {
                 ArrayList<Card> cardsToFlip = player.getOpenCards().get(color);
@@ -155,63 +152,7 @@ public class GameManager {
                 }
             }
         }
-        showFlippedCards(flippedCards);
-    }
-
-    /**
-     * Displays flipped cards after applying game rules.
-     *
-     * @param flippedCards A mapping of players to their flipped cards
-     */
-    public void showFlippedCards(Map<Player, ArrayList<Card>> flippedCards) {
-        for (Player p : players) {
-            System.out.println("\n" + p.getName() + " open cards after flipping:");
-            for (String color : Deck.CARD_COLORS) {
-                List<Card> openCards = p.getOpenCards().getOrDefault(color, new ArrayList<>());
-                System.out.print(color + " cards: ");
-                if (openCards.isEmpty()) {
-                    System.out.print("No Cards");
-                }
-                for (Card card : openCards) {
-                    boolean contains = flippedCards.getOrDefault(p, new ArrayList<>()).contains(card);
-                    if (card.getValue() == 1 && contains) {
-                        System.out.print("[" + color + "] ");
-                    } else {
-                        System.out.print(card + " ");
-                    }
-                }
-                System.out.println();
-            }
-        }
-    }
-
-    public void displayMaxPlayersForColor(String color, List<Player> maxPlayers) {
-        String colorCode = Card.getColorCode(color); // Get the color code for the given color
-
-        if (maxPlayers.isEmpty()) {
-            displayNoMaxPlayersForColor(color);
-            return;
-        }
-
-        displayMaxPlayersForColorList(color, maxPlayers, colorCode);
-    }
-
-    public void displayNoMaxPlayersForColor(String color) {
-        System.out.println("🎭 Player(s) with most " + Card.getColorCode(color) + color + " cards: \u001B[0mNone\n");
-    }
-
-    public void displayMaxPlayersForColorList(String color, List<Player> maxPlayers, String colorCode) {
-        
-        System.out.print("🎉 Player(s) that will flip " + colorCode + color + " cards: \u001B[0m");
-            for (int i = 0; i < maxPlayers.size(); i++) {
-                System.out.print("\u001B[1m" + maxPlayers.get(i).getName() + "\u001B[0m");
-                if (i != maxPlayers.size() - 1) {
-                    System.out.print(", ");
-                }
-            }
-        System.out.println(" 🎉\n");
-        
-        Helper.sleep(1200);
+        return flippedCards;
     }
 
     /**
@@ -219,25 +160,22 @@ public class GameManager {
      */
     public void calculateFinalScores() {
         for (Player player : players) {
-            player.calculateScore();
+            player.calculateScore();;
         }
     }
 
     /**
      * Determines the winner based on scores and tiebreaker rules.
      */
-    public void determineWinner() {
+    public Player determineWinner() {
         Collections.sort(players, new PlayerComparator());
         ArrayList<Player> potentialWinners = addPotentialWinners();
 
         if (potentialWinners.size() > 1) {
-            System.out.println("There are multiple players with the highest score. Tiebreaker rules apply.");
-            for (Player p : players) {
-                System.out.println(p.getName() + " collected");
-                System.out.println("Total cards : " + p.getTotalOpenCards() + " cards");
-                System.out.println("Total colors : " + p.getOpenCards().size() + " colors\n");
-            }
+            GameRenderer.showTieBreaker(potentialWinners);
         }
+
+        return potentialWinners.get(0);
     }
 
     /**
@@ -257,6 +195,23 @@ public class GameManager {
     }
 
     /**
+     * Rearranges players list to put the ended player first
+     */
+    public static void rearrangePlayersList(List<Player> players, Player startingPlayer) {
+
+        int startIndex = players.indexOf(startingPlayer);
+        List<Player> rearranged = new ArrayList<>(players.size());
+
+        // Add players from starting index to end
+        rearranged.addAll(players.subList(startIndex, players.size()));
+        // Add players from beginning to starting index
+        rearranged.addAll(players.subList(0, startIndex));
+
+        players.clear();
+        players.addAll(rearranged);
+    }
+
+    /**
      * Gets the list of players in the game.
      *
      * @return ArrayList of players
@@ -273,5 +228,4 @@ public class GameManager {
     public Deck getDeck() {
         return deck;
     }
-
 }

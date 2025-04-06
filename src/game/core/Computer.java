@@ -1,8 +1,8 @@
 package game.core;
 
+import game.renderer.*;
 import game.utils.Helper;
 import java.util.*;
-
 public class Computer extends Player {
 
     // ============================ Instance Variables ============================
@@ -66,7 +66,7 @@ public class Computer extends Player {
             }
 
             // Select a random card
-            Card.setDisplayMode(false);
+            CardRenderer.setDisplayMode(false);
             int index = random.nextInt(closedCards.size());
             Card selectedCard = closedCards.remove(index);
 
@@ -76,7 +76,7 @@ public class Computer extends Player {
             System.out.println("\n" + name + " played: ");
             System.out.println(selectedCard);
 
-            Card.setDisplayMode(true);
+            CardRenderer.setDisplayMode(true);
             System.out.println(selectedCard + " is added to " + name + "'s Open Cards!\n");
             openCards.computeIfAbsent(selectedCard.getColor(), key -> new ArrayList<>()).add(selectedCard);
         }

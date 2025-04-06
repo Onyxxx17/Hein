@@ -1,51 +1,11 @@
-package game.utils;
+package game.setup;
 
 import game.core.*;
 import game.exceptions.*;
-import game.gameplay.RollDice;
+import game.utils.Helper;
 import java.util.*;
 
-public class GameUtil {
-
-    private static final int DELAY_DURATION = 45;
-
-    /**
-     * Prints a welcome message, showing the banner and introducing the game.
-     * Includes a brief reminder of the game rules and prompts the user to press
-     * Enter to continue.
-     *
-     * @param scanner The Scanner object for user input.
-     */
-    public static void welcomeMessage(Scanner scanner) {
-        Helper.flush();
-        Helper.progressBar();
-        Helper.flush();
-        AsciiArt.printBanner();
-        String border = "****************************************";
-
-        System.out.println("\n" + border);
-        Helper.typewrite("🎉 WELCOME TO THE PARADE CARD GAME! 🎭", DELAY_DURATION);
-        System.out.println(border + "\n");
-
-        Helper.typewrite("🎴 Remember Players! The rule is simple.", DELAY_DURATION);
-        Helper.typewrite("🏆 Score as LOW as possible. Good Luck! 🍀\n", DELAY_DURATION);
-
-        System.out.println(border + "\n");
-
-        pressEnterToContinue(scanner);
-        Helper.flush();
-    }
-
-    /**
-     * Waits for the user to press Enter to continue the game. The user is
-     * prompted to press Enter to continue.
-     *
-     * @param scanner The scanner object for user input.
-     */
-    public static void pressEnterToContinue(Scanner scanner) {
-        System.out.print("\n👉 Press Enter to continue...");
-        scanner.nextLine(); // Waits for the user to press Enter
-    }
+public class PlayerSetup {
 
     /**
      * Prompts the user for the number of players and validates the input.
@@ -60,7 +20,6 @@ public class GameUtil {
         // Input loop for player count
         while (true) {
             try {
-
                 System.out.print("👥 Enter the number of players (2-6): ");
                 playerCount = scanner.nextInt();
 
@@ -252,92 +211,5 @@ public class GameUtil {
             return !(name.length() > 5);
         }
         return false;
-    }
-
-    /**
-     * Decides the starting player by simulating a dice roll for each player.
-     * Each player rolls a dice, and the player with the highest roll becomes
-     * the starting player. In case of a tie, only the tied players reroll until
-     * a single winner is determined.
-     *
-     * @param players List of players participating in the game
-     * @return The player who will start the game
-     *
-     */
-    public static Player decideStartingPlayer(ArrayList<Player> players) {
-        Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.", 45);
-        Helper.sleep(1000);
-        ArrayList<Player> contenders = new ArrayList<>(players);
-
-        while (contenders.size() > 1) {
-            System.out.println("\nRolling to decide the starting player... 🎲");
-
-            int maxRoll = 0; // To track the highest roll
-            HashMap<Integer, ArrayList<Player>> rollMap = new HashMap<>(); // Map roll values to players
-
-            // Each contender rolls the dice
-            for (Player player : contenders) {
-                try {
-                    int roll = RollDice.roll(); // Get a random dice roll (1-6)
-                    RollDice.animateRoll(player.getName(), roll); // Display rolling animation
-                    System.out.println(player.getName() + " rolled: " + "[ " + roll + " ]"); // Display the roll value
-
-                    // Store players based on their rolled value
-                    rollMap.putIfAbsent(roll, new ArrayList<>());
-                    rollMap.get(roll).add(player);
-
-                    // Update maxRoll if this roll is the highest so far
-                    maxRoll = Math.max(maxRoll, roll);
-                } catch (InterruptedException e) {
-                    // Handle any interruptions during the animation
-                    System.out.println("Animation interrupted for player: " + player.getName());
-                    Thread.currentThread().interrupt();
-                    // Continue execution instead of breaking
-                }
-            }
-
-            // Get only the players who rolled the highest value
-            contenders = rollMap.get(maxRoll);
-
-            // If multiple players rolled the highest, they will reroll
-            if (contenders.size() > 1) {
-                System.out.println("\nTie between players scoring " + maxRoll + "! Rerolling for these players...");
-            }
-        }
-
-        // The final remaining player is the starting player
-        Player startingPlayer = contenders.get(0);
-        System.out.println("\n" + startingPlayer.getName() + " got the highest roll! " + startingPlayer.getName() + " goes first! ✨");
-
-        return startingPlayer;
-    }
-
-    /**
-     * Rearranges the given list of players such that the given starting player
-     * is the first element in the list, and the rest of the players remain in
-     * order.
-     *
-     * @param players the list of players to be rearranged
-     * @param startingPlayer the player that should be the first element in the
-     * list
-     */
-    public static void rearrangePlayersList(ArrayList<Player> players, Player startingPlayer) {
-        int startingIndex = players.indexOf(startingPlayer);
-        if (startingIndex == -1) {
-            return; // Starting player not found in the list (should not happen but added just in case)
-        }
-
-        // Create a new list with the starting player and the rest in order
-        ArrayList<Player> rearrangedList = new ArrayList<>();
-        for (int i = startingIndex; i < players.size(); i++) {
-            rearrangedList.add(players.get(i));
-        }
-        for (int i = 0; i < startingIndex; i++) {
-            rearrangedList.add(players.get(i));
-        }
-
-        // Update the original players list
-        players.clear();
-        players.addAll(rearrangedList);
     }
 }

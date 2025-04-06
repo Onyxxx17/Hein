@@ -1,5 +1,7 @@
 package game.utils;
 
+import java.util.Scanner;
+
 /**
  * A utility class providing various helper functions for console-based
  * applications. It includes methods for clearing the console, displaying
@@ -101,17 +103,6 @@ public class Helper {
     }
 
     /**
-     * Prints a message inside a box made of '=' characters.
-     *
-     * @param message The message to display inside the box.
-     */
-    public static void printBox(String message) {
-        System.out.println("=".repeat(40));
-        System.out.println(message);
-        System.out.println("=".repeat(40));
-    }
-
-    /**
      * Returns the ANSI color code for a given color.
      *
      * @param color The color name.
@@ -150,5 +141,21 @@ public class Helper {
             default ->
                 "\u001B[0m"; // Default reset code
         };
+    }
+    /**
+     * Waits for the user to press Enter to continue the game. The user is
+     * prompted to press Enter to continue.
+     *
+     * @param scanner The scanner object for user input.
+     */
+    public static void pressEnterToContinue(Scanner scanner) {
+        System.out.print("\n👉 Press Enter to continue...");
+        scanner.nextLine(); // Waits for the user to press Enter
+    }
+
+    public static void printBox(String title) {
+        System.out.println("=".repeat(40));
+        System.out.println(title);
+        System.out.println("=".repeat(40));
     }
 }

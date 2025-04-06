@@ -1,14 +1,10 @@
 package game.core;
 
+import game.utils.Constants;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Deck {
-
-    // ============================ Constants ============================
-
-    /** Define available colors for cards. */
-    public static final String[] CARD_COLORS = {"Blue", "Green", "Grey", "Orange", "Purple", "Red"};
 
     // ============================ Instance Variables ============================
 
@@ -23,8 +19,8 @@ public class Deck {
      */
     public Deck() {
         this.cards = new ArrayList<>();
-        for (String color : CARD_COLORS) {
-            for (int i = 0; i <= 10; i++) { // Adding cards numbered 0 to 10
+        for (String color : Constants.COLORS) {
+            for (int i = 0; i <= Constants.MAX_CARDS_PER_COLOUR; i++) { // Adding cards numbered 0 to 10
                 cards.add(new Card(color, i));
             }
         }

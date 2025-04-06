@@ -1,7 +1,6 @@
 package game.core;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Abstract base class representing a player in the game.
@@ -90,15 +89,15 @@ public abstract class Player {
      *
      * @param parade The parade from which cards are drawn.
      */
-    public void drawCardsFromParade(Parade parade) {
+    public ArrayList<Card> drawCardsFromParade(Parade parade) {
         ArrayList<Card> currentCardsInParade = parade.getCards();
         if (currentCardsInParade.isEmpty()) {
             System.out.println(name + " receives no cards this round (parade is empty).");
-            return;
+            return new ArrayList<>();
         }
 
         Card playedCard = currentCardsInParade.get(currentCardsInParade.size() - 1);
-        ArrayList<Card> cardsToRemove = new ArrayList<>();
+        ArrayList<Card> cardsToReceive = new ArrayList<>();
 
         // Calculate index range for card selection
         int toCount = Math.max(currentCardsInParade.size() - playedCard.getValue() - 1, 0);
@@ -106,16 +105,15 @@ public abstract class Player {
         for (int i = 0; i < toCount; i++) {
             Card card = currentCardsInParade.get(i);
             if (card.getColor().equals(playedCard.getColor()) || playedCard.getValue() >= card.getValue()) {
-                cardsToRemove.add(card);
+                cardsToReceive.add(card);
             }
         }
 
         // Remove cards from parade and add them to openCards
-        currentCardsInParade.removeAll(cardsToRemove);
-        addCardsToOpenCards(cardsToRemove);
+        currentCardsInParade.removeAll(cardsToReceive);
+        addCardsToOpenCards(cardsToReceive);
 
-        // Display results
-        displayReceivedCards(cardsToRemove);
+        return cardsToReceive;
     }
     
     /**
@@ -123,45 +121,9 @@ public abstract class Player {
      * 
      * @param cards List of cards to add to open cards.
      */
-    private void addCardsToOpenCards(List<Card> cards) {
+    private void addCardsToOpenCards(ArrayList<Card> cards) {
         for (Card card : cards) {
             openCards.computeIfAbsent(card.getColor(), key -> new ArrayList<>()).add(card);
-        }
-    }
-    
-    /**
-     * Displays the cards received by the player in ASCII art format.
-     * 
-     * @param receivedCards The cards received by the player.
-     */
-    private void displayReceivedCards(List<Card> receivedCards) {
-        if (receivedCards.isEmpty()) {
-            System.out.println(name + " receives no cards this round.");
-            return;
-        }
-        
-        System.out.println(name + " receives:");
-
-        // Set display mode to ASCII art for the received cards
-        Card.setDisplayMode(false);
-
-        // Prepare card lines (7 lines for standard ASCII card)
-        StringBuilder[] cardLines = new StringBuilder[7];
-        for (int i = 0; i < cardLines.length; i++) {
-            cardLines[i] = new StringBuilder();
-        }
-
-        // Build each line of the card display
-        for (Card card : receivedCards) {
-            String[] cardParts = card.toString().split("\n");
-            for (int i = 0; i < cardParts.length; i++) {
-                cardLines[i].append(cardParts[i]).append("   ");
-            }
-        }
-
-        // Print the assembled card lines
-        for (StringBuilder line : cardLines) {
-            System.out.println(line.toString());
         }
     }
 
@@ -177,31 +139,6 @@ public abstract class Player {
             closedCards.add(card);
         }
     }
-
-    // ============================ Display Methods ============================
-    /**
-     * Displays the player's open cards grouped by color.
-     */
-    public void showOpenCards() {
-        if (openCards.isEmpty()) {
-            System.out.println(name + " has no open cards.\n");
-            return;
-        }
-        
-        Card.setDisplayMode(true);
-        System.out.println("🎴 " + name + "'s Open Cards:");
-        
-        openCards.forEach((color, cards)
-                -> System.out.println(color + " cards: "
-                        + cards.stream()
-                                .map(Card::toString)
-                                .collect(Collectors.joining(", "))
-                )
-        );
-        
-        System.out.println();
-    }
-
     // ============================ Score Calculation ============================
     /**
      * Calculates the player's score based on the total value of open cards.
@@ -213,19 +150,6 @@ public abstract class Player {
                 score += card.getValue();
             }
         }
-    }
-
-    /**
-     * Counts the total number of cards in the player's open cards.
-     *
-     * @return The total count of open cards.
-     */
-    public int getColorCount() {
-        int totalCount = 0;
-        for (ArrayList<Card> cards : openCards.values()) {
-            totalCount += cards.size();
-        }
-        return totalCount;
     }
 
     // ============================ Getter Methods ============================
@@ -274,6 +198,19 @@ public abstract class Player {
         return openCards.values().stream()
                 .mapToInt(List::size)
                 .sum();
+    }
+
+    /**
+     * Counts the total number of cards in the player's open cards.
+     *
+     * @return The total count of open cards.
+     */
+    public int getColorCount() {
+        int totalCount = 0;
+        for (ArrayList<Card> cards : openCards.values()) {
+            totalCount += cards.size();
+        }
+        return totalCount;
     }
 
     // ============================ Setter Methods ============================

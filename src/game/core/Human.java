@@ -1,5 +1,6 @@
 package game.core;
 
+import game.renderer.CardRenderer;
 import java.util.*;
 
 /**
@@ -60,7 +61,7 @@ public class Human extends Player {
             Card selectedCard = closedCards.remove(cardIndex - 1);
 
 
-            Card.setDisplayMode(true);
+            CardRenderer.setDisplayMode(true);
             openCards.computeIfAbsent(selectedCard.getColor(), key -> new ArrayList<>()).add(selectedCard);
             System.out.println(selectedCard + " is added to " + name + "'s Open Cards!\n");
         }
@@ -102,7 +103,7 @@ public class Human extends Player {
             return;
         }
 
-        Card.setDisplayMode(false);
+        CardRenderer.setDisplayMode(false);
         System.out.println("🎴 Your hand:");
 
         // Print selection numbers above each card

@@ -1,8 +1,8 @@
 package game.gameplay;
 
-import game.core.Player;
-import game.utils.Helper;
-import java.util.ArrayList;
+import game.core.*;
+import game.utils.*;
+import java.util.*;
 
 /**
  * Displays a podium of top players at the end of the game like Kahoot
@@ -13,7 +13,7 @@ public class Podium {
      * Displays the podium with player rankings based on their scores.
      * List of players sorted by score (lowest to highest for Parade game)
      */
-    public static void displayPodium(ArrayList<Player> players) {
+    public static void displayPodium(ArrayList<Player> players, Player winner) {
         
         System.out.println("===============================");
         System.out.println("        FINAL RESULTS         ");
@@ -28,7 +28,7 @@ public class Podium {
         System.out.println("        1st         ");
         System.out.println("      ┌─────┐       ");
         System.out.println("      │     │       ");
-        System.out.println("      │  " + getInitial(players.get(0).getName()) + "  │       ");
+        System.out.println("      │  " + getInitial(winner.getName()) + "  │       ");
         
         // Handle different numbers of players
         if (players.size() >= 3) {
@@ -56,17 +56,11 @@ public class Podium {
             String medal = "";
             
             switch (i) {
-                case 0:
-                    medal = "🥇";
-                    break;
-                case 1:
-                    medal = "🥈";
-                    break;
-                case 2:
-                    medal = "🥉";
-                    break;
-                default:
-                    break;
+                case 0 -> medal = "🥇";
+                case 1 -> medal = "🥈";
+                case 2 -> medal = "🥉";
+                default -> {
+                }
             }
             
             System.out.printf("%s #%d: %s - %d points%n", 
@@ -75,7 +69,7 @@ public class Podium {
         
         // Display winner message
         System.out.println("\n🎉 CONGRATULATIONS 🎉");
-        System.out.println("🏆 " + players.get(0).getName() + " WINS THE GAME! 🏆");
+        System.out.println("🏆 " + winner.getName() + " WINS THE GAME! 🏆");
         System.out.println("\nThanks for playing Parade!");
         System.out.println("===============================");
     }

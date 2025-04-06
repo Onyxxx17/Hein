@@ -2,9 +2,10 @@ package app;
 
 import game.core.*;
 import game.gameplay.*;
+import game.renderer.GameRenderer;
+import game.setup.*;
 import game.utils.*;
 import java.util.*;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -12,18 +13,17 @@ public class Main {
         Scanner sc = new Scanner(System.in);
     
         // Display the welcome message to the user
-        GameUtil.welcomeMessage(sc);
+        GameRenderer.welcomeMessage(sc);
     
         // Ask the user for the number of players and store the input
-        int playerCount = GameUtil.askForNumberOfPlayers(new Scanner(System.in));
+        int playerCount = PlayerSetup.askForNumberOfPlayers(new Scanner(System.in));
     
-        // Preparing to start the game:
         // Create the list of players based on the input number and pass the scanner for player setup
-        ArrayList<Player> players = GameUtil.createPlayers(playerCount, sc);
+        ArrayList<Player> players = PlayerSetup.createPlayers(playerCount, sc);
     
     
         // Wait for the user to press Enter to continue to the next step
-        GameUtil.pressEnterToContinue(sc);
+        Helper.pressEnterToContinue(sc);
     
         // Clear the screen (or any other action defined in Helper.flush())
         Helper.flush();
