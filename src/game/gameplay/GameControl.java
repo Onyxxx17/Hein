@@ -30,7 +30,7 @@ public class GameControl {
         this.deck = gameManager.getDeck();
         this.players = gameManager.getPlayers();
         this.scanner = sc;
-        this.parade = new Parade(deck);
+        this.parade = new Parade();
     }
 
     public void startGame() {
@@ -80,6 +80,7 @@ public class GameControl {
         dealCardstoPlayers();
         Helper.sleep(500);
 
+        parade.initializeParade(deck);
         GameRenderer.showParadeInitialization();
         Helper.sleep(1000);
         ParadeRenderer.showParade(parade);

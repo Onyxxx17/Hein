@@ -1,8 +1,8 @@
 package game.renderer;
 
-import java.util.List;
 import game.core.Player;
 import game.utils.Helper;
+import java.util.List;
 
 public class StartingPlayerRenderer {
 
@@ -18,7 +18,6 @@ public class StartingPlayerRenderer {
     public static void rollMessage() {
         System.out.print("\nRolling to decide the starting player");
         Helper.loading();
-        System.out.println("🎲");
     }
 
     public static void showTie(List<Player> tiedPlayers, int maxRoll) {

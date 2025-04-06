@@ -12,8 +12,11 @@ public class Parade {
     /**
      * Constructor for Parade. Initializes an empty parade.
      */
-    public Parade(Deck deck) {
+    public Parade() {
         this.cards = new ArrayList<>();
+    }
+    // ============================ Parade Operations ============================
+    public void initializeParade(Deck deck) {
         for (int i = 0; i < Constants.INITIAL_CARDS_OF_PARADE; i++) {
             if (deck.isEmpty()) {
                 throw new IllegalStateException("Not enough cards in the deck to initialize a Parade");
@@ -21,8 +24,6 @@ public class Parade {
             cards.add(deck.removeCardFromDeck());
         }
     }
-    // ============================ Parade Operations ============================
-
     /**
      * Adds a card to the end of the parade.
      *
