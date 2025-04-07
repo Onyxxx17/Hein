@@ -14,6 +14,7 @@ public class ComputerRenderer {
     }
 
     public static void renderComputerPlayedCard(String name, Card card) {
+        CardRenderer.setDisplayMode(false);
         System.out.println("\n" + name + " played: ");
         System.out.println(card);
     }
@@ -23,6 +24,7 @@ public class ComputerRenderer {
     }
 
     public static void renderCardAddedToOpenCards(String name, Card card) {
+        CardRenderer.setDisplayMode(true);
         System.out.println(card + " is added to " + name + "'s Open Cards!\n");
     }
 }

@@ -1,35 +1,13 @@
 package game.renderer;
 
 import game.core.*;
-import game.utils.AsciiArt;
 import game.utils.Constants;
 import game.utils.Helper;
 import java.util.*;
 
-public class GameRenderer {// implements GameRendererInterface{
-    private static final int DELAY_DURATION = 45;
-    public GameRenderer() {};
+public class GameFlowRenderer {
+
     // Static utility method: Called once, independent of GameRenderer instance
-    public static void welcomeMessage(Scanner scanner) {
-        Helper.flush();
-        Helper.progressBar();
-        Helper.flush();
-        AsciiArt.welcomeArt();
-        String border = "****************************************";
-
-        System.out.println("\n" + border);
-        Helper.typewrite("🎉 WELCOME TO THE PARADE CARD GAME! 🎭", DELAY_DURATION);
-        System.out.println(border + "\n");
-
-        Helper.typewrite("🎴 Remember Players! The rule is simple.", DELAY_DURATION);
-        Helper.typewrite("🏆 Score as LOW as possible. Good Luck! 🍀\n", DELAY_DURATION);
-
-        System.out.println(border + "\n");
-
-        Helper.pressEnterToContinue(scanner);
-        Helper.flush();
-    }
-
     public static void showFlippedCards(Map<Player, ArrayList<Card>> flippedCards, ArrayList<Player> players) {
         for (Player p : players) {
             System.out.println("\n" + p.getName() + " open cards after flipping:");
@@ -84,20 +62,57 @@ public class GameRenderer {// implements GameRendererInterface{
     public static void logNoFlippingDueToTie(String color) {
         System.out.println("All players have the same number of cards. No cards flipped for " + color);
     }
+
     public static void showTieBreaker(ArrayList<Player> potentialWinners) {
-        System.out.println("There is a tie between " + potentialWinners.size() + " players");
-        System.out.println("Players with the highest score : " + potentialWinners.toString());
-        System.out.println("\nWinner will be decided on two conditions:\n");
-        System.out.println("1. Fewest number of cards collected");
-        System.out.println("2. Fewest number of colors collected\n");
+        // Initial dramatic pause before announcement
+        Helper.sleep(800);
+        System.out.println("⚔️  A tie has been detected between " + potentialWinners.size() + " players!");
+        Helper.sleep(500);
 
+        // List tied players with slight delay between each
+        System.out.println("🔝 Players with the highest score: ");
         for (Player p : potentialWinners) {
-            System.out.println(p.getName() + " collected");
-            System.out.println("Total cards : " + p.getTotalOpenCards() + " cards");
-            System.out.println("Total colors : " + p.getOpenCards().size() + " colors\n");
+            Helper.sleep(300);
+            System.out.println(" - " + p.getName());
         }
-    }
 
+        // Pause before rules explanation
+        Helper.sleep(800);
+        System.out.println("\n🏆 To break the tie and determine the winner, we will consider:\n");
+        Helper.sleep(500);
+
+        // Animated countdown of tiebreaker rules
+        System.out.println("1️⃣ Fewest number of total cards collected.");
+        Helper.sleep(500);
+        System.out.println("2️⃣ Fewest number of different colors collected.");
+        Helper.sleep(500);
+        System.out.println("3️⃣ Final dice roll if still tied!");
+        Helper.sleep(500);
+
+        // Dramatic lead-in to details
+        System.out.println("\nLet the tiebreaker begin!");
+        Helper.sleep(600);
+        System.out.println("\n📊 Analyzing player collections...\n");
+        Helper.sleep(1000);
+
+        // Display details with typing effect
+        for (Player p : potentialWinners) {
+            System.out.println("🔹 " + p.getName() + " collected:");
+            Helper.sleep(300);
+
+            System.out.print("   - Total cards: ");
+            Helper.typewrite(String.valueOf(p.getTotalOpenCards()), 50);
+
+            System.out.print("\n   - Total colors: ");
+            Helper.typewrite(String.valueOf(p.getOpenCards().size()), 50);
+            System.out.println();
+
+            Helper.sleep(400); // Pause between players
+        }
+
+        // Final dramatic pause before continuing
+        Helper.sleep(1000);
+    }
 
     public static void show2PlayerRules() {
         System.out.println("The difference between the two players is not enough to flip cards. It needs to be at least 2.");
@@ -112,7 +127,6 @@ public class GameRenderer {// implements GameRendererInterface{
         Helper.loading();
         System.out.println("\n✅ Done!");
     }
-
 
     public static void showCardDealing() {
         System.out.print("\n🎴 Cards are being dealt");
@@ -151,18 +165,18 @@ public class GameRenderer {// implements GameRendererInterface{
     }
 
     public static void showDeckEmpty() {
-        System.out.println("‼️ No more cards are left in the deck. Game Over ‼️");
-        playLastRound();
+        Helper.sleep(1000);
+        Helper.printBox("\n‼️ No more cards are left in the deck ‼️\n" + playLastRound());
     }
 
     public static void showAllColorsCollected(Player player) {
-        System.out.println("\n‼️" + player.getName() +
-                " has collected all 6 color cards. Game Over ‼️\n");
-        playLastRound();
+        Helper.sleep(1000);
+        Helper.printBox("\n‼️" + player.getName()
+                + " has collected all 6 color cards ‼️\n" + playLastRound());
     }
 
-    private static void playLastRound() {
-        System.out.println("‼️ Every player plays one last round ‼️");
+    private static String playLastRound() {
+        return ("‼️ Every player plays one last round ‼️");
     }
 
     public static void displayOpenCards(ArrayList<Player> players) {

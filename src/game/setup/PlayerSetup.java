@@ -2,7 +2,7 @@ package game.setup;
 
 import game.core.*;
 import game.exceptions.*;
-import game.utils.Helper;
+import game.renderer.GameState;
 import java.util.*;
 
 public class PlayerSetup {
@@ -16,7 +16,7 @@ public class PlayerSetup {
     public static int askForNumberOfPlayers(Scanner scanner) {
         int playerCount = 0;
 
-        Helper.printBox("🎲 WELCOME TO THE GAME SETUP 🎲");
+        GameState.gameSetUp();
         // Input loop for player count
         while (true) {
             try {
@@ -32,7 +32,6 @@ public class PlayerSetup {
 
                 // Break the loop if a valid player count is entered
                 System.out.println("\n✅ Player count: " + playerCount);
-                System.out.println("=".repeat(40));
                 break;
 
             } catch (InvalidPlayerCountException e) {
@@ -64,8 +63,7 @@ public class PlayerSetup {
         int humanCount = 0;
         int botIndex = 1;
 
-        System.out.println("🎭 PLAYER SETUP 🎭");
-        System.out.println("=".repeat(40));
+        GameState.setUpPlayers();
 
         for (int i = 1; i <= numPlayers; i++) {
             String type = getPlayerType(scanner, i);

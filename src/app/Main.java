@@ -2,7 +2,7 @@ package app;
 
 import game.core.*;
 import game.gameplay.*;
-import game.renderer.GameRenderer;
+import game.renderer.*;
 import game.setup.*;
 import game.utils.*;
 import java.util.*;
@@ -13,7 +13,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
     
         // Display the welcome message to the user
-        GameRenderer.welcomeMessage(sc);
+        GameState.welcomeMessage(sc);
     
         // Ask the user for the number of players and store the input
         int playerCount = PlayerSetup.askForNumberOfPlayers(new Scanner(System.in));
@@ -34,8 +34,8 @@ public class Main {
         // Set up the game manager, which holds the game state and flow
         GameManager gameManager = new GameManager(players, deck);
     
-        // Create a GameControl object to manage the game flow using the game manager and scanner for user input
-        GameControl game = new GameControl(gameManager, sc);
+        // Create a Game object to manage the game flow using the game manager and scanner for user input
+        Game game = new Game(gameManager, sc);
     
         // Start the game by calling the startGame method
         game.startGame();

@@ -1,18 +1,19 @@
 package game.utils;
 
 public class Constants {
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
+    public static final String RESET = "\u001B[0m";
+    public static final String RED = "\u001B[31m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String YELLOW = "\u001B[33m";
+    public static final String BLUE = "\u001B[34m";
+    public static final String PURPLE = "\u001B[35m";
+    public static final String CYAN = "\u001B[36m";
+    public static final String GREY = "\u001B[37m";
 
+    public static final int DELAY_DURATION = 45;
     public static int CARDS_PER_LINE = 7;
     public static final int INITIAL_CARDS_OF_PARADE = 6;
-
+    public static final int TOTAL_COLORS = 6;
     public static final String[] COLORS = {"Blue", "Green", "Grey", "Orange", "Purple", "Red"};
 
     public static final int MIN_PLAYERS = 2;

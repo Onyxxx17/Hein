@@ -222,4 +222,12 @@ public abstract class Player {
     public void setScore(int score) {
         this.score = score;
     }
+
+    public void setOpenCards(Map<String, ArrayList<Card>> openCards) {
+        this.openCards = new HashMap<>(openCards);
+    }
+
+    public boolean isHuman() {
+        return false;
+    }
 }

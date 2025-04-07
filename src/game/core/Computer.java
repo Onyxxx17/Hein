@@ -68,6 +68,7 @@ public class Computer extends Player {
             Card selectedCard = closedCards.remove(index);
 
             // Display and add to open cards
+            
             ComputerRenderer.renderComputerThinking(name);
             ComputerRenderer.renderComputerPlayedCard(name, selectedCard);
             ComputerRenderer.renderCardAddedToOpenCards(name, selectedCard);
