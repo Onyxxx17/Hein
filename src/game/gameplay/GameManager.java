@@ -16,9 +16,6 @@ public class GameManager {
 
     private final ArrayList<Player> players; // List of players participating in the game
     private final Deck deck; // The deck of cards used in the game
-    private static final int TOTAL_COLORS = 6; // Number of unique colors in the game
-    private static final int MIN_DIFFERENCE_FOR_TWO_PLAYERS = 2; // Minimum card count difference for two-player flipping
-    private static final int FLIPPED_CARD_VALUE = 1; // Value assigned to flipped cards
 
     /**
      * Creates a new GameManager with the specified players and deck.
@@ -45,7 +42,7 @@ public class GameManager {
         }
         for (Player p : players) {
             Map<String, ArrayList<Card>> openCards = p.getOpenCards();
-            if (openCards.size() == TOTAL_COLORS) {
+            if (openCards.size() == Constants.TOTAL_COLORS) {
                 boolean haveAllColors = true;
                 for (List<Card> list : openCards.values()) {
                     if (list.isEmpty()) {
@@ -128,7 +125,7 @@ public class GameManager {
         int count2 = player2.getOpenCards().getOrDefault(color, new ArrayList<>()).size();
         int difference = Math.abs(count1 - count2);
 
-        if (difference < MIN_DIFFERENCE_FOR_TWO_PLAYERS && difference != 0) {
+        if (difference < Constants.MIN_DIFFERENCE_FOR_TWO_PLAYERS && difference != 0) {
             GameFlowRenderer.show2PlayerRules();
             playersOut.clear();
         }
@@ -149,7 +146,7 @@ public class GameManager {
                 List<Card> cardsToFlip = player.getOpenCards().get(color);
                 flippedCards.putIfAbsent(player, new ArrayList<>());
                 for (Card card : cardsToFlip) {
-                    card.setValue(FLIPPED_CARD_VALUE);
+                    card.setValue(Constants.FLIPPED_CARD_VALUE);
                     flippedCards.get(player).add(card);
                 }
             }
@@ -162,7 +159,7 @@ public class GameManager {
      */
     public void calculateFinalScores() {
         for (Player player : players) {
-            player.setScore(40);
+            player.calculateScore();
         }
     }
 

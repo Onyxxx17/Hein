@@ -18,7 +18,8 @@ public class Constants {
 
     public static final int MIN_PLAYERS = 2;
     public static final int MAX_PLAYERS = 6;
-
+    public static final int MIN_DIFFERENCE_FOR_TWO_PLAYERS = 2; // Minimum card count difference for two-player flipping
+    public static final int FLIPPED_CARD_VALUE = 1; // Value assigned to flipped cards
     public static final int MAX_CARDS_PER_COLOUR = 10;
 
     public static final String[] DICE_FACES = {
