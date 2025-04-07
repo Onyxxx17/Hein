@@ -140,11 +140,11 @@ public class GameManager {
         Map<Player, ArrayList<Card>> flippedCards = new HashMap<>();
 
         for (String color : Constants.COLORS) {
-            ArrayList<Player> maxPlayers = checkPlayerWithMaxCards(color);
+            List<Player> maxPlayers = checkPlayerWithMaxCards(color);
             GameRenderer.displayMaxPlayersForColor(color, maxPlayers);
 
             for (Player player : maxPlayers) {
-                ArrayList<Card> cardsToFlip = player.getOpenCards().get(color);
+                List<Card> cardsToFlip = player.getOpenCards().get(color);
                 flippedCards.putIfAbsent(player, new ArrayList<>());
                 for (Card card : cardsToFlip) {
                     card.setValue(FLIPPED_CARD_VALUE);
