@@ -2,6 +2,7 @@ package game.gameplay;
 
 import game.core.*;
 import game.renderer.*;
+import game.setup.Dice;
 import game.utils.Constants;
 import java.util.*;
 
@@ -164,6 +165,37 @@ public class GameManager {
         }
     }
 
+     private Player determineFirstWinnerByDice(ArrayList<Player> tiedPlayers) {
+        if (tiedPlayers == null || tiedPlayers.isEmpty()) {
+            return null; // Or handle this error case appropriately
+        }
+
+        Dice dice = new Dice();
+        Player winner = null;
+        int highestRoll = -1;
+
+        System.out.println("\nInitiating dice roll to determine the initial winner among tied players...\n");
+
+        for (Player player : tiedPlayers) {
+            System.out.println(player.getName() + " will roll the dice...");
+            int rollResult = dice.roll();
+            dice.animateRoll(player.getName(), rollResult);
+            System.out.println(player.getName() + " rolled a " + rollResult + "!");
+
+            if (rollResult > highestRoll) {
+                highestRoll = rollResult;
+                winner = player;
+            } else if (rollResult == highestRoll) {
+                // Handle ties in the dice roll if needed (e.g., re-roll)
+                System.out.println("It's a tie in the dice roll between " + winner.getName() + " and " + player.getName() + "! The current leader remains.");
+            }
+            System.out.println();
+        }
+
+        System.out.println("The initial winner determined by the dice roll is: " + winner.getName() + "!");
+        return winner;
+    }
+
     /**
      * Determines the winner based on scores and tiebreaker rules.
      */
@@ -173,10 +205,21 @@ public class GameManager {
 
         if (potentialWinners.size() > 1) {
             GameRenderer.showTieBreaker(potentialWinners);
+
+            // If there's still a tie after showing the initial info,
+            // use the dice to determine the "first" winner.
+            if (potentialWinners.size() > 1) {
+                Player diceWinner = determineFirstWinnerByDice(potentialWinners);
+                // Now, effectively, the 'diceWinner' is the one who should be at index 0
+                // if we were to re-sort or create a new list.
+                // For simplicity, we can just return this diceWinner.
+                return diceWinner;
+            }
         }
 
         return potentialWinners.get(0);
     }
+
 
     /**
      * Adds players with the highest scores to the list of potential winners.
