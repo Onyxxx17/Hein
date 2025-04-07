@@ -1,8 +1,8 @@
 package game.core;
 
-import game.renderer.*;
-import game.utils.Helper;
+import game.renderer.ComputerRenderer;
 import java.util.*;
+
 public class Computer extends Player {
 
     // ============================ Instance Variables ============================
@@ -33,7 +33,7 @@ public class Computer extends Player {
     @Override
     public void playCard(Parade parade, Scanner scanner) {
         if (closedCards.isEmpty()) {
-            System.out.println(name + " has no cards left to play!");
+            ComputerRenderer.renderNoCardsLeft(name);
             return;
         }
 
@@ -42,10 +42,8 @@ public class Computer extends Player {
         Card selectedCard = closedCards.remove(index);
 
         // Add the selected card to the parade
-        System.out.print(name + " is thinking");
-        Helper.loading();
-        System.out.println("\n" + name + " played: ");
-        System.out.println(selectedCard);
+        ComputerRenderer.renderComputerThinking(name);
+        ComputerRenderer.renderComputerPlayedCard(name, selectedCard);
 
         parade.addCard(selectedCard);
     }
@@ -61,23 +59,19 @@ public class Computer extends Player {
     public void finalPlay(Parade parade, Scanner scanner) {
         for (int i = 0; i < 2; i++) {
             if (closedCards.isEmpty()) {
-                System.out.println(name + " has no more cards to move to open cards.");
+                ComputerRenderer.renderNoMoreCardsToMove(name);
                 return;
             }
 
             // Select a random card
-            CardRenderer.setDisplayMode(false);
             int index = random.nextInt(closedCards.size());
             Card selectedCard = closedCards.remove(index);
 
             // Display and add to open cards
-            System.out.print(name + " is thinking");
-            Helper.loading();
-            System.out.println("\n" + name + " played: ");
-            System.out.println(selectedCard);
+            ComputerRenderer.renderComputerThinking(name);
+            ComputerRenderer.renderComputerPlayedCard(name, selectedCard);
+            ComputerRenderer.renderCardAddedToOpenCards(name, selectedCard);
 
-            CardRenderer.setDisplayMode(true);
-            System.out.println(selectedCard + " is added to " + name + "'s Open Cards!\n");
             openCards.computeIfAbsent(selectedCard.getColor(), key -> new ArrayList<>()).add(selectedCard);
         }
     }
