@@ -120,7 +120,20 @@ public class Game {
         GameFlowRenderer.displayOpenCards(players);
         ParadeRenderer.showParade(parade);
         GameFlowRenderer.showTurnHeader(player.getName());
+
+        if (player.isHuman()) {
+            System.out.print("Type 'quit' anytime to exit the game.\n");
+            System.out.print(player.getName() + ", press Enter to play your turn or type 'quit': ");
+            String input = scanner.nextLine().trim();
+        
+            if (input.equalsIgnoreCase("quit")) {
+                System.out.println("Player chose to quit the game. Exiting...");
+                scanner.close();
+                System.exit(0);
+            }
+        }
         player.playCard(parade, scanner);
+    
         Helper.sleep(800);
         ArrayList<Card> drawnCards = player.drawCardsFromParade(parade);
         PlayerRenderer.displayReceivedCards(player, drawnCards);
