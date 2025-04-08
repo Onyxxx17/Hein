@@ -80,7 +80,8 @@ public class Helper {
      * Displays a simple loading animation by printing three dots sequentially.
      */
     public static void loading() {
-        for (int i = 0; i < 3; i++) {
+        int loading_dots = 3;
+        for (int i = 0; i < loading_dots; i++) {
             System.out.print(".");
             sleep(500);
         }
