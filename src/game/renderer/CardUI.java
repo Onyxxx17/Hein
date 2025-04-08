@@ -1,31 +1,34 @@
 package game.renderer;
+
 import game.core.Card;
+import game.utils.Constants;
 import game.utils.Helper;
 
 /**
  * Console-based card renderer implementation using static methods.
  */
-public class CardRenderer {
+public class CardUI {
 
-    private static final String RESET = "\u001B[0m";
+    private static final String RESET = Constants.RESET;
     private static boolean simpleDisplayMode = false;  // Make simpleDisplayMode static
     //private static boolean guiDisplayMode = false;
-    public static void setDisplayMode(boolean simpleMode) {
+
+    public static void setSimpleDisplayMode(boolean simpleMode) {
         simpleDisplayMode = simpleMode;
     }
-    
+
     public static String renderToString(Card card) {
-        return simpleDisplayMode ? 
-               renderSimple(card) : 
-               renderAsciiArt(card);
+        return simpleDisplayMode
+                ? renderSimple(card)
+                : renderAsciiArt(card);
     }
 
     private static String renderSimple(Card card) {
         return String.format("%s [%s%s %d%s]",
-                colorToEmoji(card.getColor()), 
-                Helper.getColorCode(card.getColor()), 
-                card.getColor(), 
-                card.getValue(), 
+                colorToEmoji(card.getColor()),
+                Helper.getColorCode(card.getColor()),
+                card.getColor(),
+                card.getValue(),
                 RESET);
     }
 
@@ -53,26 +56,40 @@ public class CardRenderer {
 
     private static String colorToEmoji(String color) {
         return switch (color.toLowerCase()) {
-            case "red" -> "🔴";
-            case "green" -> "🟢";
-            case "purple" -> "🟣";
-            case "grey" -> "🔘";
-            case "orange" -> "🟠";
-            case "blue" -> "🔵";
-            default -> "🃏";
+            case "red" ->
+                "🔴";
+            case "green" ->
+                "🟢";
+            case "purple" ->
+                "🟣";
+            case "grey" ->
+                "🔘";
+            case "orange" ->
+                "🟠";
+            case "blue" ->
+                "🔵";
+            default ->
+                "🃏";
         };
     }
 
     private static String getAnimalArt(String color) {
         String colorCode = Helper.getColorCode(color);
         return switch (color.toLowerCase()) {
-            case "red" -> colorCode + "│   🦊    │" + RESET;
-            case "blue" -> colorCode + "│   🐳    │" + RESET;
-            case "green" -> colorCode + "│   🐢    │" + RESET;
-            case "orange" -> colorCode + "│   🦁    │" + RESET;
-            case "purple" -> colorCode + "│   🦄    │" + RESET;
-            case "grey" -> colorCode + "│   🐺    │" + RESET;
-            default -> colorCode + "│   ❓    │" + RESET;
+            case "red" ->
+                colorCode + "│   🦊    │" + RESET;
+            case "blue" ->
+                colorCode + "│   🐳    │" + RESET;
+            case "green" ->
+                colorCode + "│   🐢    │" + RESET;
+            case "orange" ->
+                colorCode + "│   🦁    │" + RESET;
+            case "purple" ->
+                colorCode + "│   🦄    │" + RESET;
+            case "grey" ->
+                colorCode + "│   🐺    │" + RESET;
+            default ->
+                colorCode + "│   ❓    │" + RESET;
         };
     }
 }

@@ -1,7 +1,5 @@
 package game.core;
-
-import game.renderer.CardRenderer;
-import java.util.Objects;
+import game.renderer.CardUI;
 
 /**
  * Represents a playing card with a color and numerical value.
@@ -18,11 +16,6 @@ public class Card {
      * The numerical value of the card.
      */
     private int value;
-
-    /**
-     * ANSI escape code for resetting text formatting.
-     */
-    private static final String RESET = "\u001B[0m";
 
     // ============================ Constructor ============================
     /**
@@ -49,25 +42,6 @@ public class Card {
         this.value = value;
     }
 
-    // ============================ Core Methods ============================
-    /**
-     * Checks if two cards are equal based on their color and value.
-     *
-     * @param obj The object to compare against.
-     * @return {@code true} if both color and value match, {@code false}
-     * otherwise.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Card card)) {
-            return false;
-        }
-        return value == card.value && Objects.equals(color.toLowerCase(), card.color.toLowerCase());
-    }
-
     // ============================ Display Methods ============================
     /**
      * Returns a string representation of the card.
@@ -76,6 +50,6 @@ public class Card {
      */
     @Override
     public String toString() {
-        return CardRenderer.renderToString(this);
+        return CardUI.renderToString(this);
     }
 }

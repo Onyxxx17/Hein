@@ -2,7 +2,6 @@ package game.setup;
 
 import game.core.Player;
 import game.renderer.*;
-import game.utils.Helper;
 import java.util.*;
 public class StartingPlayerDecider {
     private final Dice dice;
@@ -52,7 +51,6 @@ public class StartingPlayerDecider {
     private List<Player> handleTieOfDice(List<Player> tiedPlayers, int maxRoll) {
         if (tiedPlayers.size() > 1) {
             StartingPlayerRenderer.showTie(tiedPlayers, maxRoll);
-            Helper.loading();
         }
         return tiedPlayers;
     }

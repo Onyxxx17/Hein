@@ -16,12 +16,14 @@ public class Game {
     private final GameManager gameManager;
     private final Deck deck;
     private final Parade parade;
-    private final ArrayList<Player> players;
+    private final List<Player> players;
     private final Scanner scanner;
+    private final Dice dice = new Dice();
+    private final StartingPlayerDecider startingPlayerdecider = new StartingPlayerDecider(dice);
 
     /**
-     * Creates a new Game instance with the specified game manager and
-     * input scanner.
+     * Creates a new Game instance with the specified game manager and input
+     * scanner.
      *
      * @param gameManager The game manager that handles game rules and state
      * @param sc The scanner used for user input
@@ -31,7 +33,7 @@ public class Game {
         this.deck = gameManager.getDeck();
         this.players = gameManager.getPlayers();
         this.scanner = sc;
-        this.parade = new Parade();
+        this.parade = new Parade(deck);
     }
 
     /**
@@ -55,12 +57,12 @@ public class Game {
                     }
                     int currentIndex = players.indexOf(player);
                     Player nextPlayer = players.get((currentIndex + 1) % players.size());
-                    GameManager.rearrangePlayersList(players, nextPlayer);
+                    gameManager.rearrangePlayers(nextPlayer);
                     Helper.pressEnterToContinue(scanner);
                     Helper.flush();
                     break;
                 }
-                if (player instanceof Human) {
+                if (player.isHuman()) {
                     scanner.nextLine();
                 }
                 Helper.pressEnterToContinue(scanner);
@@ -80,10 +82,8 @@ public class Game {
         // Clear the screen (or any other action defined in Helper.flush())
         Helper.flush();
 
-        Dice dice = new Dice();
-        StartingPlayerDecider startingPlayerdecider = new StartingPlayerDecider(dice);
         Player firstPlayer = startingPlayerdecider.decideStartingPlayer(players);
-        GameManager.rearrangePlayersList(players, firstPlayer);
+        gameManager.rearrangePlayers(firstPlayer);
 
         Helper.pressEnterToContinue(scanner);
         Helper.flush();
@@ -98,7 +98,7 @@ public class Game {
         dealCardstoPlayers();
         Helper.sleep(500);
 
-        parade.initializeParade(deck);
+        parade.initializeParade();
         GameFlowRenderer.showParadeInitialization();
         Helper.sleep(1000);
         ParadeRenderer.showParade(parade);
@@ -120,7 +120,9 @@ public class Game {
         GameFlowRenderer.displayOpenCards(players);
         ParadeRenderer.showParade(parade);
         GameFlowRenderer.showTurnHeader(player.getName());
+        checkForQuit(player, player.isHuman());
         player.playCard(parade, scanner);
+
         Helper.sleep(800);
         ArrayList<Card> drawnCards = player.drawCardsFromParade(parade);
         PlayerRenderer.displayReceivedCards(player, drawnCards);
@@ -154,7 +156,7 @@ public class Game {
     private void addFinalTwoCards() {
         for (Player player : players) {
             Helper.flush();
-            GameFlowRenderer.showFinalPhase();
+            GamePhaseRenderer.showFinalPhase();
             Helper.sleep(1000);
             GameFlowRenderer.displayOpenCards(players);
             GameFlowRenderer.showTurnHeader(player.getName());
@@ -173,7 +175,7 @@ public class Game {
      */
     public void dealCardstoPlayers() {
         for (Player player : players) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < Constants.CARDS_TO_DEAL; i++) {
                 player.drawCardFromDeck(deck);
             }
         }
@@ -191,18 +193,45 @@ public class Game {
 
         GameFlowRenderer.displayOpenCards(players);
 
-        GameFlowRenderer.showFlippingPhase();
+        GamePhaseRenderer.showFlippingPhase();
         Helper.sleep(1000);
 
-        Map<Player, ArrayList<Card>> flippedCards = gameManager.flipCards();
+        Map<Player, List<Card>> flippedCards = gameManager.flipCards();
         GameFlowRenderer.showFlippedCards(flippedCards, players);
         Helper.typewrite("\n✅ Final Scores Have Been Calculated! ✅\n", 30);
         Helper.pressEnterToContinue(scanner);
 
         Helper.flush();
-        gameManager.calculateFinalScores();
+        gameManager.calculateScores();
         Player winner = gameManager.determineWinner();
 
         Podium.displayPodium(players, winner);
+    }
+
+    private void checkForQuit(Player player, boolean isHuman) {
+        if (isHuman) {
+            System.out.print("🛑 Type 'quit' anytime to exit the game.\n");
+            System.out.print(player.getName() + ", Type anything to play your turn or type 'quit': ");
+            String input = scanner.nextLine().trim();
+
+            if (input.equalsIgnoreCase("quit")) {
+                System.out.print("Are you sure you want to quit? (y/n):");
+                String confirm = scanner.nextLine().trim();
+                while (!confirm.equalsIgnoreCase("y") && !confirm.equalsIgnoreCase("n") && !confirm.equalsIgnoreCase("yes") && !confirm.equalsIgnoreCase("no")) {
+                    System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                    System.out.print("\nAre you sure you want to quit? (y/n):");
+                    confirm = scanner.nextLine().trim();
+                }
+                if (confirm.equalsIgnoreCase("y") || confirm.equalsIgnoreCase("yes")) {
+                    System.out.println("\n" + player.getName() + " chose to quit the game");
+                    System.out.println("Scores will be calculated up until this point and the game will end");
+                    Helper.loading();
+                    Helper.sleep(1500);
+                    concludeGame();
+                    GamePhaseRenderer.goodbyeMessage();
+                    System.exit(0);
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package game.renderer;
 
 import game.core.Player;
+import game.utils.Constants;
 import game.utils.Helper;
 import java.util.*;
 
@@ -23,7 +24,7 @@ public class PodiumRenderer {
         System.out.println("      │  " + getInitial(winner.getName()) + "  │       ");
 
         // Handle different numbers of players
-        if (players.size() >= 3) {
+        if (players.size() >= Constants.PODIUM_SIZE) {
             // Show both 2nd and 3rd places
             System.out.println("┌─────┼─────┼─────┐");
             System.out.println("│     │     │     │");
@@ -31,7 +32,7 @@ public class PodiumRenderer {
                     getInitial(players.get(2).getName()) + "  │");
             System.out.println("│ 2nd │     │ 3rd │");
             System.out.println("└─────┴─────┴─────┘");
-        } else if (players.size() == 2) {
+        } else if (players.size() == Constants.MIN_PLAYERS) {
             // Show only 2nd place, not 3rd
             System.out.println("┌─────┼─────│     ");
             System.out.println("│     │     │     ");
@@ -62,7 +63,7 @@ public class PodiumRenderer {
         // Display winner message
         System.out.println("\n🎉 CONGRATULATIONS 🎉");
         System.out.println("🏆 " + winner.getName() + " WINS THE GAME! 🏆");
-        System.out.println("\nThanks for playing Parade!");
+        // System.out.println("\nThanks for playing Parade!");
         System.out.println("===============================");
     }
 

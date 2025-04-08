@@ -8,7 +8,7 @@ import java.util.*;
 public class GameFlowRenderer {
 
     // Static utility method: Called once, independent of GameRenderer instance
-    public static void showFlippedCards(Map<Player, ArrayList<Card>> flippedCards, ArrayList<Player> players) {
+    public static void showFlippedCards(Map<Player, List<Card>> flippedCards, List<Player> players) {
         for (Player p : players) {
             System.out.println("\n" + p.getName() + " open cards after flipping:");
             for (String color : Constants.COLORS) {
@@ -63,7 +63,7 @@ public class GameFlowRenderer {
         System.out.println("All players have the same number of cards. No cards flipped for " + color);
     }
 
-    public static void showTieBreaker(ArrayList<Player> potentialWinners) {
+    public static void showTieBreaker(List<Player> potentialWinners) {
         // Initial dramatic pause before announcement
         Helper.sleep(800);
         System.out.println("⚔️  A tie has been detected between " + potentialWinners.size() + " players!");
@@ -135,7 +135,7 @@ public class GameFlowRenderer {
     }
 
     public static void showParadeInitialization() {
-        System.out.print("\n✨ Initializing Parade");
+        System.out.print("✨ Initializing Parade");
         Helper.loading();
         System.out.println("\n🎉 Parade has been initialized with 6 cards!\n");
     }
@@ -152,26 +152,20 @@ public class GameFlowRenderer {
         System.out.println("\n" + player.getName() + " draws one card from the deck.");
     }
 
-    public static void showFinalPhase() {
-        Helper.printBox("🎴 Add 2 Cards to Open Cards");
-    }
-
-    public static void showFlippingPhase() {
-        Helper.printBox("🃏 Flipping Cards");
-    }
-
     public static void showDrawCardFromDeck(Player player) {
         System.out.println("\n" + player.getName() + " draws one card from the deck.");
     }
 
     public static void showDeckEmpty() {
+        System.out.println();
         Helper.sleep(1000);
-        Helper.printBox("\n‼️ No more cards are left in the deck ‼️\n" + playLastRound());
+        Helper.printBox("‼️ No more cards are left in the deck ‼️\n" + playLastRound());
     }
 
     public static void showAllColorsCollected(Player player) {
+        System.out.println();
         Helper.sleep(1000);
-        Helper.printBox("\n‼️" + player.getName()
+        Helper.printBox("‼️" + player.getName()
                 + " has collected all 6 color cards ‼️\n" + playLastRound());
     }
 
@@ -179,9 +173,18 @@ public class GameFlowRenderer {
         return ("‼️ Every player plays one last round ‼️");
     }
 
-    public static void displayOpenCards(ArrayList<Player> players) {
+    public static void displayOpenCards(List<Player> players) {
         for (Player player : players) {
             PlayerRenderer.showOpenCards(player);
         }
+    }
+
+    public static void showQuitOption() {
+        System.out.print("🛑 Type 'quit' anytime to exit the game.\n");
+        System.out.print("Press enter to play your round or 'quit' to exit> ");
+    }
+
+    public static void confirmQuit() {
+        System.out.print("Are you sure you want to quit? (y/n): ");
     }
 }
