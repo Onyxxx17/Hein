@@ -1,8 +1,8 @@
 package game.gameplay;
 
 import game.core.*;
-import game.utils.Constants;
-import game.utils.Helper;
+import game.renderer.GamePhaseRenderer;
+import game.utils.*;
 import java.util.*;
 
 /**
@@ -11,9 +11,7 @@ import java.util.*;
 public class Podium{
 
     public static void displayPodium(List<Player> players, Player winner) {
-        System.out.println("===============================");
-        System.out.println("        FINAL RESULTS         ");
-        System.out.println("===============================");
+        GamePhaseRenderer.finalResults();
 
         Helper.sleep(500);
 

@@ -156,7 +156,7 @@ public class Game {
     private void addFinalTwoCards() {
         for (Player player : players) {
             Helper.flush();
-            GameFlowRenderer.showFinalPhase();
+            GamePhaseRenderer.showFinalPhase();
             Helper.sleep(1000);
             GameFlowRenderer.displayOpenCards(players);
             GameFlowRenderer.showTurnHeader(player.getName());
@@ -193,7 +193,7 @@ public class Game {
 
         GameFlowRenderer.displayOpenCards(players);
 
-        GameFlowRenderer.showFlippingPhase();
+        GamePhaseRenderer.showFlippingPhase();
         Helper.sleep(1000);
 
         Map<Player, List<Card>> flippedCards = gameManager.flipCards();
@@ -228,7 +228,7 @@ public class Game {
                     Helper.loading();
                     Helper.sleep(1500);
                     concludeGame();
-                    GameState.goodbyeMessage();
+                    GamePhaseRenderer.goodbyeMessage();
                     System.exit(0);
                 }
             }

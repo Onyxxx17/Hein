@@ -1,7 +1,7 @@
 package game.renderer;
-import game.core.Human;
+
 import game.core.Card;
-import game.renderer.CardRenderer;
+import game.core.Human;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,7 +17,7 @@ public class HumanRenderer {
             return;
         }
 
-        CardRenderer.setDisplayMode(false);
+        CardUI.setSimpleDisplayMode(false);
         System.out.println("🎴 Your hand:");
 
         for (int i = 0; i < closedCards.size(); i++) {

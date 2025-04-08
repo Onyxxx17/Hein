@@ -1,7 +1,7 @@
 package game.gameplay;
 
 import game.core.*;
-import game.renderer.GameState;
+import game.renderer.GamePhaseRenderer;
 import game.setup.*;
 import game.utils.Helper;
 import java.util.List;
@@ -33,7 +33,7 @@ public class GameMenu {
                         showInstructions();
                         break; // loop continues, menu shown again
                     case 3:
-                        GameState.goodbyeMessage();
+                        GamePhaseRenderer.goodbyeMessage();
                         System.exit(0);
                         break;
                     default:
@@ -50,7 +50,7 @@ public class GameMenu {
     private void printMenuOptions() {
         System.out.println("\n========== 🎮 MAIN MENU 🎮 ==========");
         System.out.println("1. Start New Game");
-        System.out.println("2. How to Play");
+        System.out.println("2. Learn How to Play");
         System.out.println("3. Quit");
         System.out.println("=====================================");
         System.out.print("Choose an option (1-3): ");
@@ -68,7 +68,6 @@ public class GameMenu {
         System.out.print("\nStarting a new game");
         Helper.loading();
         Helper.flush();
-        System.out.println("\n");
         PlayerSetup setup = new PlayerSetup(scanner);
         int playerCount = setup.askForNumberOfPlayers();
         List<Player> players = setup.createPlayers(playerCount);
@@ -78,14 +77,6 @@ public class GameMenu {
         game.startGame();
     }
 
-    // private void showInstructions() {
-    //     System.out.println("\n📜 HOW TO PLAY:");
-    //     System.out.println("- Each player takes turns playing cards into the parade.");
-    //     System.out.println("- The goal is to minimize your score based on card values.");
-    //     System.out.println("- At the end of the game, you'll select two final cards to add to your open cards.");
-    //     System.out.println("- The lowest score wins!");
-    //     System.out.println();
-    // }
     private void showInstructions() {
         Helper.flush();
         System.out.println("\n🌟 HOW TO PLAY PARADE 🌟");
@@ -97,8 +88,6 @@ public class GameMenu {
         System.out.println("\n🔄 YOUR TURN:");
         System.out.println("1. Play 1 card to the END of the parade");
         System.out.println("2. Cards might get removed:");
-        System.out.println("   💥 If you play ZERO (0):");
-        System.out.println("      - EVERYTHING disappears except your 0 card!");
         System.out.println("   💥 If you play a NUMBER (like 5):");
         System.out.println("      - First 5 cards are SAFE 🔒");
         System.out.println("      - Remove cards AFTER these if they:");
@@ -126,7 +115,7 @@ public class GameMenu {
         if (input.equalsIgnoreCase("yes")) {
             return true;
         } else {
-            GameState.goodbyeMessage();
+            GamePhaseRenderer.goodbyeMessage();
             return false;
         }
     }

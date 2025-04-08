@@ -152,26 +152,20 @@ public class GameFlowRenderer {
         System.out.println("\n" + player.getName() + " draws one card from the deck.");
     }
 
-    public static void showFinalPhase() {
-        Helper.printBox("🎴 Add 2 Cards to Open Cards");
-    }
-
-    public static void showFlippingPhase() {
-        Helper.printBox("🃏 Flipping Cards");
-    }
-
     public static void showDrawCardFromDeck(Player player) {
         System.out.println("\n" + player.getName() + " draws one card from the deck.");
     }
 
     public static void showDeckEmpty() {
+        System.out.println();
         Helper.sleep(1000);
-        Helper.printBox("\n‼️ No more cards are left in the deck ‼️\n" + playLastRound());
+        Helper.printBox("‼️ No more cards are left in the deck ‼️\n" + playLastRound());
     }
 
     public static void showAllColorsCollected(Player player) {
+        System.out.println();
         Helper.sleep(1000);
-        Helper.printBox("\n‼️" + player.getName()
+        Helper.printBox("‼️" + player.getName()
                 + " has collected all 6 color cards ‼️\n" + playLastRound());
     }
 
@@ -183,5 +177,14 @@ public class GameFlowRenderer {
         for (Player player : players) {
             PlayerRenderer.showOpenCards(player);
         }
+    }
+
+    public static void showQuitOption() {
+        System.out.print("🛑 Type 'quit' anytime to exit the game.\n");
+        System.out.print("Press enter to play your round or 'quit' to exit> ");
+    }
+
+    public static void confirmQuit() {
+        System.out.print("Are you sure you want to quit? (y/n): ");
     }
 }

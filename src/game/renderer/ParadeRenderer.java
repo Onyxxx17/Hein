@@ -11,7 +11,7 @@ public class ParadeRenderer {
      */
     public static void showParade(Parade parade) {
         List<Card> cards = parade.getCards();
-        CardRenderer.setDisplayMode(false);
+        CardUI.setSimpleDisplayMode(false);
         System.out.println("Parade (Starts from left):");
 
         int totalCards = cards.size();

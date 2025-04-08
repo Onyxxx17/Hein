@@ -15,7 +15,7 @@ public class PlayerRenderer {
             System.out.printf("%s receives no cards this round.%n", player.getName());
             return;
         }
-        
+
         System.out.printf("%s receives:%n", player.getName());
         renderCardGroup(receivedCards);
     }
@@ -25,23 +25,23 @@ public class PlayerRenderer {
      */
     public static void showOpenCards(Player player) {
         Map<String, List<Card>> openCards = player.getOpenCards();
-        
+
         if (openCards.isEmpty()) {
             System.out.printf("%s has no open cards.%n%n", player.getName());
             return;
         }
-        
-        CardRenderer.setDisplayMode(true);
+
+        CardUI.setSimpleDisplayMode(true);
         System.out.printf("🎴 %s's Open Cards:%n", player.getName());
-        
-        openCards.forEach((color, cards) -> 
-            System.out.printf("%s cards: %s%n",
-                color,
-                cards.stream()
-                    .map(Card::toString)
-                    .collect(Collectors.joining(", ")))
+
+        openCards.forEach((color, cards)
+                -> System.out.printf("%s cards: %s%n",
+                        color,
+                        cards.stream()
+                                .map(Card::toString)
+                                .collect(Collectors.joining(", ")))
         );
-        
+
         System.out.println();
     }
 
@@ -49,9 +49,9 @@ public class PlayerRenderer {
      * Shared helper for rendering a group of cards.
      */
     private static void renderCardGroup(ArrayList<Card> cards) {
-        CardRenderer.setDisplayMode(false);
+        CardUI.setSimpleDisplayMode(false);
         StringBuilder[] lines = new StringBuilder[7];
-        
+
         // Initialize lines
         for (int i = 0; i < lines.length; i++) {
             lines[i] = new StringBuilder();

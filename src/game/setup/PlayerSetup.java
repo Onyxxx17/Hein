@@ -2,7 +2,7 @@ package game.setup;
 
 import game.core.*;
 import game.exceptions.*;
-import game.renderer.GameState;
+import game.renderer.GamePhaseRenderer;
 import java.util.*;
 
 public class PlayerSetup {
@@ -15,7 +15,7 @@ public class PlayerSetup {
 
     public int askForNumberOfPlayers() {
         int playerCount = 0;
-        GameState.gameSetUp();
+        GamePhaseRenderer.displayGameSetup();
 
         while (true) {
             try {
@@ -24,7 +24,7 @@ public class PlayerSetup {
 
                 if (playerCount < 2 || playerCount > 6) {
                     throw new InvalidPlayerCountException(
-                        "❌ Invalid player count! This game requires 2 to 6 players.\n"
+                            "❌ Invalid player count! This game requires 2 to 6 players.\n"
                     );
                 }
 
@@ -49,7 +49,7 @@ public class PlayerSetup {
         int humanCount = 0;
         int botIndex = 1;
 
-        GameState.setUpPlayers();
+        GamePhaseRenderer.displaySetUpPlayers();
 
         for (int i = 1; i <= numPlayers; i++) {
             String type = getPlayerType(i);
@@ -124,10 +124,14 @@ public class PlayerSetup {
     }
 
     public boolean isValidName(String name) {
-        if (name.length() < 3) return false;
+        if (name.length() < 3) {
+            return false;
+        }
 
         for (char c : name.toCharArray()) {
-            if (Character.isLetter(c)) return true;
+            if (Character.isLetter(c)) {
+                return true;
+            }
         }
 
         return false;

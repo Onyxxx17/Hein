@@ -1,10 +1,8 @@
 package game.core;
 
-import game.renderer.CardRenderer;
-import game.renderer.HumanRenderer;
+import game.renderer.*;
 import game.utils.Constants;
 import java.util.*;
-
 
 public class Human extends Player {
 
@@ -35,7 +33,7 @@ public class Human extends Player {
             int cardIndex = HumanRenderer.getValidCardSelection(scanner, closedCards.size());
             Card selectedCard = closedCards.remove(cardIndex - 1);
 
-            CardRenderer.setDisplayMode(true);
+            CardUI.setSimpleDisplayMode(true);
             openCards.computeIfAbsent(selectedCard.getColor(), key -> new ArrayList<>()).add(selectedCard);
             System.out.println(selectedCard + " is added to " + name + "'s Open Cards!\n");
         }
