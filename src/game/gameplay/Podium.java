@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class Podium{
 
-    public static void displayPodium(ArrayList<Player> players, Player winner) {
+    public static void displayPodium(List<Player> players, Player winner) {
         System.out.println("===============================");
         System.out.println("        FINAL RESULTS         ");
         System.out.println("===============================");

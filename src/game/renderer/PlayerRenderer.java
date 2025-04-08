@@ -24,7 +24,7 @@ public class PlayerRenderer {
      * Displays a player's open cards grouped by color.
      */
     public static void showOpenCards(Player player) {
-        Map<String, ArrayList<Card>> openCards = player.getOpenCards();
+        Map<String, List<Card>> openCards = player.getOpenCards();
         
         if (openCards.isEmpty()) {
             System.out.printf("%s has no open cards.%n%n", player.getName());
@@ -73,6 +73,6 @@ public class PlayerRenderer {
 
     public static void showCardDraw(Player player) {
         Helper.sleep(1000);
-        System.out.println("\n 💎 " + player.getName() + " draws one card from the deck.");
+        System.out.println("\n💎 " + player.getName() + " draws one card from the deck.");
     }
 }

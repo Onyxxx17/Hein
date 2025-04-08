@@ -1,22 +1,23 @@
 package game.core;
 
 import game.utils.Constants;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Parade {
 
-    private final ArrayList<Card> cards;
-
+    private final List<Card> cards;
+    private final Deck deck;
     // ============================ Constructor ============================
 
     /**
      * Constructor for Parade. Initializes an empty parade.
      */
-    public Parade() {
+    public Parade(Deck deck) {
+        this.deck = deck;
         this.cards = new ArrayList<>();
     }
     // ============================ Parade Operations ============================
-    public void initializeParade(Deck deck) {
+    public void initializeParade() {
         for (int i = 0; i < Constants.INITIAL_CARDS_OF_PARADE; i++) {
             if (deck.isEmpty()) {
                 throw new IllegalStateException("Not enough cards in the deck to initialize a Parade");
@@ -62,7 +63,7 @@ public class Parade {
      *
      * @return The ArrayList of cards in the parade.
      */
-    public ArrayList<Card> getCards() {
+    public List<Card> getCards() {
         return cards;
     }
 }

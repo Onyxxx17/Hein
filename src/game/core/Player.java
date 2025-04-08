@@ -17,12 +17,12 @@ public abstract class Player {
     /**
      * Cards in the player's hand (not visible to other players).
      */
-    protected ArrayList<Card> closedCards;
+    protected List<Card> closedCards;
     
     /**
      * Open cards grouped by color (visible to all players).
      */
-    protected Map<String, ArrayList<Card>> openCards;
+    protected Map<String, List<Card>> openCards;
     
     /**
      * The player's current score.
@@ -92,7 +92,6 @@ public abstract class Player {
     public ArrayList<Card> drawCardsFromParade(Parade parade) {
         List<Card> currentCardsInParade = parade.getCards();
         if (currentCardsInParade.isEmpty()) {
-            System.out.println(name + " receives no cards this round (parade is empty).");
             return new ArrayList<>();
         }
 
@@ -145,7 +144,7 @@ public abstract class Player {
      */
     public void calculateScore() {
         score = 0;
-        for (ArrayList<Card> cards : openCards.values()) {
+        for (List<Card> cards : openCards.values()) {
             for (Card card : cards) {
                 score += card.getValue();
             }
@@ -167,7 +166,7 @@ public abstract class Player {
      * 
      * @return The list of cards in the player's hand.
      */
-    public ArrayList<Card> getClosedCards() {
+    public List<Card> getClosedCards() {
         return closedCards;
     }
 
@@ -176,7 +175,7 @@ public abstract class Player {
      * 
      * @return Map of color to list of cards.
      */
-    public Map<String, ArrayList<Card>> getOpenCards() {
+    public Map<String, List<Card>> getOpenCards() {
         return openCards;
     }
 
@@ -207,7 +206,7 @@ public abstract class Player {
      */
     public int getColorCount() {
         int totalCount = 0;
-        for (ArrayList<Card> cards : openCards.values()) {
+        for (List<Card> cards : openCards.values()) {
             totalCount += cards.size();
         }
         return totalCount;
@@ -223,7 +222,7 @@ public abstract class Player {
         this.score = score;
     }
 
-    public void setOpenCards(Map<String, ArrayList<Card>> openCards) {
+    public void setOpenCards(Map<String, List<Card>> openCards) {
         this.openCards = new HashMap<>(openCards);
     }
 

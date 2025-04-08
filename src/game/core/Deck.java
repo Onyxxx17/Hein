@@ -1,15 +1,14 @@
 package game.core;
 
 import game.utils.Constants;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class Deck {
 
     // ============================ Instance Variables ============================
 
     /** List to hold all cards in the deck. */
-    private final ArrayList<Card> cards;
+    private final List<Card> cards;
 
     // ============================ Constructor ============================
 
@@ -20,10 +19,7 @@ public class Deck {
     public Deck() {
         this.cards = new ArrayList<>();
         for (String color : Constants.COLORS) {
-            // for (int i = 0; i <= Constants.MAX_CARDS_PER_COLOUR; i++) { // Adding cards numbered 0 to 10
-            //     cards.add(new Card(color, i));
-            // }
-            for (int i = 0; i <= Constants.MAX_CARDS_PER_COLOUR; i++) { // Adding cards numbered 0 to 9
+            for (int i = 0; i <= Constants.MAX_CARDS_PER_COLOUR; i++) { // Adding cards numbered 0 to 10
                 cards.add(new Card(color, i));
             }
         }
@@ -64,7 +60,7 @@ public class Deck {
      *
      * @return An ArrayList of Card objects.
      */
-    public ArrayList<Card> getCards() {
+    public List<Card> getCards() {
         return cards;
     }
 

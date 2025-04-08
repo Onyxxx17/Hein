@@ -19,11 +19,6 @@ public class Card {
      */
     private int value;
 
-    /**
-     * ANSI escape code for resetting text formatting.
-     */
-    private static final String RESET = "\u001B[0m";
-
     // ============================ Constructor ============================
     /**
      * Creates a card with the specified color and value.

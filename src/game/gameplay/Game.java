@@ -16,8 +16,10 @@ public class Game {
     private final GameManager gameManager;
     private final Deck deck;
     private final Parade parade;
-    private final ArrayList<Player> players;
+    private final List<Player> players;
     private final Scanner scanner;
+    private final Dice dice = new Dice();
+    private final StartingPlayerDecider startingPlayerdecider = new StartingPlayerDecider(dice);
 
     /**
      * Creates a new Game instance with the specified game manager and
@@ -31,7 +33,7 @@ public class Game {
         this.deck = gameManager.getDeck();
         this.players = gameManager.getPlayers();
         this.scanner = sc;
-        this.parade = new Parade();
+        this.parade = new Parade(deck);
     }
 
     /**
@@ -55,12 +57,12 @@ public class Game {
                     }
                     int currentIndex = players.indexOf(player);
                     Player nextPlayer = players.get((currentIndex + 1) % players.size());
-                    GameManager.rearrangePlayersList(players, nextPlayer);
+                    gameManager.rearrangePlayers(nextPlayer);
                     Helper.pressEnterToContinue(scanner);
                     Helper.flush();
                     break;
                 }
-                if (player instanceof Human) {
+                if (player.isHuman()) {
                     scanner.nextLine();
                 }
                 Helper.pressEnterToContinue(scanner);
@@ -80,10 +82,8 @@ public class Game {
         // Clear the screen (or any other action defined in Helper.flush())
         Helper.flush();
 
-        Dice dice = new Dice();
-        StartingPlayerDecider startingPlayerdecider = new StartingPlayerDecider(dice);
         Player firstPlayer = startingPlayerdecider.decideStartingPlayer(players);
-        GameManager.rearrangePlayersList(players, firstPlayer);
+        gameManager.rearrangePlayers(firstPlayer);
 
         Helper.pressEnterToContinue(scanner);
         Helper.flush();
@@ -98,7 +98,7 @@ public class Game {
         dealCardstoPlayers();
         Helper.sleep(500);
 
-        parade.initializeParade(deck);
+        parade.initializeParade();
         GameFlowRenderer.showParadeInitialization();
         Helper.sleep(1000);
         ParadeRenderer.showParade(parade);
@@ -194,13 +194,13 @@ public class Game {
         GameFlowRenderer.showFlippingPhase();
         Helper.sleep(1000);
 
-        Map<Player, ArrayList<Card>> flippedCards = gameManager.flipCards();
+        Map<Player, List<Card>> flippedCards = gameManager.flipCards();
         GameFlowRenderer.showFlippedCards(flippedCards, players);
         Helper.typewrite("\n✅ Final Scores Have Been Calculated! ✅\n", 30);
         Helper.pressEnterToContinue(scanner);
 
         Helper.flush();
-        gameManager.calculateFinalScores();
+        gameManager.calculateScores();
         Player winner = gameManager.determineWinner();
 
         Podium.displayPodium(players, winner);

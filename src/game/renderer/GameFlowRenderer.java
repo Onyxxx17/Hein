@@ -8,7 +8,7 @@ import java.util.*;
 public class GameFlowRenderer {
 
     // Static utility method: Called once, independent of GameRenderer instance
-    public static void showFlippedCards(Map<Player, ArrayList<Card>> flippedCards, ArrayList<Player> players) {
+    public static void showFlippedCards(Map<Player, List<Card>> flippedCards, List<Player> players) {
         for (Player p : players) {
             System.out.println("\n" + p.getName() + " open cards after flipping:");
             for (String color : Constants.COLORS) {
@@ -63,7 +63,7 @@ public class GameFlowRenderer {
         System.out.println("All players have the same number of cards. No cards flipped for " + color);
     }
 
-    public static void showTieBreaker(ArrayList<Player> potentialWinners) {
+    public static void showTieBreaker(List<Player> potentialWinners) {
         // Initial dramatic pause before announcement
         Helper.sleep(800);
         System.out.println("⚔️  A tie has been detected between " + potentialWinners.size() + " players!");
@@ -179,7 +179,7 @@ public class GameFlowRenderer {
         return ("‼️ Every player plays one last round ‼️");
     }
 
-    public static void displayOpenCards(ArrayList<Player> players) {
+    public static void displayOpenCards(List<Player> players) {
         for (Player player : players) {
             PlayerRenderer.showOpenCards(player);
         }
