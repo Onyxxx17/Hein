@@ -1,6 +1,7 @@
 package game.renderer;
 
 import game.core.*;
+import game.utils.Helper;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,5 +69,10 @@ public class PlayerRenderer {
         for (StringBuilder line : lines) {
             System.out.println(line.toString().stripTrailing());
         }
+    }
+
+    public static void showCardDraw(Player player) {
+        Helper.sleep(1000);
+        System.out.println("\n 💎 " + player.getName() + " draws one card from the deck.");
     }
 }

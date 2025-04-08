@@ -90,7 +90,7 @@ public abstract class Player {
      * @param parade The parade from which cards are drawn.
      */
     public ArrayList<Card> drawCardsFromParade(Parade parade) {
-        ArrayList<Card> currentCardsInParade = parade.getCards();
+        List<Card> currentCardsInParade = parade.getCards();
         if (currentCardsInParade.isEmpty()) {
             System.out.println(name + " receives no cards this round (parade is empty).");
             return new ArrayList<>();
@@ -221,5 +221,13 @@ public abstract class Player {
      */
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void setOpenCards(Map<String, ArrayList<Card>> openCards) {
+        this.openCards = new HashMap<>(openCards);
+    }
+
+    public boolean isHuman() {
+        return false;
     }
 }

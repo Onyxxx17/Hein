@@ -138,4 +138,9 @@ public class Human extends Player {
             System.out.println(line.toString().stripTrailing());
         }
     }
+
+    @Override
+    public boolean isHuman() {
+        return true;
+    }
 }

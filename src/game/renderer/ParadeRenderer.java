@@ -1,8 +1,8 @@
 package game.renderer;
 
 import game.core.*;
-import java.util.*;
 import game.utils.*;
+import java.util.*;
 
 public class ParadeRenderer {
 
@@ -10,7 +10,7 @@ public class ParadeRenderer {
      * Displays the current parade of cards in a fixed horizontal format.
      */
     public static void showParade(Parade parade) {
-        ArrayList<Card> cards = parade.getCards();
+        List<Card> cards = parade.getCards();
         CardRenderer.setDisplayMode(false);
         System.out.println("Parade (Starts from left):");
 
@@ -19,7 +19,7 @@ public class ParadeRenderer {
 
         while (index < totalCards) {
             int end = Math.min(index + Constants.CARDS_PER_LINE, totalCards);
-            ArrayList<Card> chunk = new ArrayList<>(cards.subList(index, end));
+            List<Card> chunk = new ArrayList<>(cards.subList(index, end));
 
             // Prepare card lines
             StringBuilder[] cardLines = new StringBuilder[7];

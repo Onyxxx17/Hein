@@ -1,15 +1,12 @@
-package game.gameplay;
+package game.renderer;
 
-import game.core.*;
+import game.core.Player;
 import game.utils.Helper;
 import java.util.*;
 
-/**
- * Displays a podium of top players at the end of the game like Kahoot
- */
-public class Podium{
+public class PodiumRenderer {
 
-    public static void displayPodium(ArrayList<Player> players, Player winner) {
+    public static void renderPodium(ArrayList<Player> players, Player winner) {
         System.out.println("===============================");
         System.out.println("        FINAL RESULTS         ");
         System.out.println("===============================");
