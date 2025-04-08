@@ -1,5 +1,6 @@
 package game.renderer;
 import game.core.Card;
+import game.utils.Constants;
 import game.utils.Helper;
 
 /**
@@ -7,7 +8,7 @@ import game.utils.Helper;
  */
 public class CardRenderer {
 
-    private static final String RESET = "\u001B[0m";
+    private static final String RESET = Constants.RESET;
     private static boolean simpleDisplayMode = false;  // Make simpleDisplayMode static
     //private static boolean guiDisplayMode = false;
     public static void setDisplayMode(boolean simpleMode) {

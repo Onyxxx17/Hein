@@ -1,5 +1,4 @@
 package game.core;
-
 import game.renderer.CardRenderer;
 import java.util.Objects;
 

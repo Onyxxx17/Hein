@@ -12,7 +12,7 @@ public class StartingPlayerRenderer {
     }
 
     public static void showTie(int numPlayers, int maxRoll) {
-        System.out.println("\n" + numPlayers + " players tie at " + maxRoll + "! Rerolling for these players...");
+        System.out.println("\n" + numPlayers + "  players tie at " + maxRoll + "! Rerolling for these players...");
     }
 
     public static void rollMessage() {

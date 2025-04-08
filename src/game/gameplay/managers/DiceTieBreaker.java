@@ -2,7 +2,6 @@ package game.gameplay.managers;
 
 import game.core.Player;
 import game.setup.Dice;
-import game.utils.Helper;
 import java.util.*;
 
 public class DiceTieBreaker {
@@ -19,7 +18,6 @@ public class DiceTieBreaker {
         
         System.out.println("\n🎲 Breaking tie with dice rolls...");
         for (Player p : players) {
-            Helper.loading();
             int roll = dice.roll();
             dice.animateRoll(p.getName(), roll);
             results.put(p, roll);

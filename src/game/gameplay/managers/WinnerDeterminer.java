@@ -7,22 +7,35 @@ import java.util.*;
 
 public class WinnerDeterminer {
     private final List<Player> players;
-    private final DiceTieBreaker diceTiebreaker;
+    private final DiceTieBreaker diceTieBreaker;
 
     public WinnerDeterminer(List<Player> players) {
         this.players = players;
-        this.diceTiebreaker = new DiceTieBreaker();
+        this.diceTieBreaker = new DiceTieBreaker();
     }
 
     public Player determineWinner() {
         sortPlayers();
-        List<Player> potentialWinners = getPotentialWinners();
+
+        // Get all the players with same score
+        List<Player> playersWithSameScore = getPotentialWinners();
         
-        if (potentialWinners.size() > 1) {
-            GameFlowRenderer.showTieBreaker(potentialWinners);
-            return resolveTie(potentialWinners);
+        if (playersWithSameScore.size() > 1) {
+            GameFlowRenderer.showTieBreaker(playersWithSameScore);
         }
-        return potentialWinners.get(0);
+
+        //Get all platers with all same conditions to solve with dice
+        List<Player> playersWithAllSameConditions = new ArrayList<>();
+        for (Player p : playersWithSameScore) {
+            if (new PlayerComparator().compare(playersWithSameScore.get(0), p) == 0) {
+                playersWithAllSameConditions.add(p);
+            }
+        }
+
+        if (playersWithAllSameConditions.size() > 1) {
+            return resolveTie(playersWithAllSameConditions);
+        }
+        return playersWithSameScore.get(0);
     }
 
     private void sortPlayers() {
@@ -41,7 +54,7 @@ public class WinnerDeterminer {
     }
 
     private Player resolveTie(List<Player> tiedPlayers) {
-        Player winner = diceTiebreaker.resolveTie(tiedPlayers);
+        Player winner = diceTieBreaker.resolveTie(tiedPlayers);
         updatePlayerOrder(tiedPlayers);
         return winner;
     }

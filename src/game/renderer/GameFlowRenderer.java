@@ -135,7 +135,7 @@ public class GameFlowRenderer {
     }
 
     public static void showParadeInitialization() {
-        System.out.print("\n✨ Initializing Parade");
+        System.out.print("✨ Initializing Parade");
         Helper.loading();
         System.out.println("\n🎉 Parade has been initialized with 6 cards!\n");
     }
