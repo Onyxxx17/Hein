@@ -36,5 +36,18 @@ public class GameState {
         Helper.printBox("🎭 PLAYER SETUP 🎭");
     }
 
+    public static void goodbyeMessage() {
+        System.out.println("\n\n");
+        System.out.println("   ____                       _       ");
+        System.out.println("  |  _ \\ __ _ _ __ __ _  __ _| | ___  ");
+        System.out.println("  | |_) / _` | '__/ _` |/ _` | |/ _ \\ ");
+        System.out.println("  |  __/ (_| | | | (_| | (_| | |  __/ ");
+        System.out.println("  |_|   \\__,_|_|  \\__,_|\\__,_|_|\\___| ");
+        System.out.println("\n");
+        System.out.println("        🌟 THANK YOU FOR PLAYING 🌟");
+        System.out.println("              🎉  PARADE  🎉");
+        System.out.println("\n\n");
+    }
+
     
 }

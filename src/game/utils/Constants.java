@@ -32,7 +32,6 @@ public class Constants {
     public static final int MAX_CARDS_PER_COLOUR = 10;
     public static final int PODIUM_SIZE = 3;
 
-
     public static final String[] DICE_FACES = {
         """
         +-------+

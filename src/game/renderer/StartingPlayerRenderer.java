@@ -11,17 +11,14 @@ public class StartingPlayerRenderer {
         Helper.sleep(1000);
     }
 
-    public static void showTie(int numPlayers, int maxRoll) {
-        System.out.println("\n" + numPlayers + "  players tie at " + maxRoll + "! Rerolling for these players...");
-    }
-
     public static void rollMessage() {
         System.out.print("\nRolling to decide the starting player");
         Helper.loading();
     }
 
     public static void showTie(List<Player> tiedPlayers, int maxRoll) {
-        System.out.print("\n" + tiedPlayers.size() + "players tie at " + maxRoll + "! Rerolling for these players");
+        System.out.print("\n" + tiedPlayers.size() + " players tie at " + maxRoll + "! Rerolling for these players");
+        Helper.loading();
     }
 
     public static void showWinner(Player player) {

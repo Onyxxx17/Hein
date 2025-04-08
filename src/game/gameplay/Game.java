@@ -22,8 +22,8 @@ public class Game {
     private final StartingPlayerDecider startingPlayerdecider = new StartingPlayerDecider(dice);
 
     /**
-     * Creates a new Game instance with the specified game manager and
-     * input scanner.
+     * Creates a new Game instance with the specified game manager and input
+     * scanner.
      *
      * @param gameManager The game manager that handles game rules and state
      * @param sc The scanner used for user input
@@ -120,7 +120,9 @@ public class Game {
         GameFlowRenderer.displayOpenCards(players);
         ParadeRenderer.showParade(parade);
         GameFlowRenderer.showTurnHeader(player.getName());
+        checkForQuit(player, player.isHuman());
         player.playCard(parade, scanner);
+
         Helper.sleep(800);
         ArrayList<Card> drawnCards = player.drawCardsFromParade(parade);
         PlayerRenderer.displayReceivedCards(player, drawnCards);
@@ -204,5 +206,32 @@ public class Game {
         Player winner = gameManager.determineWinner();
 
         Podium.displayPodium(players, winner);
+    }
+
+    private void checkForQuit(Player player, boolean isHuman) {
+        if (isHuman) {
+            System.out.print("🛑 Type 'quit' anytime to exit the game.\n");
+            System.out.print(player.getName() + ", Type anything to play your turn or type 'quit': ");
+            String input = scanner.nextLine().trim();
+
+            if (input.equalsIgnoreCase("quit")) {
+                System.out.print("Are you sure you want to quit? (y/n):");
+                String confirm = scanner.nextLine().trim();
+                while (!confirm.equalsIgnoreCase("y") && !confirm.equalsIgnoreCase("n") && !confirm.equalsIgnoreCase("yes") && !confirm.equalsIgnoreCase("no")) {
+                    System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                    System.out.print("\nAre you sure you want to quit? (y/n):");
+                    confirm = scanner.nextLine().trim();
+                }
+                if (confirm.equalsIgnoreCase("y") || confirm.equalsIgnoreCase("yes")) {
+                    System.out.println("\n" + player.getName() + " chose to quit the game");
+                    System.out.println("Scores will be calculated up until this point and the game will end");
+                    Helper.loading();
+                    Helper.sleep(1500);
+                    concludeGame();
+                    GameState.goodbyeMessage();
+                    System.exit(0);
+                }
+            }
+        }
     }
 }
