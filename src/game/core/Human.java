@@ -2,6 +2,7 @@ package game.core;
 
 import game.renderer.CardRenderer;
 import game.renderer.HumanRenderer;
+import game.utils.Constants;
 import java.util.*;
 
 
@@ -29,7 +30,7 @@ public class Human extends Player {
 
     @Override
     public void finalPlay(Parade parade, Scanner scanner) {
-        for (int selection = 1; selection <= 2; selection++) {
+        for (int selection = 1; selection <= Constants.FINAL_PLAY_MOVES; selection++) {
             HumanRenderer.showClosedCards(this);
             int cardIndex = HumanRenderer.getValidCardSelection(scanner, closedCards.size());
             Card selectedCard = closedCards.remove(cardIndex - 1);

@@ -1,6 +1,7 @@
 package game.core;
 
 import game.renderer.ComputerRenderer;
+import game.utils.Constants;
 import java.util.*;
 
 public class Computer extends Player {
@@ -57,7 +58,7 @@ public class Computer extends Player {
      */
     @Override
     public void finalPlay(Parade parade, Scanner scanner) {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < Constants.FINAL_PLAY_MOVES; i++) {
             if (closedCards.isEmpty()) {
                 ComputerRenderer.renderNoMoreCardsToMove(name);
                 return;

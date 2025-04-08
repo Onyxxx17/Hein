@@ -111,35 +111,35 @@ public class Helper {
     public static String getColorCode(String color) {
         return switch (color.toLowerCase()) {
             case "blue" ->
-                "\u001B[34m";      // Blue text color
+                Constants.BLUE;      // Blue text color
             case "green" ->
-                "\u001B[32m";     // Green text color
+                Constants.GREEN;     // Green text color
             case "grey", "gray" ->
-                "\u001B[37m"; // Grey (also accepts 'gray')
+                Constants.GREY; // Grey (also accepts 'gray')
             case "orange" ->
-                "\u001B[38;5;214m";  // Orange text (extended 256-color range)
+                Constants.ORANGE;  // Orange text (extended 256-color range)
             case "purple" ->
-                "\u001B[35m";    // Purple text color
+                Constants.PURPLE;    // Purple text color
             case "red" ->
-                "\u001B[31m";       // Red text color
+                Constants.RED;       // Red text color
             case "yellow" ->
-                "\u001B[33m";    // Yellow text color
+                Constants.YELLOW;    // Yellow text color
             case "cyan" ->
-                "\u001B[36m";      // Cyan text color
+                Constants.CYAN;      // Cyan text color
             case "magenta" ->
-                "\u001B[35m";   // Magenta text color
+                Constants.MAGENTA;   // Magenta text color
             case "black" ->
-                "\u001B[30m";     // Black text color
+                Constants.BLACK;     // Black text color
             case "white" ->
-                "\u001B[37m";     // White text color
+                Constants.WHITE;     // White text color
             case "brightgreen" ->
-                "\u001B[92m"; // Bright green text
+                Constants.BRIGHT_GREEN; // Bright green text
             case "brightyellow" ->
-                "\u001B[93m"; // Bright yellow text
+                Constants.BRIGHT_YELLOW; // Bright yellow text
             case "brightblue" ->
-                "\u001B[94m"; // Bright blue text
+                Constants.BRIGHT_BLUE; // Bright blue text
             default ->
-                "\u001B[0m"; // Default reset code
+                Constants.DEFAULT_COLOR; // Default reset code
         };
     }
     /**

@@ -1,6 +1,6 @@
 package game.core;
-
 import game.renderer.CardRenderer;
+import game.utils.Constants;
 import java.util.Objects;
 
 /**
@@ -22,7 +22,7 @@ public class Card {
     /**
      * ANSI escape code for resetting text formatting.
      */
-    private static final String RESET = "\u001B[0m";
+    private static final String RESET = Constants.RESET;
 
     // ============================ Constructor ============================
     /**
