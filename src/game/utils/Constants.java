@@ -21,6 +21,7 @@ public class Constants {
     public static final int DELAY_DURATION = 45;
     public static int CARDS_PER_LINE = 7;
     public static final int INITIAL_CARDS_OF_PARADE = 6;
+    public static final int CARDS_TO_DEAL = 5;
     public static final int TOTAL_COLORS = 6;
     public static final String[] COLORS = {"Blue", "Green", "Grey", "Orange", "Purple", "Red"};
     public static final int FINAL_PLAY_MOVES = 2;
@@ -30,6 +31,7 @@ public class Constants {
     public static final int FLIPPED_CARD_VALUE = 1; // Value assigned to flipped cards
     public static final int MAX_CARDS_PER_COLOUR = 10;
     public static final int PODIUM_SIZE = 3;
+
 
     public static final String[] DICE_FACES = {
         """

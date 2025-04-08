@@ -173,7 +173,7 @@ public class Game {
      */
     public void dealCardstoPlayers() {
         for (Player player : players) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < Constants.CARDS_TO_DEAL; i++) {
                 player.drawCardFromDeck(deck);
             }
         }

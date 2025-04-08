@@ -96,7 +96,7 @@ public class GameManager {
         GameFlowRenderer.logMaxCardsForColor(color, max);
 
         // Special rule for two-player game
-        if (players.size() == 2) {
+        if (players.size() == Constants.MIN_PLAYERS) {
             check2PlayerConditions(color, playersOut);
         }
 
