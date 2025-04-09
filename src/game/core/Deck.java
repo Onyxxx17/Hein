@@ -19,7 +19,7 @@ public class Deck {
     public Deck() {
         this.cards = new ArrayList<>();
         for (String color : Constants.COLORS) {
-            for (int i = 0; i <= Constants.MAX_CARDS_PER_COLOUR; i++) { // Adding cards numbered 0 to 10
+            for (int i = 0; i <= Constants.MAX_CARDS_PER_COLOR; i++) { // Adding cards numbered 0 to 10
                 cards.add(new Card(color, i));
             }
         }
