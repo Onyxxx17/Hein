@@ -180,11 +180,17 @@ public class GameFlowRenderer {
     }
 
     public static void showQuitOption() {
-        System.out.print("🛑 Type 'quit' anytime to exit the game.\n");
-        System.out.print("Press enter to play your round or 'quit' to exit> ");
+        System.out.print("\n🛑 Press enter to play your round or 'quit' to exit> ");
     }
 
     public static void confirmQuit() {
         System.out.print("Are you sure you want to quit? (y/n): ");
+    }
+
+    public static void showPlayerRound(Player player, List<Player> players, Parade parade, Deck deck) {
+        GameFlowRenderer.showDeckSize(deck);
+        GameFlowRenderer.displayOpenCards(players);
+        ParadeRenderer.showParade(parade);
+        GameFlowRenderer.showTurnHeader(player.getName());
     }
 }

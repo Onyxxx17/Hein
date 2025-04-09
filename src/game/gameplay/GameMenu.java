@@ -25,20 +25,17 @@ public class GameMenu {
                 int userChoice = Integer.parseInt(choice);
 
                 switch (userChoice) {
-                    case 1:
+                    case 1 -> {
                         startNewGame(); // your original game flow
                         loop = false;   // exit loop after starting game
-                        break;
-                    case 2:
-                        showInstructions();
-                        break; // loop continues, menu shown again
-                    case 3:
+                    }
+                    case 2 -> showInstructions();
+                    // loop continues, menu shown again
+                    case 3 -> {
                         GamePhaseRenderer.goodbyeMessage();
                         System.exit(0);
-                        break;
-                    default:
-                        System.out.println("❌ Invalid choice. Please enter a number (1-3).\n");
-                        break;
+                    }
+                    default -> System.out.println("❌ Invalid choice. Please enter a number (1-3).\n");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("❌ Invalid input. Please enter a number (1-3).\n");
@@ -105,14 +102,14 @@ public class GameMenu {
     }
 
     public boolean askForAnotherGame() {
-        System.out.print("\nDo you want to play another game? (yes/no): ");
-        String input = scanner.nextLine().trim();
-        while (!input.equalsIgnoreCase("yes") && !input.equalsIgnoreCase("no")) {
+        System.out.print("\n✨ Do you want to play another game? (y/n): ");
+        String input = scanner.nextLine().trim().toLowerCase();
+        while (!input.matches("yes|no|y|n")) {
             System.out.print("Invalid input. Please enter 'yes' or 'no'.\n");
             System.out.print("\nDo you want to play another game? (yes/no): ");
             input = scanner.nextLine().trim();
         }
-        if (input.equalsIgnoreCase("yes")) {
+        if (input.equals("yes") || input.equals("y")) {
             return true;
         } else {
             GamePhaseRenderer.goodbyeMessage();

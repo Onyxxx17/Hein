@@ -1,6 +1,7 @@
 package game.gameplay;
 
 import game.core.*;
+import game.gameplay.managers.QuitHandler;
 import game.renderer.*;
 import game.setup.*;
 import game.utils.*;
@@ -18,43 +19,47 @@ public class Game {
     private final Parade parade;
     private final List<Player> players;
     private final Scanner scanner;
-    private final Dice dice = new Dice();
-    private final StartingPlayerDecider startingPlayerdecider = new StartingPlayerDecider(dice);
+    private final Dice dice;
+    private final StartingPlayerDecider startingPlayerdecider;
+    private final QuitHandler quitHandler;
 
-    /**
-     * Creates a new Game instance with the specified game manager and input
-     * scanner.
-     *
-     * @param gameManager The game manager that handles game rules and state
-     * @param sc The scanner used for user input
-     */
     public Game(GameManager gameManager, Scanner sc) {
         this.gameManager = gameManager;
         this.deck = gameManager.getDeck();
         this.players = gameManager.getPlayers();
         this.scanner = sc;
         this.parade = new Parade(deck);
+        this.dice = new Dice();
+        this.startingPlayerdecider = new StartingPlayerDecider(dice);
+        this.quitHandler = new QuitHandler(players, scanner);
     }
 
-    /**
-     * Starts the game loop by initializing the game and processing turns for
-     * each player. Continues until an end condition is met, at which point the
-     * end game handling is triggered.
-     */
     public void startGame() {
         initializeGame();
         boolean gameEnds = false;
         while (!gameEnds) {
-            for (Player player : players) {
+            if(players.size() == 1 || quitHandler.countHumans() == 0) {
+                gameEnds = true;
+                break;
+            }
+            Iterator<Player> iterator = players.iterator();
+            while (iterator.hasNext()) {
+                Player player = iterator.next();
                 Helper.flush();
+                GameFlowRenderer.showPlayerRound(player, players, parade, deck);
+
+                if (quitHandler.checkForQuit(player, player.isHuman(), iterator)) {
+                    Helper.pressEnterToContinue(scanner);
+                    Helper.flush();
+                    continue;
+                }
+
                 playTurn(player);
                 player.drawCardFromDeck(deck);
                 PlayerRenderer.showCardDraw(player);
+
                 if (gameManager.checkEndGame()) {
                     gameEnds = true;
-                    if (player.isHuman()) {
-                        scanner.nextLine();
-                    }
                     int currentIndex = players.indexOf(player);
                     Player nextPlayer = players.get((currentIndex + 1) % players.size());
                     gameManager.rearrangePlayers(nextPlayer);
@@ -62,24 +67,20 @@ public class Game {
                     Helper.flush();
                     break;
                 }
+
                 if (player.isHuman()) {
                     scanner.nextLine();
                 }
                 Helper.pressEnterToContinue(scanner);
             }
         }
-        handleEndGame();
+        if(!(players.size() == 1) && !(quitHandler.countHumans() == 0)) {
+            handleEndGame();
+        }
     }
 
-    /**
-     * Initializes the game by shuffling the deck, dealing cards to each player,
-     * initializing the Parade, and displaying the initial game state.
-     */
     public void initializeGame() {
-        // Wait for the user to press Enter to continue to the next step
         Helper.pressEnterToContinue(scanner);
-
-        // Clear the screen (or any other action defined in Helper.flush())
         Helper.flush();
 
         Player firstPlayer = startingPlayerdecider.decideStartingPlayer(players);
@@ -92,10 +93,9 @@ public class Game {
         Helper.sleep(500);
 
         deck.shuffle();
-
         GameFlowRenderer.showCardDealing();
         Helper.sleep(1000);
-        dealCardstoPlayers();
+        dealCardsToPlayers();
         Helper.sleep(500);
 
         parade.initializeParade();
@@ -107,38 +107,19 @@ public class Game {
         Helper.pressEnterToContinue(scanner);
     }
 
-    /**
-     * Executes a single turn for the given player by displaying the current
-     * game state, allowing the player to play a card, and handling card drawing
-     * from the parade. Displays relevant game information and pauses between
-     * actions for better user experience.
-     *
-     * @param player The player whose turn is being processed.
-     */
     public void playTurn(Player player) {
-        GameFlowRenderer.showDeckSize(deck);
-        GameFlowRenderer.displayOpenCards(players);
-        ParadeRenderer.showParade(parade);
-        GameFlowRenderer.showTurnHeader(player.getName());
-        checkForQuit(player, player.isHuman());
         player.playCard(parade, scanner);
-
         Helper.sleep(800);
         ArrayList<Card> drawnCards = player.drawCardsFromParade(parade);
         PlayerRenderer.displayReceivedCards(player, drawnCards);
     }
 
-    /**
-     * Handles the end game phase by allowing each player to play a final turn.
-     * Displays end game prompts and provides a pause for human players to
-     * acknowledge each step. After the last round, prompts players to add two
-     * final cards to their open collections for scoring.
-     */
     public void handleEndGame() {
         for (Player player : players) {
-            Helper.flush();
-            Helper.printBox("🚨 Last Round 🚨");
-            Helper.sleep(1000);
+            GamePhaseRenderer.showFinalRound();
+
+            GameFlowRenderer.showPlayerRound(player, players, parade, deck);
+
             playTurn(player);
             if (player.isHuman()) {
                 scanner.nextLine();
@@ -148,11 +129,6 @@ public class Game {
         addFinalTwoCards();
     }
 
-    /**
-     * Handles the final two card selection phase for each player in the game.
-     * Allows each player to add two more cards to their open collection before
-     * scoring and game conclusion.
-     */
     private void addFinalTwoCards() {
         for (Player player : players) {
             Helper.flush();
@@ -169,11 +145,7 @@ public class Game {
         concludeGame();
     }
 
-    /**
-     * Deals 5 initial cards to each player from the deck. Called during game
-     * initialization.
-     */
-    public void dealCardstoPlayers() {
+    public void dealCardsToPlayers() {
         for (Player player : players) {
             for (int i = 0; i < Constants.CARDS_TO_DEAL; i++) {
                 player.drawCardFromDeck(deck);
@@ -181,18 +153,12 @@ public class Game {
         }
     }
 
-    /**
-     * Concludes the game by flipping cards based on majority rules, calculating
-     * final scores, determining the winner, and displaying results. Closes the
-     * scanner when done.
-     */
     private void concludeGame() {
         Helper.flush();
         Helper.printBox("🐧 Open Cards Before Flipping");
         Helper.sleep(1000);
 
         GameFlowRenderer.displayOpenCards(players);
-
         GamePhaseRenderer.showFlippingPhase();
         Helper.sleep(1000);
 
@@ -204,34 +170,7 @@ public class Game {
         Helper.flush();
         gameManager.calculateScores();
         Player winner = gameManager.determineWinner();
-
         Podium.displayPodium(players, winner);
     }
-
-    private void checkForQuit(Player player, boolean isHuman) {
-        if (isHuman) {
-            System.out.print("🛑 Type 'quit' anytime to exit the game.\n");
-            System.out.print(player.getName() + ", Type anything to play your turn or type 'quit': ");
-            String input = scanner.nextLine().trim();
-
-            if (input.equalsIgnoreCase("quit")) {
-                System.out.print("Are you sure you want to quit? (y/n):");
-                String confirm = scanner.nextLine().trim();
-                while (!confirm.equalsIgnoreCase("y") && !confirm.equalsIgnoreCase("n") && !confirm.equalsIgnoreCase("yes") && !confirm.equalsIgnoreCase("no")) {
-                    System.out.println("Invalid input. Please enter 'y' or 'n'.");
-                    System.out.print("\nAre you sure you want to quit? (y/n):");
-                    confirm = scanner.nextLine().trim();
-                }
-                if (confirm.equalsIgnoreCase("y") || confirm.equalsIgnoreCase("yes")) {
-                    System.out.println("\n" + player.getName() + " chose to quit the game");
-                    System.out.println("Scores will be calculated up until this point and the game will end");
-                    Helper.loading();
-                    Helper.sleep(1500);
-                    concludeGame();
-                    GamePhaseRenderer.goodbyeMessage();
-                    System.exit(0);
-                }
-            }
-        }
-    }
 }
+

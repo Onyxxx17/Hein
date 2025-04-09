@@ -32,48 +32,4 @@ public class Constants {
     public static final int FLIPPED_CARD_VALUE = 1; // Value assigned to flipped cards
     public static final int MAX_CARDS_PER_COLOR = 11;
     public static final int PODIUM_SIZE = 3;
-
-    public static final String[] DICE_FACES = {
-        """
-        +-------+
-        |       |
-        |   ●   |
-        |       |
-        +-------+
-        """,
-        """
-        +-------+
-        | ●     |
-        |       |
-        |     ● |
-        +-------+
-        """,
-        """
-        +-------+
-        | ●     |
-        |   ●   |
-        |     ● |
-        +-------+
-        """, """
-        +-------+
-        | ●   ● |
-        |       |
-        | ●   ● |
-        +-------+
-        """,
-        """
-        +-------+
-        | ●   ● |
-        |   ●   |
-        | ●   ● |
-        +-------+
-        """,
-        """
-        +-------+
-        | ●   ● |
-        | ●   ● |
-        | ●   ● |
-        +-------+
-        """
-    };
 }

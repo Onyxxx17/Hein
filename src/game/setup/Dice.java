@@ -1,6 +1,6 @@
 package game.setup;
 
-import game.utils.Constants;
+import game.utils.AsciiArt;
 import game.utils.Helper;
 import java.util.Random;
 
@@ -33,7 +33,7 @@ public class Dice {
      * otherwise, returns an empty space.
      */
     public String getDiceFace(int value) {
-        return Constants.DICE_FACES[value - 1];
+        return AsciiArt.DICE_FACES[value - 1];
     }
 
     /**
