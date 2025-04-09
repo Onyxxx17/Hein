@@ -1,6 +1,7 @@
 package game.core;
 
 import java.util.*;
+import game.utils.Constants;
 
 /**
  * Abstract base class representing a player in the game.
@@ -28,11 +29,6 @@ public abstract class Player {
      * The player's current score.
      */
     protected int score;
-
-    /**
-     * Number of cards to draw during initialization.
-     */
-    private static final int INITIAL_HAND_SIZE = 5;
 
     // ============================ Constructor ============================
     /**
@@ -73,7 +69,7 @@ public abstract class Player {
      * @param deck The deck to draw cards from.
      */
     public void initializeClosedCards(Deck deck) {
-        for (int i = 0; i < INITIAL_HAND_SIZE; i++) {
+        for (int i = 0; i < Constants.INITIAL_HAND_SIZE; i++) {
             Card card = deck.removeCardFromDeck();
             if (card != null) {
                 closedCards.add(card);

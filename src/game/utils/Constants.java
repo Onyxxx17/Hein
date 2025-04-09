@@ -21,6 +21,7 @@ public class Constants {
     public static final int DELAY_DURATION = 45;
     public static int CARDS_PER_LINE = 7;
     public static final int INITIAL_CARDS_OF_PARADE = 6;
+    public static final int INITIAL_HAND_SIZE = 5;
     public static final int CARDS_TO_DEAL = 5;
     public static final int TOTAL_COLORS = 6;
     public static final String[] COLORS = {"Blue", "Green", "Grey", "Orange", "Purple", "Red"};
