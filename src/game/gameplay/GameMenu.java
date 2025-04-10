@@ -70,7 +70,7 @@ public class GameMenu {
         List<Player> players = setup.createPlayers(playerCount);
         Deck deck = new Deck();
         GameManager gameManager = new GameManager(players, deck);
-        Game game = new Game(gameManager, scanner);
+        GameController game = new GameController(gameManager, scanner);
         game.startGame();
     }
 

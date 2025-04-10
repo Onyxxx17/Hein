@@ -12,7 +12,7 @@ import java.util.*;
  * game conclusion. This class orchestrates the entire lifecycle of a game
  * session.
  */
-public class Game {
+public class GameController {
 
     private final GameManager gameManager;
     private final Deck deck;
@@ -23,7 +23,7 @@ public class Game {
     private final StartingPlayerDecider startingPlayerdecider;
     private final QuitHandler quitHandler;
 
-    public Game(GameManager gameManager, Scanner sc) {
+    public GameController(GameManager gameManager, Scanner sc) {
         this.gameManager = gameManager;
         this.deck = gameManager.getDeck();
         this.players = gameManager.getPlayers();
@@ -38,36 +38,46 @@ public class Game {
         initializeGame();
         boolean gameEnds = false;
         while (!gameEnds) {
-            if(players.size() == 1 || quitHandler.countHumans() == 0) {
-                gameEnds = true;
-                break;
-            }
+        
             Iterator<Player> iterator = players.iterator();
             while (iterator.hasNext()) {
+
+                // Check if there's only one player or no human players
+                if (players.size() == 1 || quitHandler.countHumans() == 0) {
+                    gameEnds = true;
+                    break;
+                }
                 Player player = iterator.next();
                 Helper.flush();
                 GameFlowRenderer.showPlayerRound(player, players, parade, deck);
-
+        
+                // Check if the player decides to quit
                 if (quitHandler.checkForQuit(player, player.isHuman(), iterator)) {
                     Helper.pressEnterToContinue(scanner);
                     Helper.flush();
-                    continue;
+                    break;
                 }
-
+        
+                // Play the player's turn
                 playTurn(player);
                 player.drawCardFromDeck(deck);
                 PlayerRenderer.showCardDraw(player);
-
+        
+                // Check if the game should end
                 if (gameManager.checkEndGame()) {
                     gameEnds = true;
                     int currentIndex = players.indexOf(player);
                     Player nextPlayer = players.get((currentIndex + 1) % players.size());
                     gameManager.rearrangePlayers(nextPlayer);
+                    if(player.isHuman()) {
+                       scanner.next();
+                    }
                     Helper.pressEnterToContinue(scanner);
                     Helper.flush();
                     break;
                 }
-
+        
+                // Allow human player to press Enter to continue
                 if (player.isHuman()) {
                     scanner.nextLine();
                 }

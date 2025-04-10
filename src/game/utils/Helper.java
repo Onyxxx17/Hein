@@ -1,5 +1,6 @@
 package game.utils;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -23,7 +24,7 @@ public class Helper {
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
             }
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException e) {
             System.out.println("Error clearing the console: " + e.getMessage());
         }
     }
