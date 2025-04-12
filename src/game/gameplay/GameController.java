@@ -136,10 +136,10 @@ public class GameController {
             GamePhaseRenderer.showFinalRound();
 
             GameFlowRenderer.showPlayerRound(player, players, parade, deck);
-            if(player.isHuman()){
-               scanner.nextLine();
-            }
             playTurn(player);
+            if(player.isHuman()){
+                scanner.nextLine();
+             }
             Helper.pressEnterToContinue(scanner);
         }
         addFinalTwoCards();
