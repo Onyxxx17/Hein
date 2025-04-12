@@ -1,6 +1,7 @@
 package game.core;
 
 import game.utils.Constants;
+import java.lang.invoke.ConstantCallSite;
 import java.util.*;
 
 public class Deck {
@@ -19,7 +20,7 @@ public class Deck {
     public Deck() {
         this.cards = new ArrayList<>();
         for (String color : Constants.COLORS) {
-            for (int i = 0; i < Constants.MAX_CARDS_PER_COLOR; i++) { // Adding cards numbered 0 to 10
+            for (int i = Constants.MINVALUEOFCARD; i <= Constants.MAXVALUEOFCARD; i++) { // Adding cards numbered 0 to 10
                 cards.add(new Card(color, i));
             }
         }

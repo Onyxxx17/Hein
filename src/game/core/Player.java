@@ -1,7 +1,7 @@
 package game.core;
 
-import java.util.*;
 import game.utils.Constants;
+import java.util.*;
 
 /**
  * Abstract base class representing a player in the game.
@@ -57,10 +57,9 @@ public abstract class Player {
      * Handles the player's final play when the game is ending.
      * Implementation will differ between human and AI players.
      *
-     * @param parade The parade to play the card to.
      * @param scanner Scanner for user input (for human players).
      */
-    public abstract void finalPlay(Parade parade, Scanner scanner);
+    public abstract void finalPlay(Scanner scanner);
 
     // ============================ Card Initialization ============================
     /**

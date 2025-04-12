@@ -1,6 +1,5 @@
 package game.core;
 import game.renderer.CardUI;
-
 /**
  * Represents a playing card with a color and numerical value.
  */

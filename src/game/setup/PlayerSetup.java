@@ -21,6 +21,7 @@ public class PlayerSetup {
             try {
                 System.out.print("👥 Enter the number of players (2-6): ");
                 playerCount = scanner.nextInt();
+                scanner.nextLine(); // Clear the buffer
 
                 if (playerCount < 2 || playerCount > 6) {
                     throw new InvalidPlayerCountException(
@@ -36,7 +37,7 @@ public class PlayerSetup {
 
             } catch (InputMismatchException e) {
                 System.out.println("❌ Invalid input! Please enter a valid number.\n");
-                scanner.next(); // clear buffer
+                scanner.next();
             }
         }
 
@@ -45,7 +46,7 @@ public class PlayerSetup {
 
     public List<Player> createPlayers(int numPlayers) {
         List<Player> players = new ArrayList<>();
-        List<String> names = new ArrayList<>();
+        Set<String> names = new HashSet<>();
         int humanCount = 0;
         int botIndex = 1;
 
@@ -87,28 +88,19 @@ public class PlayerSetup {
         }
     }
 
-    private void handleHumanPlayer(List<String> names, List<Player> players) {
+    private void handleHumanPlayer(Set<String> names, List<Player> players) {
         String name;
         while (true) {
-            System.out.print("📝 Enter player name: ");
-            name = scanner.nextLine().trim();
-
-            if (!isValidName(name)) {
-                System.out.println("❌ Name must be (3-10) characters long and contain one letter.\n");
-                continue;
+            try {
+                System.out.print("📝 Enter player name: ");
+                name = scanner.nextLine().trim();
+        
+                validateName(name, names); // Validate the name (throws InvalidNameException if invalid)
+        
+                break; // Exit loop if no exception is thrown
+            } catch (InvalidNameException e) {
+                System.out.println("❌ " + e.getMessage() + "\n"); // Print the error message from the exception
             }
-
-            if (checkNameWithBot(name)) {
-                System.out.println("❌ Names starting with bot must be at least 6 characters long.\n");
-                continue;
-            }
-
-            if (names.contains(name.toLowerCase())) {
-                System.out.println("❌ Name already taken by another player. Please choose a different name.\n");
-                continue;
-            }
-
-            break;
         }
 
         names.add(name.toLowerCase());
@@ -116,32 +108,49 @@ public class PlayerSetup {
         System.out.println("✅ " + name + " has joined the game!");
     }
 
-    private void handleComputerPlayer(List<Player> players, List<String> names, int botIndex) {
+    private void handleComputerPlayer(List<Player> players, Set<String> names, int botIndex) {
         String botName = "Bot " + botIndex;
         names.add(botName.toLowerCase());
         players.add(new Computer(botName));
         System.out.println("🤖 " + botName + " has joined the game!");
     }
 
-    public boolean isValidName(String name) {
-        if (name.length() < 3) {
-            return false;
-        }
+    public boolean isValidLength(String name) {
+        return name.length() >= 3 && name.length() <= 10;
+    }
 
+    public boolean containLetter(String name) {
         for (char c : name.toCharArray()) {
             if (Character.isLetter(c)) {
                 return true;
             }
         }
-
         return false;
     }
 
     public boolean checkNameWithBot(String name) {
         String lower = name.toLowerCase();
         if (lower.startsWith("bot")) {
-            return name.length() <= 5;
+            return name.length() < 6;
         }
         return false;
+    }
+
+    private void validateName(String name, Set<String> names) throws InvalidNameException {
+        if (!isValidLength(name)) {
+            throw new InvalidNameException("Name must be (3-10) characters long.");
+        }
+    
+        if (!containLetter(name)) {
+            throw new InvalidNameException("Name must contain at least one letter.");
+        }
+    
+        if (checkNameWithBot(name)) {
+            throw new InvalidNameException("Names starting with 'bot' must be at least 6 characters long.");
+        }
+    
+        if (names.contains(name.toLowerCase())) {
+            throw new InvalidNameException("Name already taken by another player. Please choose a different name.");
+        }
     }
 }

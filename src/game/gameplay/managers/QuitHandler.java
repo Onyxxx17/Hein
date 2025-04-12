@@ -35,7 +35,7 @@ public class QuitHandler {
                     if (players.size() == 1 || humanCount == 0) {
                         if (players.size() == 1) {
                             System.out.println("\n==============================================");
-                            System.out.println("║ 🎮 " + Constants.BOLD + "\t\t   GAME OVER!" + Constants.RESET + " \t\t🎮║");
+                            System.out.println("║ 🎮 " + Constants.BOLD + "\t\t   GAME OVER!" + Constants.RESET + " \t\t   🎮║");
                             System.out.println("==============================================");
                             System.out.println("║ There is only " + Constants.BOLD + "one player" + Constants.RESET + " left in the game! ║");
                             System.out.println("==============================================\n");

@@ -12,30 +12,29 @@ public class Human extends Player {
 
     @Override
     public void playCard(Parade parade, Scanner scanner) {
+
+        //Will never be empty but kept for consistency
         if (closedCards.isEmpty()) {
-            System.out.println("No cards left to play!");
-            return;
+            throw new IllegalStateException(name + " has no cards left to play!");
         }
 
-        HumanRenderer.showClosedCards(this);
-        int cardIndex = HumanRenderer.getValidCardSelection(scanner, closedCards.size());
+        int cardIndex = PlayerRenderer.getValidCardSelection(isHuman(),scanner, closedCards.size());
         Card selectedCard = closedCards.remove(cardIndex - 1);
         parade.addCard(selectedCard);
 
-        System.out.println(name + " played: ");
-        System.out.println(selectedCard);
+        PlayerRenderer.showPlayedCard(selectedCard, name);
     }
 
     @Override
-    public void finalPlay(Parade parade, Scanner scanner) {
+    public void finalPlay(Scanner scanner) {
         for (int selection = 1; selection <= Constants.FINAL_PLAY_MOVES; selection++) {
-            HumanRenderer.showClosedCards(this);
-            int cardIndex = HumanRenderer.getValidCardSelection(scanner, closedCards.size());
+            int cardIndex = PlayerRenderer.getValidCardSelection(isHuman(),scanner, closedCards.size());
             Card selectedCard = closedCards.remove(cardIndex - 1);
 
             CardUI.setSimpleDisplayMode(true);
             openCards.computeIfAbsent(selectedCard.getColor(), key -> new ArrayList<>()).add(selectedCard);
-            System.out.println(selectedCard + " is added to " + name + "'s Open Cards!\n");
+            PlayerRenderer.showPlayedCard(selectedCard, name);
+            PlayerRenderer.showCardAddedToOpenCards(name, selectedCard);
         }
     }
 

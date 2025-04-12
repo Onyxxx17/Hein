@@ -124,8 +124,6 @@ public class Helper {
                 Constants.PURPLE;    // Purple text color
             case "red" ->
                 Constants.RED;       // Red text color
-            case "yellow" ->
-                Constants.YELLOW;    // Yellow text color
             default ->
                 Constants.RESET; // Default reset code
         };

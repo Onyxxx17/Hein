@@ -37,54 +37,57 @@ public class GameController {
     public void startGame() {
         initializeGame();
         boolean gameEnds = false;
-        while (!gameEnds) {
-        
-            Iterator<Player> iterator = players.iterator();
-            while (iterator.hasNext()) {
+        boolean earlyTermination = false;
 
-                // Check if there's only one player or no human players
+        while (!gameEnds) {
+            Iterator<Player> iterator = players.iterator();
+            while (iterator.hasNext() && !gameEnds) {
+                // Check for early termination before processing turns
                 if (players.size() == 1 || quitHandler.countHumans() == 0) {
                     gameEnds = true;
+                    earlyTermination = true;
                     break;
                 }
+
                 Player player = iterator.next();
                 Helper.flush();
                 GameFlowRenderer.showPlayerRound(player, players, parade, deck);
-        
-                // Check if the player decides to quit
+
+                // Check for quit command
                 if (quitHandler.checkForQuit(player, player.isHuman(), iterator)) {
                     Helper.pressEnterToContinue(scanner);
                     Helper.flush();
-                    break;
+                    continue;
                 }
-        
-                // Play the player's turn
+
+                // Process turn
                 playTurn(player);
                 player.drawCardFromDeck(deck);
                 PlayerRenderer.showCardDraw(player);
-        
-                // Check if the game should end
+
+                // Check normal game end condition
                 if (gameManager.checkEndGame()) {
                     gameEnds = true;
                     int currentIndex = players.indexOf(player);
                     Player nextPlayer = players.get((currentIndex + 1) % players.size());
                     gameManager.rearrangePlayers(nextPlayer);
-                    if(player.isHuman()) {
-                       scanner.next();
+                    if (player.isHuman()) {
+                        scanner.nextLine();
                     }
                     Helper.pressEnterToContinue(scanner);
                     Helper.flush();
                     break;
                 }
-        
-                // Allow human player to press Enter to continue
+
+                // Pause for human players
                 if (player.isHuman()) {
                     scanner.nextLine();
                 }
                 Helper.pressEnterToContinue(scanner);
             }
         }
-        if(!(players.size() == 1) && !(quitHandler.countHumans() == 0)) {
+
+        if (!earlyTermination) {
             handleEndGame();
         }
     }
@@ -102,6 +105,7 @@ public class GameController {
         GameFlowRenderer.showGameStart(firstPlayer);
         Helper.sleep(500);
 
+        System.out.println("Deck size: " + deck.getCards().size() + " cards");
         deck.shuffle();
         GameFlowRenderer.showCardDealing();
         Helper.sleep(1000);
@@ -118,10 +122,13 @@ public class GameController {
     }
 
     public void playTurn(Player player) {
+        if (player.isHuman()) {
+            PlayerRenderer.showClosedCards(player);
+        }
         player.playCard(parade, scanner);
         Helper.sleep(800);
         ArrayList<Card> drawnCards = player.drawCardsFromParade(parade);
-        PlayerRenderer.displayReceivedCards(player, drawnCards);
+        PlayerRenderer.showReceivedCards(player, drawnCards);
     }
 
     public void handleEndGame() {
@@ -129,11 +136,10 @@ public class GameController {
             GamePhaseRenderer.showFinalRound();
 
             GameFlowRenderer.showPlayerRound(player, players, parade, deck);
-
-            playTurn(player);
-            if (player.isHuman()) {
-                scanner.nextLine();
+            if(player.isHuman()){
+               scanner.nextLine();
             }
+            playTurn(player);
             Helper.pressEnterToContinue(scanner);
         }
         addFinalTwoCards();
@@ -146,7 +152,10 @@ public class GameController {
             Helper.sleep(1000);
             GameFlowRenderer.displayOpenCards(players);
             GameFlowRenderer.showTurnHeader(player.getName());
-            player.finalPlay(parade, scanner);
+            if (player.isHuman()) {
+                PlayerRenderer.showClosedCards(player);
+            }
+            player.finalPlay(scanner);
             if (player.isHuman()) {
                 scanner.nextLine();
             }
@@ -178,9 +187,9 @@ public class GameController {
         Helper.pressEnterToContinue(scanner);
 
         Helper.flush();
+        GameFlowRenderer.showFlippedCards(flippedCards, players);
         gameManager.calculateScores();
         Player winner = gameManager.determineWinner();
         Podium.displayPodium(players, winner);
     }
 }
-

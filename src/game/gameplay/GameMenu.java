@@ -114,6 +114,7 @@ public class GameMenu {
             input = scanner.nextLine().trim();
         }
         if (input.equals("yes") || input.equals("y")) {
+            Helper.flush();
             return true;
         } else {
             GamePhaseRenderer.goodbyeMessage();

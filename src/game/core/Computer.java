@@ -1,16 +1,10 @@
 package game.core;
 
-import game.renderer.ComputerRenderer;
+import game.renderer.PlayerRenderer;
 import game.utils.Constants;
 import java.util.*;
 
 public class Computer extends Player {
-
-    // ============================ Instance Variables ============================
-
-    /** Random number generator for AI decision-making. */
-    private static final Random random = new Random();
-
     // ============================ Constructor ============================
 
     /**
@@ -23,28 +17,29 @@ public class Computer extends Player {
     }
 
     // ============================ Gameplay Methods ============================
-
     /**
      * Allows the computer player to randomly play a card from its hand into the
      * parade.
      *
      * @param parade The parade where the card will be added.
-     * @param scanner Scanner object (not used, but kept for consistency with Human player).
+     * @param scanner Scanner object (not used, but kept for consistency with
+     * Human player).
      */
     @Override
     public void playCard(Parade parade, Scanner scanner) {
+
+        // Not necessary but kept for consistency
         if (closedCards.isEmpty()) {
-            ComputerRenderer.renderNoCardsLeft(name);
-            return;
+            throw new IllegalStateException(name + " has no cards left to play!");
         }
 
         // Select a random card from closedCards
-        int index = random.nextInt(closedCards.size());
+        int index = Constants.RANDOM.nextInt(closedCards.size());
         Card selectedCard = closedCards.remove(index);
 
         // Add the selected card to the parade
-        ComputerRenderer.renderComputerThinking(name);
-        ComputerRenderer.renderComputerPlayedCard(name, selectedCard);
+        PlayerRenderer.showComputerThinking(name);
+        PlayerRenderer.showPlayedCard(selectedCard, name);
 
         parade.addCard(selectedCard);
     }
@@ -53,26 +48,27 @@ public class Computer extends Player {
      * Allows the computer to randomly select two cards from its hand to move to
      * open cards before scoring.
      *
-     * @param parade The parade object (not used here but passed for consistency).
+     * @param parade The parade object (not used here but passed for
+     * consistency).
      * @param scanner Scanner object (not used for the computer player).
      */
     @Override
-    public void finalPlay(Parade parade, Scanner scanner) {
+    public void finalPlay(Scanner scanner) {
         for (int i = 0; i < Constants.FINAL_PLAY_MOVES; i++) {
+
+            // Not necessary but kept for consistency
             if (closedCards.isEmpty()) {
-                ComputerRenderer.renderNoMoreCardsToMove(name);
-                return;
+                throw new IllegalStateException(name + " has no cards left to play!");
             }
 
             // Select a random card
-            int index = random.nextInt(closedCards.size());
+            int index = Constants.RANDOM.nextInt(closedCards.size());
             Card selectedCard = closedCards.remove(index);
 
             // Display and add to open cards
-            
-            ComputerRenderer.renderComputerThinking(name);
-            ComputerRenderer.renderComputerPlayedCard(name, selectedCard);
-            ComputerRenderer.renderCardAddedToOpenCards(name, selectedCard);
+            PlayerRenderer.showComputerThinking(name);
+            PlayerRenderer.showPlayedCard(selectedCard, name);
+            PlayerRenderer.showCardAddedToOpenCards(name, selectedCard);
 
             openCards.computeIfAbsent(selectedCard.getColor(), key -> new ArrayList<>()).add(selectedCard);
         }

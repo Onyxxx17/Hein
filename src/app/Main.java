@@ -1,6 +1,5 @@
 package app;
 
-import game.utils.Helper;
 import game.gameplay.GameMenu;
 import game.renderer.GamePhaseRenderer;
 import java.util.*;
@@ -12,7 +11,6 @@ public class Main {
         GamePhaseRenderer.welcomeMessage(scanner);
         boolean playAnotherGame;
         do {
-            Helper.flush();
             GameMenu menu = new GameMenu(scanner);
             menu.launch();
             playAnotherGame = menu.askForAnotherGame();
