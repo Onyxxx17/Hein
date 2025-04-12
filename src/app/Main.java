@@ -1,8 +1,8 @@
 package app;
 
-import game.gameplay.*;
-import game.renderer.*;
 import game.utils.Helper;
+import game.gameplay.GameMenu;
+import game.renderer.GamePhaseRenderer;
 import java.util.*;
 
 public class Main {
