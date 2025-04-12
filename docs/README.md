@@ -49,7 +49,7 @@ CS102 Programming Fundamentals II: Parade Game (G3T2)
  ----------------------------------------------
  
  Playing a Card
- [] When a face value of 0 is played, remove all cards from the Parade (except the 0 card itself) and add to player's collection
+ [] When a face value of 0 is played, all cards enter removal mode (take all same color cards and face value of 0 card)
  [] If the played card has a value v, then the first v cards in the Parade (from the right) are safe and cannot be removed
     --> The removal check starts from the (v+1)th card onward
  [] Then, remove cards if the colour matches and value comparison
@@ -118,6 +118,7 @@ CS102 Programming Fundamentals II: Parade Game (G3T2)
 
  5. RollDice
  Prompt players to roll dice to decide who goes first
+
  
  [src/game/utils]
  1. GameUtils
