@@ -39,23 +39,23 @@ public class CardFlipper {
         int max = 0;
         List<Player> playersOut = new ArrayList<>();
         boolean isAllSameNoOfCards = true;
-        int firstCards = 0;
+        int firstPlayerCards = 0;
 
         if (players.get(0).getOpenCards() != null && players.get(0).getOpenCards().containsKey(color)) {
-            firstCards = players.get(0).getOpenCards().get(color).size();
+            firstPlayerCards = players.get(0).getOpenCards().get(color).size();
         }
 
         // Find players with the most cards of the given color
         for (Player p : players) {
-            int numCards = p.getOpenCards().getOrDefault(color, new ArrayList<>()).size();
-            if (firstCards != numCards) {
+            int numCardsOfPlayer = p.getOpenCards().getOrDefault(color, new ArrayList<>()).size();
+            if (firstPlayerCards != numCardsOfPlayer) {
                 isAllSameNoOfCards = false;
             }
-            if (numCards > max) {
-                max = numCards;
+            if (numCardsOfPlayer > max) {
+                max = numCardsOfPlayer;
                 playersOut.clear(); // Reset as a new max is found
                 playersOut.add(p);
-            } else if (numCards == max) {
+            } else if (numCardsOfPlayer == max) {
                 playersOut.add(p);
             }
         }

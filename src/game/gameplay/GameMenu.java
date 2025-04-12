@@ -3,6 +3,7 @@ package game.gameplay;
 import game.core.*;
 import game.renderer.GamePhaseRenderer;
 import game.setup.*;
+import game.utils.Constants;
 import game.utils.Helper;
 import java.util.List;
 import java.util.Scanner;
@@ -26,16 +27,18 @@ public class GameMenu {
 
                 switch (userChoice) {
                     case 1 -> {
-                        startNewGame(); // your original game flow
-                        loop = false;   // exit loop after starting game
+                        startNewGame();
+                        loop = false;
                     }
-                    case 2 -> showInstructions();
+                    case 2 ->
+                        showInstructions();
                     // loop continues, menu shown again
                     case 3 -> {
                         GamePhaseRenderer.goodbyeMessage();
                         System.exit(0);
                     }
-                    default -> System.out.println("❌ Invalid choice. Please enter a number (1-3).\n");
+                    default ->
+                        System.out.println("❌ Invalid choice. Please enter a number (1-3).\n");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("❌ Invalid input. Please enter a number (1-3).\n");
@@ -45,22 +48,17 @@ public class GameMenu {
     }
 
     private void printMenuOptions() {
-        System.out.println("\n========== 🎮 MAIN MENU 🎮 ==========");
-        System.out.println("1. Start New Game");
-        System.out.println("2. Learn How to Play");
-        System.out.println("3. Quit");
-        System.out.println("=====================================");
+        System.out.println("╔═══════════════════════════════════════╗");
+        System.out.println("║          🎮 MAIN MENU 🎮              ║");
+        System.out.println("╠═══════════════════════════════════════╣");
+        System.out.println("║ 1. Start New Game                     ║");
+        System.out.println("║ 2. Learn How to Play                  ║");
+        System.out.println("║ 3. Quit                               ║");
+        System.out.println("╚═══════════════════════════════════════╝");
         System.out.print("Choose an option (1-3): ");
+
     }
 
-    // private void startNewGameLoop() {
-    //     boolean playAgain = true;
-    //     while (playAgain) {
-    //         startNewGame(); // your original game flow
-    //         playAgain = askForAnotherGame(); // ask after each game
-    //     }
-    //     GameState.goodbyeMessage(); // say goodbye if they say no
-    // }
     private void startNewGame() {
         System.out.print("\nStarting a new game");
         Helper.loading();
@@ -76,29 +74,35 @@ public class GameMenu {
 
     private void showInstructions() {
         Helper.flush();
-        System.out.println("\n🌟 HOW TO PLAY PARADE 🌟");
-        System.out.println("🎯 GOAL: Collect the LOWEST score by playing cards strategically!");
-        System.out.println("\n🏁 SETUP:");
-        System.out.println("- Everyone gets 5 cards");
-        System.out.println("- 6 cards form the starting parade");
+        System.out.println("\n══════════════════════════════════════════");
+        System.out.println(Constants.BOLD + "🌟✨ HOW TO PLAY PARADE ✨🌟" + Constants.RESET);
+        System.out.println("══════════════════════════════════════════\n");
 
-        System.out.println("\n🔄 YOUR TURN:");
-        System.out.println("1. Play 1 card to the END of the parade");
-        System.out.println("2. Cards might get removed:");
-        System.out.println("   💥 If you play a NUMBER (like 5):");
-        System.out.println("      - First 5 cards are SAFE 🔒");
-        System.out.println("      - Remove cards AFTER these if they:");
-        System.out.println("        • Match your card's COLOR 🎨");
-        System.out.println("        • Have value ≤ your card's number 🔢");
+        System.out.println("🎯 " + Constants.BOLD + "GOAL:" + Constants.RESET + " Collect the LOWEST score by playing cards strategically!\n");
 
-        System.out.println("\n🚨 GAME ENDS WHEN:");
-        System.out.println("- Deck runs out ❌");
-        System.out.println("- Someone collects all 6 colors 🌈");
+        System.out.println("🏁 " + Constants.BOLD + "SETUP:" + Constants.RESET);
+        System.out.println("  - Each player starts with " + Constants.BOLD + "5 cards" + Constants.RESET + " 🃏");
+        System.out.println("  - " + Constants.BOLD + "6 cards" + Constants.RESET + " form the starting parade 🚶‍♂️🚶‍♀️🚶\n");
 
-        System.out.println("\n🏆 FINAL ROUND:");
-        System.out.println("- Everyone discards 2 cards to their collection");
-        System.out.println("- Lowest TOTAL of collected cards WINS! 🏅");
-        System.out.println("  (Tiebreaker: Fewer cards → Fewer colors)");
+        System.out.println("🔄 " + Constants.BOLD + "YOUR TURN:" + Constants.RESET);
+        System.out.println("  1️⃣ Play " + Constants.BOLD + "1 card" + Constants.RESET + " to the END of the parade ➡️");
+        System.out.println("  2️⃣ Cards might get removed based on rules:");
+        System.out.println("     💥 If you play a card with a NUMBER (e.g., " + Constants.BOLD + "5" + Constants.RESET + "):");
+        System.out.println("        - The first " + Constants.BOLD + "5 cards" + Constants.RESET + " are SAFE 🔒");
+        System.out.println("        - Remove cards AFTER these if they:");
+        System.out.println("          • Match your card's " + Constants.BOLD + "COLOR" + Constants.RESET + " 🎨");
+        System.out.println("          • Have a value " + Constants.BOLD + "≤ your card's number" + Constants.RESET + " 🔢\n");
+
+        System.out.println("🚨 " + Constants.BOLD + "GAME ENDS WHEN:" + Constants.RESET);
+        System.out.println("  - The deck runs out ❌");
+        System.out.println("  - Someone collects all " + Constants.BOLD + "6 colors" + Constants.RESET + " 🌈\n");
+
+        System.out.println("🏆 " + Constants.BOLD + "FINAL ROUND:" + Constants.RESET);
+        System.out.println("  - Everyone discards " + Constants.BOLD + "2 cards" + Constants.RESET + " to their collection 🗑️");
+        System.out.println("  - The player with the LOWEST TOTAL score WINS! 🏅");
+        System.out.println("     (Tiebreaker: Fewer cards → Fewer colors)\n");
+
+        System.out.println("══════════════════════════════════════════");
     }
 
     public boolean askForAnotherGame() {

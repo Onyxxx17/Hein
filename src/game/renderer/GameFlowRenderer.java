@@ -40,13 +40,16 @@ public class GameFlowRenderer {
     }
 
     public static void displayNoMaxPlayersForColor(String color) {
-        System.out.println("🎭 Player(s) with most " + Helper.getColorCode(color) + color + " cards: \u001B[0mNone\n");
+        System.out.println("🎭 Player(s) with most " + Helper.getColorCode(color)
+                + color + Constants.RESET + " cards: "
+                + Constants.BOLD + "None" + Constants.RESET + "\n");
     }
 
     public static void displayMaxPlayersForColorList(String color, List<Player> maxPlayers, String colorCode) {
-        System.out.print("🎉 Player(s) that will flip " + colorCode + color + " cards: \u001B[0m");
+        System.out.print("🎉 Player(s) that will flip " + colorCode
+                + color + Constants.RESET + " cards: ");
         for (int i = 0; i < maxPlayers.size(); i++) {
-            System.out.print("\u001B[1m" + maxPlayers.get(i).getName() + "\u001B[0m");
+            System.out.print(Constants.BOLD + maxPlayers.get(i).getName() + Constants.RESET);
             if (i != maxPlayers.size() - 1) {
                 System.out.print(", ");
             }
@@ -180,11 +183,11 @@ public class GameFlowRenderer {
     }
 
     public static void showQuitOption() {
-        System.out.print("\n🛑 Press enter to play your round or 'quit' to exit> ");
+        System.out.print("\n🛑 Type anything to play your round or 'quit' to exit> ");
     }
 
     public static void confirmQuit() {
-        System.out.print("Are you sure you want to quit? (y/n): ");
+        System.out.print("\nAre you sure you want to quit? (y/n): ");
     }
 
     public static void showPlayerRound(Player player, List<Player> players, Parade parade, Deck deck) {

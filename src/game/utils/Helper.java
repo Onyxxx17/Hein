@@ -126,22 +126,8 @@ public class Helper {
                 Constants.RED;       // Red text color
             case "yellow" ->
                 Constants.YELLOW;    // Yellow text color
-            case "cyan" ->
-                Constants.CYAN;      // Cyan text color
-            case "magenta" ->
-                Constants.MAGENTA;   // Magenta text color
-            case "black" ->
-                Constants.BLACK;     // Black text color
-            case "white" ->
-                Constants.WHITE;     // White text color
-            case "brightgreen" ->
-                Constants.BRIGHT_GREEN; // Bright green text
-            case "brightyellow" ->
-                Constants.BRIGHT_YELLOW; // Bright yellow text
-            case "brightblue" ->
-                Constants.BRIGHT_BLUE; // Bright blue text
             default ->
-                Constants.DEFAULT_COLOR; // Default reset code
+                Constants.RESET; // Default reset code
         };
     }
     /**

@@ -94,12 +94,12 @@ public class PlayerSetup {
             name = scanner.nextLine().trim();
 
             if (!isValidName(name)) {
-                System.out.println("❌ Name must be at least 3 characters long and contain one letter.\n");
+                System.out.println("❌ Name must be (3-10) characters long and contain one letter.\n");
                 continue;
             }
 
             if (checkNameWithBot(name)) {
-                System.out.println("❌ Name cannot start with 'bot'. If your name contains 'bot', it must be at least 6 characters long.\n");
+                System.out.println("❌ Names starting with bot must be at least 6 characters long.\n");
                 continue;
             }
 
