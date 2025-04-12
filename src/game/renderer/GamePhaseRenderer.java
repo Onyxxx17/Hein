@@ -1,8 +1,6 @@
 package game.renderer;
 
-import game.utils.AsciiArt;
-import game.utils.Constants;
-import game.utils.Helper;
+import game.utils.*;
 import java.util.Scanner;
 
 public class GamePhaseRenderer {

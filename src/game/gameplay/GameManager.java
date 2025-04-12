@@ -1,11 +1,7 @@
 package game.gameplay;
 
 import game.core.*;
-import game.gameplay.managers.CardFlipper;
-import game.gameplay.managers.EndGameChecker;
-import game.gameplay.managers.PlayerManager;
-import game.gameplay.managers.ScoreCalculator;
-import game.gameplay.managers.WinnerDeterminer;
+import game.gameplay.managers.*;
 import java.util.*;
 
 public class GameManager {
