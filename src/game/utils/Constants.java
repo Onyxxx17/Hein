@@ -2,6 +2,10 @@ package game.utils;
 
 import java.util.Random;
 
+/**
+ * Constants class holds various constants used throughout the game.
+ * It includes color codes for console output, game settings, and regex patterns.
+ */
 public class Constants {
 
     // ============================ COLOR CODES ============================

@@ -1,5 +1,9 @@
 package game.utils;
 
+/**
+ * AsciiArt class provides static methods to display ASCII art for the game.
+ * It includes a welcome message and representations of dice faces.
+ */
 public class AsciiArt {
 
     // Welcome art for the game

@@ -86,10 +86,10 @@ public class Helper {
     }
 
     /**
-     * Returns the ANSI color code for a given color.
+     * Returns the color code for a given color.
      *
      * @param color The color name.
-     * @return The ANSI escape code for that color.
+     * @return The escape code for that color.
      */
     public static String getColorCode(String color) {
         return switch (color.toLowerCase()) {
