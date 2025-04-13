@@ -30,25 +30,6 @@ public class Helper {
     }
 
     /**
-     * Displays a spinner animation for a specified duration.
-     *
-     * @param message The message to display alongside the spinner.
-     * @param duration The duration (in seconds) to show the spinner.
-     */
-    public static void showSpinnerLoading(String message, int duration) {
-        String[] spinner = {"|", "/", "-", "\\"}; // Spinner characters
-        int i = 0;
-        long endTime = System.currentTimeMillis() + duration * 1000; // Duration in seconds
-    
-        System.out.print(message + " "); // Print the message once before starting the spinner
-        while (System.currentTimeMillis() < endTime) {
-            System.out.print("\r" + message + " " + spinner[i % 4]); // Overwrite the spinner character only
-            i++;
-            sleep(250); // Control the speed of the spinner
-        }
-    }
-
-    /**
      * Simulates a typewriter effect by printing a message character by
      * character with a delay.
      *

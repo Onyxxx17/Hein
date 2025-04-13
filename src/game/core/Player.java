@@ -42,6 +42,15 @@ public abstract class Player {
         this.openCards = new HashMap<>();
         this.score = 0;
     }
+    // ============================ Player Type Check ============================
+    /**
+     * Checks if the player is a human player.
+     *
+     * @return false.
+     */
+    public boolean isHuman() {
+        return false;
+    }
 
     // ============================ Abstract Methods ============================
     /**
@@ -153,7 +162,7 @@ public abstract class Player {
      * @return The list of cards in the player's hand.
      */
     public List<Card> getClosedCards() {
-        return closedCards;
+        return Collections.unmodifiableList(closedCards);
     }
 
     /**
@@ -162,7 +171,7 @@ public abstract class Player {
      * @return Map of color to list of cards.
      */
     public Map<String, List<Card>> getOpenCards() {
-        return openCards;
+        return Collections.unmodifiableMap(openCards);
     }
 
     /**
@@ -208,11 +217,8 @@ public abstract class Player {
         this.score = score;
     }
 
+    // For testing of tiebreakers
     public void setOpenCards(Map<String, List<Card>> openCards) {
         this.openCards = new HashMap<>(openCards);
-    }
-
-    public boolean isHuman() {
-        return false;
     }
 }

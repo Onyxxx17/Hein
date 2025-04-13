@@ -196,4 +196,20 @@ public class GameFlowRenderer {
         ParadeRenderer.showParade(parade);
         GameFlowRenderer.showTurnHeader(player.getName());
     }
+
+    public static void showGameOverOnlyOnePlayerLeft() {
+        System.out.println("\n==============================================");
+        System.out.println("║ 🎮 " + Constants.BOLD + "\t\t   GAME OVER!" + Constants.RESET + " \t\t   🎮║");
+        System.out.println("==============================================");
+        System.out.println("║ There is only " + Constants.BOLD + "one player" + Constants.RESET + " left in the game! ║");
+        System.out.println("==============================================\n");
+    }
+
+    public static void showGameOverNoHumansLeft() {
+        System.out.println("\n====================================================");
+        System.out.println("║ 🎮 " + Constants.BOLD + "\t\t  GAME OVER!" + Constants.RESET + " \t\t\t 🎮║");
+        System.out.println("====================================================");
+        System.out.println("║ There are no more " + Constants.BOLD + "human players" + Constants.RESET + " left in the game!║");
+        System.out.println("====================================================\n");
+    }
 }

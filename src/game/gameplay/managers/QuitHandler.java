@@ -34,17 +34,9 @@ public class QuitHandler {
                     int humanCount = countHumans();
                     if (players.size() == 1 || humanCount == 0) {
                         if (players.size() == 1) {
-                            System.out.println("\n==============================================");
-                            System.out.println("║ 🎮 " + Constants.BOLD + "\t\t   GAME OVER!" + Constants.RESET + " \t\t   🎮║");
-                            System.out.println("==============================================");
-                            System.out.println("║ There is only " + Constants.BOLD + "one player" + Constants.RESET + " left in the game! ║");
-                            System.out.println("==============================================\n");
+                            GameFlowRenderer.showGameOverOnlyOnePlayerLeft();
                         } else {
-                            System.out.println("\n====================================================");
-                            System.out.println("║ 🎮 " + Constants.BOLD + "\t\t  GAME OVER!" + Constants.RESET + " \t\t\t 🎮║");
-                            System.out.println("====================================================");
-                            System.out.println("║ There are no more " + Constants.BOLD + "human players" + Constants.RESET + " left in the game!║");
-                            System.out.println("====================================================\n");
+                            GameFlowRenderer.showGameOverNoHumansLeft();
                         }
 
                         Helper.sleep(Constants.SLOWDELAY);

@@ -87,6 +87,6 @@ public class Parade {
      * @return The ArrayList of cards in the parade.
      */
     public List<Card> getCards() {
-        return cards;
+        return Collections.unmodifiableList(cards);
     }
 }

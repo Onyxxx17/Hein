@@ -45,7 +45,7 @@ public class StartingPlayerDecider {
     }
 
     private void updateRollMap(HashMap<Integer, List<Player>> rollMap, int roll, Player player) {
-        rollMap.computeIfAbsent(roll, k -> new ArrayList<>()).add(player);
+        rollMap.computeIfAbsent(roll, key -> new ArrayList<>()).add(player);
     }
 
     private List<Player> handleTieOfDice(List<Player> tiedPlayers, int maxRoll) {

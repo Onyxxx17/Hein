@@ -59,9 +59,8 @@ public class Deck {
      * @return An ArrayList of Card objects.
      */
     public List<Card> getCards() {
-        return cards;
+        return Collections.unmodifiableList(cards);
     }
-
     /**
      * Returns the number of cards remaining in the deck.
      *

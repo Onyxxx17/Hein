@@ -34,12 +34,12 @@ public class GamePhaseRenderer {
     }
 
     public static void goodbyeMessage() {
-        System.out.println("+------------------------------------------+");
-        System.out.println("|                                          |");
-        System.out.println("|        🌟 THANK YOU FOR PLAYING 🌟       |");
-        System.out.println("|              🎉  PARADE  🎉              |");
-        System.out.println("|                                          |");
-        System.out.println("+------------------------------------------+");
+        System.out.println("╔═══════════════════════════════════════╗");
+        System.out.println("║                                       ║");
+        System.out.println("║     🌟 THANK YOU FOR PLAYING 🌟       ║");
+        System.out.println("║             🎉  PARADE  🎉            ║");
+        System.out.println("║                                       ║");
+        System.out.println("╚═══════════════════════════════════════╝");
     }
 
     public static void showFinalRound() {
