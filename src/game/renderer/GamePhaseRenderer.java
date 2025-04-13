@@ -25,11 +25,11 @@ public class GamePhaseRenderer {
         Helper.pressEnterToContinue(scanner);
         Helper.flush();
     }
-    public static void displayGameSetup() {
+    public static void showGameSetup() {
         Helper.printBox("🎲 WELCOME TO THE GAME SETUP 🎲");
     }
 
-    public static void displaySetUpPlayers() {
+    public static void showSetUpPlayers() {
         Helper.printBox("🎭 PLAYER SETUP 🎭");
     }
 

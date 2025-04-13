@@ -111,13 +111,13 @@ public class PlayerRenderer {
         }
         System.out.println();
 
-        displayCardsHorizontally(closedCards);
+        showCardsHorizontally(closedCards);
     }
 
     /**
      * Helper method to display a list of cards horizontally in ASCII art.
      */
-    private static void displayCardsHorizontally(List<Card> cards) {
+    private static void showCardsHorizontally(List<Card> cards) {
         StringBuilder[] cardLines = new StringBuilder[7];
         for (int i = 0; i < cardLines.length; i++) {
             cardLines[i] = new StringBuilder();

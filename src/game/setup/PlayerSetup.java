@@ -15,7 +15,7 @@ public class PlayerSetup {
 
     public int askForNumberOfPlayers() {
         int playerCount = 0;
-        GamePhaseRenderer.displayGameSetup();
+        GamePhaseRenderer.showGameSetup();
 
         while (true) {
             try {
@@ -50,7 +50,7 @@ public class PlayerSetup {
         int humanCount = 0;
         int botIndex = 1;
 
-        GamePhaseRenderer.displaySetUpPlayers();
+        GamePhaseRenderer.showSetUpPlayers();
 
         for (int i = 1; i <= numPlayers; i++) {
             String type = getPlayerType(i);

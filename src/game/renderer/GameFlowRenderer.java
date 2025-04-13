@@ -30,22 +30,22 @@ public class GameFlowRenderer {
         }
     }
 
-    public static void displayMaxPlayersForColor(String color, List<Player> maxPlayers) {
+    public static void showMaxPlayersForColor(String color, List<Player> maxPlayers) {
         String colorCode = Helper.getColorCode(color);
         if (maxPlayers.isEmpty()) {
-            displayNoMaxPlayersForColor(color);
+            showNoMaxPlayersForColor(color);
             return;
         }
-        displayMaxPlayersForColorList(color, maxPlayers, colorCode);
+        showMaxPlayersForColorList(color, maxPlayers, colorCode);
     }
 
-    public static void displayNoMaxPlayersForColor(String color) {
+    public static void showNoMaxPlayersForColor(String color) {
         System.out.println("🎭 Player(s) with most " + Helper.getColorCode(color)
                 + color + Constants.RESET + " cards: "
                 + Constants.BOLD + "None" + Constants.RESET + "\n");
     }
 
-    public static void displayMaxPlayersForColorList(String color, List<Player> maxPlayers, String colorCode) {
+    public static void showMaxPlayersForColorList(String color, List<Player> maxPlayers, String colorCode) {
         System.out.print("🎉 Player(s) that will flip " + colorCode
                 + color + Constants.RESET + " cards: ");
         for (int i = 0; i < maxPlayers.size(); i++) {
@@ -176,7 +176,7 @@ public class GameFlowRenderer {
         return ("‼️ Every player plays one last round ‼️");
     }
 
-    public static void displayOpenCards(List<Player> players) {
+    public static void showOpenCards(List<Player> players) {
         for (Player player : players) {
             PlayerRenderer.showOpenCards(player);
         }
@@ -192,7 +192,7 @@ public class GameFlowRenderer {
 
     public static void showPlayerRound(Player player, List<Player> players, Parade parade, Deck deck) {
         GameFlowRenderer.showDeckSize(deck);
-        GameFlowRenderer.displayOpenCards(players);
+        GameFlowRenderer.showOpenCards(players);
         ParadeRenderer.showParade(parade);
         GameFlowRenderer.showTurnHeader(player.getName());
     }

@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class Podium{
 
-    public static void displayPodium(List<Player> players, Player winner) {
+    public static void showPodium(List<Player> players, Player winner) {
         GamePhaseRenderer.finalResults();
 
         Helper.sleep(500);

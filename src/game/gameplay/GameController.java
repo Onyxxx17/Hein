@@ -139,7 +139,7 @@ public class GameController {
             Helper.flush();
             GamePhaseRenderer.showFinalPhase();
             Helper.sleep(Constants.FASTDELAY);
-            GameFlowRenderer.displayOpenCards(players);
+            GameFlowRenderer.showOpenCards(players);
             GameFlowRenderer.showTurnHeader(player.getName());
             if (player.isHuman()) {
                 PlayerRenderer.showClosedCards(player);
@@ -163,7 +163,7 @@ public class GameController {
         Helper.printBox("🐧 Open Cards Before Flipping");
         Helper.sleep(Constants.SLOWDELAY);
 
-        GameFlowRenderer.displayOpenCards(players);
+        GameFlowRenderer.showOpenCards(players);
         GamePhaseRenderer.showFlippingPhase();
         Helper.sleep(Constants.SLOWDELAY);
 
@@ -176,6 +176,6 @@ public class GameController {
         // GameFlowRenderer.showFlippedCards(flippedCards, players);
         gameManager.calculateScores();
         Player winner = gameManager.determineWinner();
-        Podium.displayPodium(players, winner);
+        Podium.showPodium(players, winner);
     }
 }
