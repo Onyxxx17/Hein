@@ -141,9 +141,6 @@ public class GameController {
             Helper.sleep(Constants.FASTDELAY);
             GameFlowRenderer.displayOpenCards(players);
             GameFlowRenderer.showTurnHeader(player.getName());
-            if (player.isHuman()) {
-                PlayerRenderer.showClosedCards(player);
-            }
             player.finalPlay(scanner);
             Helper.pressEnterToContinue(scanner);
         }

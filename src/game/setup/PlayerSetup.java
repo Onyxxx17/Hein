@@ -15,7 +15,7 @@ public class PlayerSetup {
 
     public int askForNumberOfPlayers() {
         int playerCount = 0;
-        GamePhaseRenderer.showGameSetup();
+        GamePhaseRenderer.displayGameSetup();
 
         while (true) {
             try {
@@ -61,7 +61,7 @@ public class PlayerSetup {
                 humanCount++;
             } else {
                 if (humanCount == 0 && i == numPlayers) {
-                    System.out.println("❌ There must be at least one human player!");
+                    System.out.println("❌ There must be at least one human player!\n");
                     i--;
                 } else {
                     handleComputerPlayer(players, names, botIndex);
