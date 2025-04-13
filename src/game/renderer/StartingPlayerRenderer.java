@@ -8,7 +8,7 @@ import java.util.List;
 public class StartingPlayerRenderer {
 
     public static void showInitialMessage() {
-        Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.", 45);
+        Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.", Constants.TYPEWRITE_DURATION);
         Helper.sleep(Constants.SLOWDELAY);
     }
 
