@@ -1,6 +1,7 @@
 package game.renderer;
 
 import game.core.Player;
+import game.utils.Constants;
 import game.utils.Helper;
 import java.util.List;
 
@@ -8,7 +9,7 @@ public class StartingPlayerRenderer {
 
     public static void showInitialMessage() {
         Helper.typewrite("Before we start, every player will roll a dice to decide the starting player.", 45);
-        Helper.sleep(1000);
+        Helper.sleep(Constants.SLOWDELAY);
     }
 
     public static void rollMessage() {

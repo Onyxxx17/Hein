@@ -58,11 +58,11 @@ public class GameFlowRenderer {
         Helper.sleep(1200);
     }
 
-    public static void logMaxCardsForColor(String color, int max) {
+    public static void showMaxCardsForColor(String color, int max) {
         System.out.println("Max cards for " + color + " is " + max);
     }
 
-    public static void logNoFlippingDueToTie(String color) {
+    public static void showNoFlippingDueToTie(String color) {
         System.out.println("All players have the same number of cards. No cards flipped for " + color);
     }
 
@@ -168,7 +168,7 @@ public class GameFlowRenderer {
     public static void showAllColorsCollected(Player player) {
         System.out.println();
         Helper.sleep(1000);
-        Helper.printBox("‼️" + player.getName()
+        Helper.printBox("‼️ " + player.getName()
                 + " has collected all 6 color cards ‼️\n" + playLastRound());
     }
 

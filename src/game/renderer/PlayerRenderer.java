@@ -1,6 +1,7 @@
 package game.renderer;
 
 import game.core.*;
+import game.utils.Constants;
 import game.utils.Helper;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -10,7 +11,7 @@ public class PlayerRenderer {
     /**
      * Displays cards received by a player in ASCII art format.
      */
-    public static void showReceivedCards(Player player, ArrayList<Card> receivedCards) {
+    public static void showReceivedCards(Player player, List<Card> receivedCards) {
         if (receivedCards.isEmpty()) {
             System.out.printf("%s receives no cards this round.%n", player.getName());
             return;
@@ -54,7 +55,7 @@ public class PlayerRenderer {
     /**
      * Shared helper for rendering a group of cards.
      */
-    private static void showCardGroup(ArrayList<Card> cards) {
+    private static void showCardGroup(List<Card> cards) {
         CardUI.setSimpleDisplayMode(false);
         StringBuilder[] lines = new StringBuilder[7];
 
@@ -78,7 +79,7 @@ public class PlayerRenderer {
     }
 
     public static void showCardDraw(Player player) {
-        Helper.sleep(1000);
+        Helper.sleep(Constants.FASTDELAY);
         System.out.println("\n💎 " + player.getName() + " draws one card from the deck.");
     }
 
@@ -132,26 +133,5 @@ public class PlayerRenderer {
         for (StringBuilder line : cardLines) {
             System.out.println(line.toString().stripTrailing());
         }
-    }
-
-    /**
-     * Handles and validates user input for selecting a card.
-     */
-    public static int getValidCardSelection(boolean isHuman, Scanner scanner, int maxCards) {
-        if (isHuman) {
-            while (true) {
-                System.out.print("Enter the number of the card to play (1-" + maxCards + "): ");
-                if (scanner.hasNextInt()) {
-                    int index = scanner.nextInt();
-                    if (index >= 1 && index <= maxCards) {
-                        return index;
-                    }
-                } else {
-                    scanner.next(); // Consume invalid input
-                }
-                System.out.println("Invalid input! Enter a number between 1 and " + maxCards + ".\n");
-            }
-        }
-        return 0;
     }
 }

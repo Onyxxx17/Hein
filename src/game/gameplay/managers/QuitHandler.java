@@ -47,7 +47,7 @@ public class QuitHandler {
                             System.out.println("====================================================\n");
                         }
 
-                        Helper.sleep(1500);
+                        Helper.sleep(Constants.SLOWDELAY);
                         // System.exit(0);
                     }
                     return true;

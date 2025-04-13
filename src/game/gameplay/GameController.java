@@ -71,18 +71,11 @@ public class GameController {
                     int currentIndex = players.indexOf(player);
                     Player nextPlayer = players.get((currentIndex + 1) % players.size());
                     gameManager.rearrangePlayers(nextPlayer);
-                    if (player.isHuman()) {
-                        scanner.nextLine();
-                    }
                     Helper.pressEnterToContinue(scanner);
                     Helper.flush();
                     break;
                 }
 
-                // Pause for human players
-                if (player.isHuman()) {
-                    scanner.nextLine();
-                }
                 Helper.pressEnterToContinue(scanner);
             }
         }
@@ -103,20 +96,19 @@ public class GameController {
         Helper.flush();
 
         GameFlowRenderer.showGameStart(firstPlayer);
-        Helper.sleep(500);
+        Helper.sleep(Constants.FASTDELAY);
 
-        System.out.println("Deck size: " + deck.getCards().size() + " cards");
+        System.out.println("\nDeck size: " + deck.getCards().size() + " cards");
         deck.shuffle();
         GameFlowRenderer.showCardDealing();
-        Helper.sleep(1000);
         dealCardsToPlayers();
-        Helper.sleep(500);
+        Helper.sleep(Constants.FASTDELAY);
 
         parade.initializeParade();
         GameFlowRenderer.showParadeInitialization();
-        Helper.sleep(1000);
+        Helper.sleep(Constants.SLOWDELAY);
         ParadeRenderer.showParade(parade);
-        Helper.sleep(1000);
+        Helper.sleep(Constants.SLOWDELAY);
 
         Helper.pressEnterToContinue(scanner);
     }
@@ -126,8 +118,8 @@ public class GameController {
             PlayerRenderer.showClosedCards(player);
         }
         player.playCard(parade, scanner);
-        Helper.sleep(800);
-        ArrayList<Card> drawnCards = player.drawCardsFromParade(parade);
+        Helper.sleep(Constants.FASTDELAY);
+        List<Card> drawnCards = player.drawCardsFromParade(parade);
         PlayerRenderer.showReceivedCards(player, drawnCards);
     }
 
@@ -137,9 +129,6 @@ public class GameController {
 
             GameFlowRenderer.showPlayerRound(player, players, parade, deck);
             playTurn(player);
-            if(player.isHuman()){
-                scanner.nextLine();
-             }
             Helper.pressEnterToContinue(scanner);
         }
         addFinalTwoCards();
@@ -149,16 +138,13 @@ public class GameController {
         for (Player player : players) {
             Helper.flush();
             GamePhaseRenderer.showFinalPhase();
-            Helper.sleep(1000);
+            Helper.sleep(Constants.FASTDELAY);
             GameFlowRenderer.displayOpenCards(players);
             GameFlowRenderer.showTurnHeader(player.getName());
             if (player.isHuman()) {
                 PlayerRenderer.showClosedCards(player);
             }
             player.finalPlay(scanner);
-            if (player.isHuman()) {
-                scanner.nextLine();
-            }
             Helper.pressEnterToContinue(scanner);
         }
         concludeGame();
@@ -175,19 +161,19 @@ public class GameController {
     private void concludeGame() {
         Helper.flush();
         Helper.printBox("🐧 Open Cards Before Flipping");
-        Helper.sleep(1000);
+        Helper.sleep(Constants.SLOWDELAY);
 
         GameFlowRenderer.displayOpenCards(players);
         GamePhaseRenderer.showFlippingPhase();
-        Helper.sleep(1000);
+        Helper.sleep(Constants.SLOWDELAY);
 
         Map<Player, List<Card>> flippedCards = gameManager.flipCards();
         GameFlowRenderer.showFlippedCards(flippedCards, players);
-        Helper.typewrite("\n✅ Final Scores Have Been Calculated! ✅\n", 30);
+        Helper.typewrite("\n✅ Final Scores Have Been Calculated! ✅\n", Constants.TYPEWRITE_DURATION);
         Helper.pressEnterToContinue(scanner);
 
         Helper.flush();
-        GameFlowRenderer.showFlippedCards(flippedCards, players);
+        // GameFlowRenderer.showFlippedCards(flippedCards, players);
         gameManager.calculateScores();
         Player winner = gameManager.determineWinner();
         Podium.displayPodium(players, winner);

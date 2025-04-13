@@ -46,7 +46,6 @@ public class Dice {
     public void animateRoll(String playername, int index) {
         System.out.print("\n🎲 " + playername + " is rolling the dice");
         Helper.loading();
-        Helper.sleep(1500); // Delay for 1 second
         System.out.println(getDiceFace(index)); // Display one random dice face
     }
 }

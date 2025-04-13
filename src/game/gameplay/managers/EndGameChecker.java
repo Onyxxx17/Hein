@@ -4,7 +4,9 @@ import game.core.*;
 import game.renderer.GameFlowRenderer;
 import game.utils.Constants;
 import java.util.*;
+
 public class EndGameChecker {
+
     private final List<Player> players;
     private final Deck deck;
 
@@ -22,7 +24,7 @@ public class EndGameChecker {
     }
 
     private boolean isDeckEmpty() {
-        return deck == null || deck.getCards() == null || deck.getCards().isEmpty();
+        return deck.size() == 0 || deck.isEmpty();
     }
 
     private boolean checkAllColorsCollected() {
@@ -37,10 +39,14 @@ public class EndGameChecker {
 
     private boolean hasAllColors(Player player) {
         Map<String, List<Card>> openCards = player.getOpenCards();
-        if (openCards.size() != Constants.TOTAL_COLORS) return false;
-        
+        if (openCards.size() != Constants.TOTAL_COLORS) {
+            return false;
+        }
+
         for (List<Card> cards : openCards.values()) {
-            if (cards.isEmpty()) return false;
+            if (cards.isEmpty()) {
+                return false;
+            }
         }
         return true;
     }

@@ -1,6 +1,7 @@
 package game.gameplay;
 
 import game.core.*;
+import game.exceptions.InvalidInputException;
 import game.renderer.GamePhaseRenderer;
 import game.setup.*;
 import game.utils.Constants;
@@ -19,7 +20,7 @@ public class GameMenu {
     public void launch() {
         boolean loop = true;
         while (loop) {
-            printMenuOptions();
+            showMenuOptions();
 
             try {
                 String choice = scanner.next().trim();
@@ -38,25 +39,13 @@ public class GameMenu {
                         System.exit(0);
                     }
                     default ->
-                        System.out.println("❌ Invalid choice. Please enter a number (1-3).\n");
+                        throw new InvalidInputException();
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException | InvalidInputException e) {
                 System.out.println("❌ Invalid input. Please enter a number (1-3).\n");
-                scanner.nextLine(); // clear the invalid input
+                
             }
         }
-    }
-
-    private void printMenuOptions() {
-        System.out.println("╔═══════════════════════════════════════╗");
-        System.out.println("║          🎮 MAIN MENU 🎮              ║");
-        System.out.println("╠═══════════════════════════════════════╣");
-        System.out.println("║ 1. Start New Game                     ║");
-        System.out.println("║ 2. Learn How to Play                  ║");
-        System.out.println("║ 3. Quit                               ║");
-        System.out.println("╚═══════════════════════════════════════╝");
-        System.out.print("Choose an option (1-3): ");
-
     }
 
     private void startNewGame() {
@@ -70,6 +59,34 @@ public class GameMenu {
         GameManager gameManager = new GameManager(players, deck);
         GameController game = new GameController(gameManager, scanner);
         game.startGame();
+    }
+
+    public boolean askForAnotherGame() {
+        System.out.print("\n✨ Do you want to play another game? (y/n): ");
+        String input = scanner.nextLine().trim().toLowerCase();
+        while (!input.matches("yes|no|y|n")) {
+            System.out.print("Invalid input. Please enter 'yes' or 'no'.\n");
+            System.out.print("\nDo you want to play another game? (yes/no): ");
+            input = scanner.nextLine().trim();
+        }
+        if (input.equals("yes") || input.equals("y")) {
+            Helper.flush();
+            return true;
+        } else {
+            GamePhaseRenderer.goodbyeMessage();
+            return false;
+        }
+    }
+    private void showMenuOptions() {
+
+        System.out.println("╔═══════════════════════════════════════╗");
+        System.out.println("║          🎮 MAIN MENU 🎮              ║");
+        System.out.println("╠═══════════════════════════════════════╣");
+        System.out.println("║ 1. Start New Game                     ║");
+        System.out.println("║ 2. Learn How to Play                  ║");
+        System.out.println("║ 3. Quit                               ║");
+        System.out.println("╚═══════════════════════════════════════╝");
+        System.out.print("Choose an option (1-3): ");
     }
 
     private void showInstructions() {
@@ -103,22 +120,5 @@ public class GameMenu {
         System.out.println("     (Tiebreaker: Fewer cards → Fewer colors)\n");
 
         System.out.println("══════════════════════════════════════════");
-    }
-
-    public boolean askForAnotherGame() {
-        System.out.print("\n✨ Do you want to play another game? (y/n): ");
-        String input = scanner.nextLine().trim().toLowerCase();
-        while (!input.matches("yes|no|y|n")) {
-            System.out.print("Invalid input. Please enter 'yes' or 'no'.\n");
-            System.out.print("\nDo you want to play another game? (yes/no): ");
-            input = scanner.nextLine().trim();
-        }
-        if (input.equals("yes") || input.equals("y")) {
-            Helper.flush();
-            return true;
-        } else {
-            GamePhaseRenderer.goodbyeMessage();
-            return false;
-        }
     }
 }

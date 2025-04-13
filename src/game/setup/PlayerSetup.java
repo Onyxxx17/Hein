@@ -24,7 +24,7 @@ public class PlayerSetup {
                 scanner.nextLine(); // Clear the buffer
 
                 if (playerCount < 2 || playerCount > 6) {
-                    throw new InvalidPlayerCountException(
+                    throw new InvalidInputException(
                             "❌ Invalid player count! This game requires 2 to 6 players.\n"
                     );
                 }
@@ -32,7 +32,7 @@ public class PlayerSetup {
                 System.out.println("\n✅ Player count: " + playerCount);
                 break;
 
-            } catch (InvalidPlayerCountException e) {
+            } catch (InvalidInputException e) {
                 System.out.println(e.getMessage());
 
             } catch (InputMismatchException e) {
@@ -77,16 +77,21 @@ public class PlayerSetup {
 
     private String getPlayerType(int playerNumber) {
         while (true) {
-            System.out.print("\n🎮 Is Player " + playerNumber + " (H)uman or (C)omputer? ");
-            String type = scanner.next().toUpperCase();
-
-            if (type.matches("H|C|HUMAN|COMPUTER")) {
-                scanner.nextLine(); // Clear buffer
-                return type;
+            try {
+                System.out.print("🎮 Is Player " + playerNumber + " (H)uman or (C)omputer? ");
+                String input = scanner.nextLine().trim().toUpperCase();
+    
+                if (input.matches("H|C|HUMAN|COMPUTER")) {
+                    return input;
+                } else {
+                    throw new InvalidInputException("Invalid choice! Please enter ['H' or 'HUMAN'] or ['C' or 'COMPUTER'].");
+                }
+            } catch (InvalidInputException e) {
+                System.out.println( "❌ " + e.getMessage() + "\n");
             }
-            System.out.println("❌ Invalid choice! Please enter ['H' or 'HUMAN'] or ['C' or 'COMPUTER'].\n");
         }
     }
+    
 
     private void handleHumanPlayer(Set<String> names, List<Player> players) {
         String name;
@@ -105,14 +110,14 @@ public class PlayerSetup {
 
         names.add(name.toLowerCase());
         players.add(new Human(name));
-        System.out.println("✅ " + name + " has joined the game!");
+        System.out.println("✅ " + name + " has joined the game!\n");
     }
 
     private void handleComputerPlayer(List<Player> players, Set<String> names, int botIndex) {
         String botName = "Bot " + botIndex;
         names.add(botName.toLowerCase());
         players.add(new Computer(botName));
-        System.out.println("🤖 " + botName + " has joined the game!");
+        System.out.println("🤖 " + botName + " has joined the game!\n");
     }
 
     public boolean isValidLength(String name) {

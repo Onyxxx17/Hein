@@ -84,7 +84,7 @@ public class Helper {
         int loading_dots = 3;
         for (int i = 0; i < loading_dots; i++) {
             System.out.print(".");
-            sleep(500);
+            sleep(Constants.FASTDELAY);
         }
         System.out.println(); // Move to the next line after loading
     }

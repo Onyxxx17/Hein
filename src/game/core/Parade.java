@@ -44,16 +44,39 @@ public class Parade {
     }
 
     /**
-     * Removes and returns a card from a specific index in the parade.
-     *
-     * @param index The index of the card to remove.
-     * @return The removed card if the index is valid, otherwise returns null.
+     * Returns the last card played to the parade.
+     * @throws IllegalStateException if the parade is empty.
      */
-    public Card removeCard(int index) {
-        if (index >= 0 && index < cards.size()) {
-            return cards.remove(index);
+    public Card getLastPlayedCard() {
+        if (cards.isEmpty()) {
+            throw new IllegalStateException("Parade is empty.");
         }
-        return null; // Invalid index
+        return cards.get(cards.size() - 1);
+    }
+
+    /**
+     * Retrieves cards eligible for removal based on the last played card.
+     * @param playedCard The card triggering the removal logic.
+     */
+    public List<Card> getEligibleCards(Card playedCard) {
+        int toCount = Math.max(cards.size() - playedCard.getValue() - 1, 0);
+        List<Card> eligibleCards = new ArrayList<>();
+
+        for (int i = 0; i < toCount; i++) {
+            Card card = cards.get(i);
+            if (card.getColor().equals(playedCard.getColor()) || playedCard.getValue() >= card.getValue()) {
+                eligibleCards.add(card);
+            }
+        }
+        return eligibleCards;
+    }
+
+    /**
+     * Removes specified cards from the parade.
+     * @param cardsToRemove The list of cards to remove.
+     */
+    public void removeCards(List<Card> cardsToRemove) {
+        cards.removeAll(cardsToRemove);
     }
 
     // ============================ Getter Methods ============================

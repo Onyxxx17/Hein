@@ -12,7 +12,7 @@ public class GamePhaseRenderer {
         AsciiArt.welcomeArt();
         String border = "****************************************";
 
-        int duration = Constants.DELAY_DURATION;
+        int duration = Constants.TYPEWRITE_DURATION;
         System.out.println("\n" + border);
         Helper.typewrite("🎉 WELCOME TO THE PARADE CARD GAME! 🎭", duration);
         System.out.println(border + "\n");
@@ -25,7 +25,6 @@ public class GamePhaseRenderer {
         Helper.pressEnterToContinue(scanner);
         Helper.flush();
     }
-
     public static void displayGameSetup() {
         Helper.printBox("🎲 WELCOME TO THE GAME SETUP 🎲");
     }
@@ -46,7 +45,7 @@ public class GamePhaseRenderer {
     public static void showFinalRound() {
         Helper.flush();
         Helper.printBox("🚨 Last Round 🚨");
-        Helper.sleep(1000);
+        Helper.sleep(Constants.SLOWDELAY);
     }
 
     public static void showFinalPhase() {

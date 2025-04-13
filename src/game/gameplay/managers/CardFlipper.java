@@ -16,7 +16,7 @@ public class CardFlipper {
         Map<Player, List<Card>> flippedCards = new HashMap<>();
 
         for (String color : Constants.COLORS) {
-            List<Player> maxPlayers = checkPlayerWithMaxCards(color);
+            List<Player> maxPlayers = findPlayersWithMaxCards(color);
             GameFlowRenderer.displayMaxPlayersForColor(color, maxPlayers);
 
             for (Player player : maxPlayers) {
@@ -35,66 +35,52 @@ public class CardFlipper {
      * @return A list of players with the maximum number of cards of the
      * specified color
      */
-    public List<Player> checkPlayerWithMaxCards(String color) {
+    private List<Player> findPlayersWithMaxCards(String color) {
         int max = 0;
-        List<Player> playersOut = new ArrayList<>();
-        boolean isAllSameNoOfCards = true;
-        int firstPlayerCards = 0;
+        List<Player> maxPlayers = new ArrayList<>();
+        boolean allPlayersTied = true;
+        int firstPlayerCount = getCardCountForColor(players.get(0), color);
 
-        if (players.get(0).getOpenCards() != null && players.get(0).getOpenCards().containsKey(color)) {
-            firstPlayerCards = players.get(0).getOpenCards().get(color).size();
-        }
+        for (Player player : players) {
+            int count = getCardCountForColor(player, color);
+            if (count != firstPlayerCount) allPlayersTied = false;
 
-        // Find players with the most cards of the given color
-        for (Player p : players) {
-            int numCardsOfPlayer = p.getOpenCards().getOrDefault(color, new ArrayList<>()).size();
-            if (firstPlayerCards != numCardsOfPlayer) {
-                isAllSameNoOfCards = false;
-            }
-            if (numCardsOfPlayer > max) {
-                max = numCardsOfPlayer;
-                playersOut.clear(); // Reset as a new max is found
-                playersOut.add(p);
-            } else if (numCardsOfPlayer == max) {
-                playersOut.add(p);
+            if (count > max) {
+                max = count;
+                maxPlayers.clear();
+                maxPlayers.add(player);
+            } else if (count == max) {
+                maxPlayers.add(player);
             }
         }
 
-        GameFlowRenderer.logMaxCardsForColor(color, max);
+        GameFlowRenderer.showMaxCardsForColor(color,max);
+        if (allPlayersTied) {
+            GameFlowRenderer.showNoFlippingDueToTie(color);
+            return Collections.emptyList();
+        }
 
-        // Special rule for two-player game
         if (players.size() == 2) {
-            check2PlayerConditions(color, playersOut);
+            applyTwoPlayerRule(color, maxPlayers);
         }
 
-        // No flipping if all players have the same number of cards
-        if (isAllSameNoOfCards) {
-            GameFlowRenderer.logNoFlippingDueToTie(color);
-            playersOut.clear();
-        }
-
-        return playersOut;
+        return maxPlayers;
     }
 
-    /**
-     * Applies special rules for two-player games when determining card
-     * flipping. Cards are only flipped if the difference in count is at least
-     * 2.
-     *
-     * @param color The color being evaluated
-     * @param playersOut The list of players who may qualify for flipping
-     */
-    public void check2PlayerConditions(String color, List<Player> playersOut) {
-        Player player1 = players.get(0);
-        Player player2 = players.get(1);
+    private int getCardCountForColor(Player player, String color) {
+        return player.getOpenCards().getOrDefault(color, Collections.emptyList()).size();
+    }
 
-        int count1 = player1.getOpenCards().getOrDefault(color, new ArrayList<>()).size();
-        int count2 = player2.getOpenCards().getOrDefault(color, new ArrayList<>()).size();
-        int difference = Math.abs(count1 - count2);
+    private void applyTwoPlayerRule(String color, List<Player> maxPlayers) {
+        Player p1 = players.get(0);
+        Player p2 = players.get(1);
+        int difference = Math.abs(
+            getCardCountForColor(p1, color) - getCardCountForColor(p2, color)
+        );
 
         if (difference < Constants.MIN_DIFFERENCE_FOR_TWO_PLAYERS && difference != 0) {
             GameFlowRenderer.show2PlayerRules();
-            playersOut.clear();
+            maxPlayers.clear();
         }
     }
 }

@@ -13,8 +13,12 @@ public class Constants {
     public static final String BOLD = "\u001B[1m";
     public static final String RED = "\u001B[91m";
 
+    public static final String YES_NO_REGEX = "^(yes|no|y|n)$";
+    public static final String MENU_OPTION_REGEX = "^[1-3]$";
+    public static final int FASTDELAY = 500;
+    public static final int SLOWDELAY = 1000;
     public static final Random RANDOM = new Random();
-    public static final int DELAY_DURATION = 45;
+    public static final int TYPEWRITE_DURATION = 45;
     public static int CARDS_PER_LINE = 7;
     public static final int INITIAL_CARDS_OF_PARADE = 6;
     public static final int INITIAL_HAND_SIZE = 5;

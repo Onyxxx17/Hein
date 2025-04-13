@@ -1,21 +1,20 @@
 package game.core;
 
 import game.utils.Constants;
-import java.lang.invoke.ConstantCallSite;
 import java.util.*;
 
 public class Deck {
 
     // ============================ Instance Variables ============================
-
-    /** List to hold all cards in the deck. */
+    /**
+     * List to hold all cards in the deck.
+     */
     private final List<Card> cards;
 
     // ============================ Constructor ============================
-
     /**
-     * Constructor to initialize the deck with cards of different colors and values.
-     * Each color will have cards numbered from 0 to 10.
+     * Constructor to initialize the deck with cards of different colors and
+     * values. Each color will have cards numbered from 0 to 10.
      */
     public Deck() {
         this.cards = new ArrayList<>();
@@ -27,7 +26,6 @@ public class Deck {
     }
 
     // ============================ Deck Operations ============================
-
     /**
      * Shuffles the deck to randomize card order.
      */
@@ -36,8 +34,8 @@ public class Deck {
     }
 
     /**
-     * Removes and returns the top card from the deck.
-     * Assumes the deck is not empty.
+     * Removes and returns the top card from the deck. Assumes the deck is not
+     * empty.
      *
      * @return The removed card from the deck, or null if the deck is empty.
      */
@@ -55,7 +53,6 @@ public class Deck {
     }
 
     // ============================ Getters ============================
-
     /**
      * Returns the list of cards in the deck.
      *

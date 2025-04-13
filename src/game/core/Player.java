@@ -4,8 +4,8 @@ import game.utils.Constants;
 import java.util.*;
 
 /**
- * Abstract base class representing a player in the game.
- * Handles card management, interactions with the parade, and score calculation.
+ * Abstract base class representing a player in the game. Handles card
+ * management, interactions with the parade, and score calculation.
  */
 public abstract class Player {
 
@@ -14,17 +14,17 @@ public abstract class Player {
      * The name of the player.
      */
     protected String name;
-    
+
     /**
      * Cards in the player's hand (not visible to other players).
      */
     protected List<Card> closedCards;
-    
+
     /**
      * Open cards grouped by color (visible to all players).
      */
     protected Map<String, List<Card>> openCards;
-    
+
     /**
      * The player's current score.
      */
@@ -45,8 +45,8 @@ public abstract class Player {
 
     // ============================ Abstract Methods ============================
     /**
-     * Plays a card from the player's hand to the parade.
-     * Implementation will differ between human and AI players.
+     * Plays a card from the player's hand to the parade. Implementation will
+     * differ between human and AI players.
      *
      * @param parade The parade to play the card to.
      * @param scanner Scanner for user input (for human players).
@@ -54,8 +54,8 @@ public abstract class Player {
     public abstract void playCard(Parade parade, Scanner scanner);
 
     /**
-     * Handles the player's final play when the game is ending.
-     * Implementation will differ between human and AI players.
+     * Handles the player's final play when the game is ending. Implementation
+     * will differ between human and AI players.
      *
      * @param scanner Scanner for user input (for human players).
      */
@@ -84,38 +84,27 @@ public abstract class Player {
      *
      * @param parade The parade from which cards are drawn.
      */
-    public ArrayList<Card> drawCardsFromParade(Parade parade) {
-        List<Card> currentCardsInParade = parade.getCards();
-        if (currentCardsInParade.isEmpty()) {
+    public List<Card> drawCardsFromParade(Parade parade) {
+
+        // Not necessary but kept for consistency
+        if (parade.isEmpty()) {
             return new ArrayList<>();
         }
 
-        Card playedCard = currentCardsInParade.get(currentCardsInParade.size() - 1);
-        ArrayList<Card> cardsToReceive = new ArrayList<>();
-
-        // Calculate index range for card selection
-        int toCount = Math.max(currentCardsInParade.size() - playedCard.getValue() - 1, 0);
-
-        for (int i = 0; i < toCount; i++) {
-            Card card = currentCardsInParade.get(i);
-            if (card.getColor().equals(playedCard.getColor()) || playedCard.getValue() >= card.getValue()) {
-                cardsToReceive.add(card);
-            }
-        }
-
-        // Remove cards from parade and add them to openCards
-        currentCardsInParade.removeAll(cardsToReceive);
+        Card playedCard = parade.getLastPlayedCard();
+        List<Card> cardsToReceive = parade.getEligibleCards(playedCard);
+        parade.removeCards(cardsToReceive);
         addCardsToOpenCards(cardsToReceive);
 
         return cardsToReceive;
     }
-    
+
     /**
      * Adds a list of cards to the player's open cards, organizing by color.
-     * 
+     *
      * @param cards List of cards to add to open cards.
      */
-    private void addCardsToOpenCards(ArrayList<Card> cards) {
+    private void addCardsToOpenCards(List<Card> cards) {
         for (Card card : cards) {
             openCards.computeIfAbsent(card.getColor(), key -> new ArrayList<>()).add(card);
         }
@@ -129,10 +118,12 @@ public abstract class Player {
      */
     public void drawCardFromDeck(Deck deck) {
         Card card = deck.removeCardFromDeck();
-        if (card != null) {
-            closedCards.add(card);
+        if (card == null) {
+            throw new IllegalStateException("Deck is empty!");
         }
+        closedCards.add(card);
     }
+
     // ============================ Score Calculation ============================
     /**
      * Calculates the player's score based on the total value of open cards.
@@ -149,7 +140,7 @@ public abstract class Player {
     // ============================ Getter Methods ============================
     /**
      * Gets the player's name.
-     * 
+     *
      * @return The player's name.
      */
     public String getName() {
@@ -158,7 +149,7 @@ public abstract class Player {
 
     /**
      * Gets the player's closed cards (hand).
-     * 
+     *
      * @return The list of cards in the player's hand.
      */
     public List<Card> getClosedCards() {
@@ -167,7 +158,7 @@ public abstract class Player {
 
     /**
      * Gets the player's open cards grouped by color.
-     * 
+     *
      * @return Map of color to list of cards.
      */
     public Map<String, List<Card>> getOpenCards() {
@@ -176,7 +167,7 @@ public abstract class Player {
 
     /**
      * Gets the player's current score.
-     * 
+     *
      * @return The player's score.
      */
     public int getScore() {
@@ -185,7 +176,7 @@ public abstract class Player {
 
     /**
      * Gets the total number of open cards the player has.
-     * 
+     *
      * @return The total count of open cards.
      */
     public int getTotalOpenCards() {
@@ -210,7 +201,7 @@ public abstract class Player {
     // ============================ Setter Methods ============================
     /**
      * Sets the player's score. (Typically for showing edge case scenarios)
-     * 
+     *
      * @param score The new score value.
      */
     public void setScore(int score) {

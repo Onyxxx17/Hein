@@ -5,6 +5,11 @@ import game.setup.Dice;
 import java.util.*;
 
 public class DiceTieBreaker {
+    private final Dice dice;
+
+    public DiceTieBreaker() {
+        this.dice = new Dice();
+    }
     public Player resolveTie(List<Player> tiedPlayers) {
         Map<Player, Integer> rolls = rollDice(tiedPlayers);
         sortPlayersByRolls(tiedPlayers, rolls);
@@ -14,7 +19,6 @@ public class DiceTieBreaker {
 
     private Map<Player, Integer> rollDice(List<Player> players) {
         Map<Player, Integer> results = new HashMap<>();
-        Dice dice = new Dice();
         
         System.out.println("\n🎲 Breaking tie with dice rolls...");
         for (Player p : players) {
@@ -26,7 +30,11 @@ public class DiceTieBreaker {
     }
 
     private void sortPlayersByRolls(List<Player> players, Map<Player, Integer> rolls) {
-        players.sort((p1, p2) -> rolls.get(p2) - rolls.get(p1));
+        Collections.sort(players, (p1, p2) -> {
+            int roll1 = rolls.get(p1);
+            int roll2 = rolls.get(p2);
+            return Integer.compare(roll2, roll1); // Sort in descending order
+        });
     }
 
     private void displayResults(List<Player> players, Map<Player, Integer> rolls) {
