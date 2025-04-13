@@ -63,7 +63,7 @@ CS102 Programming Fundamentals II: Parade Game (G3T2)
  [] Player discard 2 cards from their hand and add to their collection
  [] Player with the lowest score wins
  [] If players have the same score, winner will be determined based on sequence, and if winner is still unable to be determined, move to next condition until winner is announced 
-    (1) Number of faced up cards: player with lesser faced up card wins
+    (1) Number of cards: player with lesser card collected wins
     (2) Number of collected colors: player with lesser color variety wins
     (3) Dice of Destiny: player with bigger dice value wins
  
