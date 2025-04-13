@@ -35,7 +35,7 @@ public class GameMenu {
                         showInstructions();
                     // loop continues, menu shown again
                     case 3 -> {
-                        GamePhaseRenderer.goodbyeMessage();
+                        GamePhaseRenderer.showGoodByeMessage();
                         System.exit(0);
                     }
                     default ->
@@ -43,7 +43,7 @@ public class GameMenu {
                 }
             } catch (NumberFormatException | InvalidInputException e) {
                 System.out.println("❌ Invalid input. Please enter a number (1-3).\n");
-                
+
             }
         }
     }
@@ -73,10 +73,11 @@ public class GameMenu {
             Helper.flush();
             return true;
         } else {
-            GamePhaseRenderer.goodbyeMessage();
+            GamePhaseRenderer.showGoodByeMessage();
             return false;
         }
     }
+
     private void showMenuOptions() {
 
         System.out.println("╔═══════════════════════════════════════╗");

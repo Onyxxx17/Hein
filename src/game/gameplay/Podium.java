@@ -8,10 +8,10 @@ import java.util.*;
 /**
  * Displays a podium of top players at the end of the game like Kahoot
  */
-public class Podium{
+public class Podium {
 
     public static void showPodium(List<Player> players, Player winner) {
-        GamePhaseRenderer.finalResults();
+        GamePhaseRenderer.showFinalResultPhase();
 
         Helper.sleep(500);
 
@@ -29,8 +29,8 @@ public class Podium{
             // Show both 2nd and 3rd places
             System.out.println("┌─────┼─────┼─────┐");
             System.out.println("│     │     │     │");
-            System.out.println("│  " + getInitial(players.get(1).getName()) + "  │     │  " +
-                    getInitial(players.get(2).getName()) + "  │");
+            System.out.println("│  " + getInitial(players.get(1).getName()) + "  │     │  "
+                    + getInitial(players.get(2).getName()) + "  │");
             System.out.println("│ 2nd │     │ 3rd │");
             System.out.println("└─────┴─────┴─────┘");
         } else if (players.size() == Constants.MIN_PLAYERS) {
@@ -50,9 +50,12 @@ public class Podium{
             String medal = "";
 
             switch (i) {
-                case 0 -> medal = "🥇";
-                case 1 -> medal = "🥈";
-                case 2 -> medal = "🥉";
+                case 0 ->
+                    medal = "🥇";
+                case 1 ->
+                    medal = "🥈";
+                case 2 ->
+                    medal = "🥉";
                 default -> {
                 }
             }

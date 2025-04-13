@@ -3,11 +3,15 @@ package game.setup;
 import game.core.Player;
 import game.renderer.*;
 import java.util.*;
+
 public class StartingPlayerDecider {
+
     private final Dice dice;
+
     public StartingPlayerDecider(Dice dice) {
         this.dice = dice;
     }
+
     /**
      * Decides starting player via dice rolls with tie-breakers.
      *
@@ -24,7 +28,7 @@ public class StartingPlayerDecider {
     }
 
     private List<Player> runDiceRound(List<Player> contenders) {
-        StartingPlayerRenderer.rollMessage();
+        StartingPlayerRenderer.showRollMessage();
         HashMap<Integer, List<Player>> rollMap = new HashMap<>();
         int maxRoll = 0;
 

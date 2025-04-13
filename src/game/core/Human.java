@@ -1,7 +1,8 @@
 package game.core;
 
 import game.exceptions.InvalidInputException;
-import game.renderer.*;
+import game.renderer.PlayerRenderer;
+import game.renderer.CardUI;
 import game.utils.Constants;
 import java.util.*;
 
@@ -29,6 +30,7 @@ public class Human extends Player {
     @Override
     public void finalPlay(Scanner scanner) {
         for (int selection = 1; selection <= Constants.FINAL_PLAY_MOVES; selection++) {
+            PlayerRenderer.showClosedCards(this);
             int cardIndex = getValidCardSelection(scanner, closedCards.size());
             Card selectedCard = closedCards.remove(cardIndex - 1);
 

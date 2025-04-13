@@ -12,7 +12,7 @@ public class StartingPlayerRenderer {
         Helper.sleep(Constants.SLOWDELAY);
     }
 
-    public static void rollMessage() {
+    public static void showRollMessage() {
         System.out.print("\nRolling to decide the starting player");
         Helper.loading();
     }

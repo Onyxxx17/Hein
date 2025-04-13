@@ -125,7 +125,7 @@ public class GameController {
 
     public void handleEndGame() {
         for (Player player : players) {
-            GamePhaseRenderer.showFinalRound();
+            GamePhaseRenderer.showLastRoundPhase();
 
             GameFlowRenderer.showPlayerRound(player, players, parade, deck);
             playTurn(player);
@@ -141,9 +141,6 @@ public class GameController {
             Helper.sleep(Constants.FASTDELAY);
             GameFlowRenderer.showOpenCards(players);
             GameFlowRenderer.showTurnHeader(player.getName());
-            if (player.isHuman()) {
-                PlayerRenderer.showClosedCards(player);
-            }
             player.finalPlay(scanner);
             Helper.pressEnterToContinue(scanner);
         }
@@ -174,6 +171,7 @@ public class GameController {
 
         Helper.flush();
         // GameFlowRenderer.showFlippedCards(flippedCards, players);
+        GameFlowRenderer.showFlippedCards(flippedCards, players);
         gameManager.calculateScores();
         Player winner = gameManager.determineWinner();
         Podium.showPodium(players, winner);
