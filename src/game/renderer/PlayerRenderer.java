@@ -6,6 +6,11 @@ import game.utils.Helper;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * PlayerRenderer is responsible for rendering various player-related messages
+ * and animations during the game. It includes methods for displaying received
+ * cards, played cards, open cards, closed cards, and other player actions.
+ */
 public class PlayerRenderer {
 
     /**
@@ -21,6 +26,12 @@ public class PlayerRenderer {
         showCardGroup(receivedCards);
     }
 
+    /**
+     * Displays a card played by a player in ASCII art format.
+     *
+     * @param card The card played by the player.
+     * @param name The name of the player who played the card.
+     */
     public static void showPlayedCard(Card card, String name) {
         System.out.println(name + " played: ");
         CardUI.setSimpleDisplayMode(false);
@@ -78,23 +89,44 @@ public class PlayerRenderer {
         }
     }
 
+    /**
+     * Announces that a player is drawing a card from the deck.
+     *
+     * @param player The player that is drawing the card.
+     */
     public static void showCardDraw(Player player) {
-        Helper.sleep(Constants.FASTDELAY);
+        Helper.sleep(Constants.NORMAL_DELAY_TIME);
         System.out.println("\n💎 " + player.getName() + " draws one card from the deck.");
     }
 
+    /**
+     * Displays a message indicating that a card has been added to the player's open cards.
+     *
+     * @param name The name of the player.
+     * @param card The card that was added.
+     */
     public static void showCardAddedToOpenCards(String name, Card card) {
         CardUI.setSimpleDisplayMode(true);
         System.out.println(card + " is added to " + name + "'s Open Cards!\n");
     }
 
+    /**
+     * Displays a message indicating that a card has been added to the player's closed cards.
+     *
+     * @param name The name of the player.
+     * @param card The card that was added.
+     */
     public static void showComputerThinking(String name) {
         System.out.print(name + " is thinking");
         Helper.loading();
     }
 
+    
     /**
-     * Displays the human player's closed cards in ASCII art format.
+     * Displays the player's closed cards (hand) in a horizontal layout, with
+     * each card's index displayed above it.
+     *
+     * @param player The player whose closed cards are to be displayed.
      */
     public static void showClosedCards(Player player) {
         List<Card> closedCards = player.getClosedCards();
@@ -115,7 +147,10 @@ public class PlayerRenderer {
     }
 
     /**
-     * Helper method to display a list of cards horizontally in ASCII art.
+     * Displays the player's closed cards (hand) in a horizontal layout, with
+     * each card's index displayed above it.
+     *
+     * @param player The player whose closed cards are to be displayed.
      */
     private static void showCardsHorizontally(List<Card> cards) {
         StringBuilder[] cardLines = new StringBuilder[7];

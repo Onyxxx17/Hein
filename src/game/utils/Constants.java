@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Constants {
 
+    // ============================ COLOR CODES ============================
     public static final String RESET = "\u001B[0m";
     public static final String GREEN = "\u001B[32m";
     public static final String BLUE = "\u001B[34m";
@@ -13,10 +14,10 @@ public class Constants {
     public static final String BOLD = "\u001B[1m";
     public static final String RED = "\u001B[91m";
 
+    // ============================ GAME CONSTANTS ============================
     public static final String YES_NO_REGEX = "^(yes|no|y|n)$";
     public static final String MENU_OPTION_REGEX = "^[1-3]$";
-    public static final int FASTDELAY = 500;
-    public static final int SLOWDELAY = 1000;
+    public static final int NORMAL_DELAY_TIME = 500;
     public static final Random RANDOM = new Random();
     public static final int TYPEWRITE_DURATION = 45;
     public static int CARDS_PER_LINE = 7;

@@ -28,7 +28,7 @@ public class Card {
         this.value = value;
     }
 
-    // ============================ Getters & Setters ============================
+    // ============================ Getters============================
     public int getValue() {
         return value;
     }
@@ -36,7 +36,9 @@ public class Card {
     public String getColor() {
         return color;
     }
+    // ============================ Setters============================
 
+    //Mainly for testing purposes
     public void setValue(int value) {
         this.value = value;
     }

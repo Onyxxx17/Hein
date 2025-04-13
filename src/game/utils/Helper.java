@@ -65,7 +65,7 @@ public class Helper {
         int loading_dots = 3;
         for (int i = 0; i < loading_dots; i++) {
             System.out.print(".");
-            sleep(Constants.FASTDELAY);
+            sleep(Constants.NORMAL_DELAY_TIME);
         }
         System.out.println(); // Move to the next line after loading
     }
@@ -109,6 +109,7 @@ public class Helper {
                 Constants.RESET; // Default reset code
         };
     }
+
     /**
      * Waits for the user to press Enter to continue the game. The user is
      * prompted to press Enter to continue.

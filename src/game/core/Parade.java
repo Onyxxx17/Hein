@@ -3,10 +3,16 @@ package game.core;
 import game.utils.Constants;
 import java.util.*;
 
+/**
+ * Parade class represents the parade of cards in the game. It provides methods
+ * to initialize the parade, add cards, check if it's empty, and retrieve
+ * eligible cards for removal based on the last played card.
+ */
 public class Parade {
 
     private final List<Card> cards;
     private final Deck deck;
+
     // ============================ Constructor ============================
 
     /**
@@ -16,7 +22,12 @@ public class Parade {
         this.deck = deck;
         this.cards = new ArrayList<>();
     }
-    // ============================ Parade Operations ============================
+
+    // ======================== Parade Operations ==========================
+    /**
+     * Initializes the parade with a specified number of cards from the deck.
+     * @throws IllegalStateException if there are not enough cards in the deck.
+     */
     public void initializeParade() {
         for (int i = 0; i < Constants.INITIAL_CARDS_OF_PARADE; i++) {
             if (deck.isEmpty()) {
@@ -25,20 +36,11 @@ public class Parade {
             cards.add(deck.removeCardFromDeck());
         }
     }
-    /**
-     * Adds a card to the end of the parade.
-     *
-     * @param card The card to be added.
-     */
+
     public void addCard(Card card) {
         cards.add(card);
     }
 
-    /**
-     * Checks if the parade is empty.
-     *
-     * @return true if there are no cards in the parade, false otherwise.
-     */
     public boolean isEmpty() {
         return cards.isEmpty();
     }
@@ -59,9 +61,12 @@ public class Parade {
      * @param playedCard The card triggering the removal logic.
      */
     public List<Card> getEligibleCards(Card playedCard) {
+
+        // Count the number of cards that will not be eligible for removal
         int toCount = Math.max(cards.size() - playedCard.getValue() - 1, 0);
         List<Card> eligibleCards = new ArrayList<>();
 
+        // Add cards that match the color or are less than the played card's value to eligibleCards
         for (int i = 0; i < toCount; i++) {
             Card card = cards.get(i);
             if (card.getColor().equals(playedCard.getColor()) || playedCard.getValue() >= card.getValue()) {
@@ -71,21 +76,12 @@ public class Parade {
         return eligibleCards;
     }
 
-    /**
-     * Removes specified cards from the parade.
-     * @param cardsToRemove The list of cards to remove.
-     */
     public void removeCards(List<Card> cardsToRemove) {
         cards.removeAll(cardsToRemove);
     }
 
-    // ============================ Getter Methods ============================
+    // ========================= Getter Methods ============================
 
-    /**
-     * Retrieves the list of cards in the parade.
-     *
-     * @return The ArrayList of cards in the parade.
-     */
     public List<Card> getCards() {
         return Collections.unmodifiableList(cards);
     }

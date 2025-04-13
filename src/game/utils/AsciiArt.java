@@ -1,12 +1,12 @@
 package game.utils;
 
 public class AsciiArt {
-    // ASCII Banner for the game
+
+    // Welcome art for the game
     public static void welcomeArt() {
-        for (int i = 0; i < 3; i++) { // Print three blank lines for spacing
+        for (int i = 0; i < 3; i++) {
             System.out.println();
         }
-        // Print the banner using ASCII art
         System.out.println("""
 ██████╗  █████╗ ██████╗  █████╗ ██████╗ ███████╗
 ██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝
@@ -17,6 +17,7 @@ public class AsciiArt {
                 """);
     }
 
+    // Dice faces
     public static final String[] DICE_FACES = {
         """
         +-------+

@@ -3,6 +3,11 @@ package game.renderer;
 import game.utils.*;
 import java.util.Scanner;
 
+/**
+ * Renders messages and phases throughout the Parade Card Game. This class
+ * provides static methods for displaying various stages of the game flow, such
+ * as welcome screens, setup phases, and final results.
+ */
 public class GamePhaseRenderer {
 
     public static void showWelcomeMessage(Scanner scanner) {
@@ -46,7 +51,7 @@ public class GamePhaseRenderer {
     public static void showLastRoundPhase() {
         Helper.flush();
         Helper.printBox("🚨 Last Round 🚨");
-        Helper.sleep(Constants.SLOWDELAY);
+        Helper.sleep(Constants.NORMAL_DELAY_TIME);
     }
 
     public static void showFinalPhase() {

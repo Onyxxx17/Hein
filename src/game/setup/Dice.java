@@ -5,44 +5,24 @@ import game.utils.Helper;
 import java.util.Random;
 
 /**
- * A utility class to handle dice operations in the game. This class combines
- * both dice logic (random number generation) and presentation (ASCII art
- * visualization) for simplicity, as these functions are tightly coupled in the
- * context of this game.
+ * The Dice class represents a six-sided dice and provides methods for rolling
+ * the dice and animating the dice roll.
  */
 public class Dice {
 
     private static final Random rand = new Random();
-    
-    /**
-     * Rolls a six-sided dice and returns a random number between 1 and 6.
-     *
-     * @return An integer value representing the result of the dice roll.
-     */
+
+    // rolls the dice and returns a random value between 1 and 6
     public int roll() {
-        // Range of values {1, 2, 3, 4, 5, 6}
         return rand.nextInt(6) + 1;
     }
 
-    /**
-     * Retrieves the ASCII art representation of a dice face based on the given
-     * value.
-     *
-     * @param value The integer value of the dice roll (1 to 6).
-     * @return The string representation of the dice face if the value is valid;
-     * otherwise, returns an empty space.
-     */
+    // returns the dice face as a string
     public String getDiceFace(int value) {
         return AsciiArt.DICE_FACES[value - 1];
     }
 
-    /**
-     * Simulates the animation of a dice roll for a given player and displays
-     * the result.
-     *
-     * @param playername The name of the player rolling the dice.
-     * @param index The index of the dice face to display (1-based).
-     */
+    // animates the dice roll
     public void animateRoll(String playername, int index) {
         System.out.print("\n🎲 " + playername + " is rolling the dice");
         Helper.loading();

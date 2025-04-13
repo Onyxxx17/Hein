@@ -5,24 +5,31 @@ import game.utils.Constants;
 import game.utils.Helper;
 
 /**
- * Console-based card renderer implementation using static methods.
+ * Console-based card renderer that displays cards either as ASCII art or a one-line string.
  */
 public class CardUI {
-
+    // ============================ Static Variables ============================
     private static final String RESET = Constants.RESET;
-    private static boolean simpleDisplayMode = false;  // Make simpleDisplayMode static
-    //private static boolean guiDisplayMode = false;
+    private static boolean simpleDisplayMode = false;
 
     public static void setSimpleDisplayMode(boolean simpleMode) {
         simpleDisplayMode = simpleMode;
     }
 
+    /**
+     * Returns a string representation of the given card,
+     * based on the current display mode.
+     *
+     * @param card the card to render
+     * @return the rendered card string
+     */
     public static String renderToString(Card card) {
         return simpleDisplayMode
                 ? renderSimple(card)
                 : renderAsciiArt(card);
     }
 
+    // Renders a one-line string with color and value info.
     private static String renderSimple(Card card) {
         return String.format("%s [%s%s %d%s]",
                 colorToEmoji(card.getColor()),
@@ -32,6 +39,7 @@ public class CardUI {
                 RESET);
     }
 
+    // Renders the card as a multi-line ASCII art block.
     private static String renderAsciiArt(Card card) {
         String color = card.getColor();
         int value = card.getValue();
@@ -54,42 +62,30 @@ public class CardUI {
         );
     }
 
+    // Maps color names to corresponding emojis.
     private static String colorToEmoji(String color) {
         return switch (color.toLowerCase()) {
-            case "red" ->
-                "🔴";
-            case "green" ->
-                "🟢";
-            case "purple" ->
-                "🟣";
-            case "grey" ->
-                "🔘";
-            case "orange" ->
-                "🟠";
-            case "blue" ->
-                "🔵";
-            default ->
-                "🃏";
+            case "red" -> "🔴";
+            case "green" -> "🟢";
+            case "purple" -> "🟣";
+            case "grey" -> "🔘";
+            case "orange" -> "🟠";
+            case "blue" -> "🔵";
+            default -> "🃏";
         };
     }
 
+    // Returns the animal art line for a given card color.
     private static String getAnimalArt(String color) {
         String colorCode = Helper.getColorCode(color);
         return switch (color.toLowerCase()) {
-            case "red" ->
-                colorCode + "│   🦊    │" + RESET;
-            case "blue" ->
-                colorCode + "│   🐳    │" + RESET;
-            case "green" ->
-                colorCode + "│   🐢    │" + RESET;
-            case "orange" ->
-                colorCode + "│   🦁    │" + RESET;
-            case "purple" ->
-                colorCode + "│   🦄    │" + RESET;
-            case "grey" ->
-                colorCode + "│   🐺    │" + RESET;
-            default ->
-                colorCode + "│   ❓    │" + RESET;
+            case "red" -> colorCode + "│   🦊    │" + RESET;
+            case "blue" -> colorCode + "│   🐳    │" + RESET;
+            case "green" -> colorCode + "│   🐢    │" + RESET;
+            case "orange" -> colorCode + "│   🦁    │" + RESET;
+            case "purple" -> colorCode + "│   🦄    │" + RESET;
+            case "grey" -> colorCode + "│   🐺    │" + RESET;
+            default -> colorCode + "│   ❓    │" + RESET;
         };
     }
 }

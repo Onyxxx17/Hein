@@ -4,6 +4,11 @@ import game.core.*;
 import game.utils.*;
 import java.util.*;
 
+/**
+ * ParadeRenderer is responsible for rendering the parade of cards in a fixed
+ * horizontal format. It displays the current parade of cards, chunking them into
+ * lines for better readability.
+ */
 public class ParadeRenderer {
 
     /**
@@ -48,7 +53,6 @@ public class ParadeRenderer {
 
         return cardLines;
     }
-
     /**
      * Prints the card lines to the console.
      */

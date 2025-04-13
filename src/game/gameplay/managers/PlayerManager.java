@@ -3,21 +3,32 @@ package game.gameplay.managers;
 import game.core.Player;
 import java.util.*;
 
+/**
+ * Manages the list of players in the game.
+ */
 public class PlayerManager {
+    // ============================ Instance Variables ============================
+    /**
+     * List of players in the game.
+     */
     private final List<Player> players;
 
+    // ============================ Constructor ============================
+
+    /**
+     * Constructs a PlayerManager with the list of players.
+     *
+     * @param players The list of players in the game.
+     */
     public PlayerManager(List<Player> players) {
         this.players = players;
     }
 
+    // ============================ Instance Methods ============================
+
     /**
-     * Reorders the players in the list such that the given player is at the
-     * start of the list and the rest of the players are in the same order
-     * relative to each other.
-     *
-     * Does nothing if the given player is not in the list.
-     *
-     * @param startingPlayer The player to put at the start of the list
+     * Moves the given player to the start of the list.
+     * Keeps the relative order of the rest unchanged.
      */
     public void rearrangePlayers(Player startingPlayer) {
         int index = players.indexOf(startingPlayer);
@@ -32,9 +43,7 @@ public class PlayerManager {
     }
 
     /**
-     * Gets the list of players.
-     *
-     * @return The list of players
+     * Returns the list of players.
      */
     public List<Player> getPlayers() {
         return players;

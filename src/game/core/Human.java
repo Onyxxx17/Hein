@@ -1,21 +1,37 @@
 package game.core;
 
 import game.exceptions.InvalidInputException;
-import game.renderer.PlayerRenderer;
 import game.renderer.CardUI;
+import game.renderer.PlayerRenderer;
 import game.utils.Constants;
 import java.util.*;
 
+/**
+ * Represents a human player in the game. The human player can play cards from
+ * their hand into the parade and perform final play moves.
+ */
 public class Human extends Player {
 
+    // ============================ Constructor ============================
     public Human(String name) {
         super(name);
     }
 
+    // ============================ Gameplay Methods ============================
+    /**
+     * Allows the human player to select and play a card from their hand into
+     * the parade.
+     *
+     * @param parade The parade where the selected card will be added.
+     * @param scanner Scanner used for capturing the player's card selection
+     * input.
+     * @throws IllegalStateException if the player's hand is empty when
+     * attempting to play.
+     */
     @Override
     public void playCard(Parade parade, Scanner scanner) {
 
-        //Will never be empty but kept for consistency
+        // Will never be empty but kept for consistency
         if (closedCards.isEmpty()) {
             throw new IllegalStateException(name + " has no cards left to play!");
         }
@@ -26,6 +42,13 @@ public class Human extends Player {
 
         PlayerRenderer.showPlayedCard(selectedCard, name);
     }
+
+    /**
+     * Allows the human player to select and move cards from their closed cards
+     * to open cards during the final play phase of the game.
+     *
+     * @param scanner Scanner used to capture user input for card selection.
+     */
 
     @Override
     public void finalPlay(Scanner scanner) {
@@ -41,11 +64,17 @@ public class Human extends Player {
         }
     }
 
+    /**
+     * Determines if the player is a human player.
+     *
+     * @return true, indicating that this player is human.
+     */
     @Override
     public boolean isHuman() {
         return true;
     }
 
+    // ============================= Helpers ===============================
     /**
      * Handles and validates user input for selecting a card.
      */
@@ -55,10 +84,10 @@ public class Human extends Player {
             try {
                 String input = scanner.nextLine();
                 int index = Integer.parseInt(input);  // Throws NumberFormatException
-                
+
                 if (index >= 1 && index <= maxCards) {
                     return index;
-                } else{
+                } else {
                     throw new InvalidInputException();
                 }
             } catch (NumberFormatException | InvalidInputException e) {

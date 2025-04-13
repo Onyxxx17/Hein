@@ -4,6 +4,10 @@ import game.renderer.PlayerRenderer;
 import game.utils.Constants;
 import java.util.*;
 
+/**
+ * Represents a computer player in the game. The computer player can play cards
+ * randomly from its hand into the parade and perform final play moves.
+ */
 public class Computer extends Player {
     // ============================ Constructor ============================
 
@@ -45,12 +49,12 @@ public class Computer extends Player {
     }
 
     /**
-     * Allows the computer to randomly select two cards from its hand to move to
-     * open cards before scoring.
-     *
-     * @param parade The parade object (not used here but passed for
-     * consistency).
-     * @param scanner Scanner object (not used for the computer player).
+     * Executes the computer player's final play moves by randomly selecting and
+     * playing cards from its hand into the open cards.
+     * @param scanner Scanner object (not used, but kept for consistency with
+     * Human player).
+     * @throws IllegalStateException if the computer player's hand is empty when
+     * attempting to play.
      */
     @Override
     public void finalPlay(Scanner scanner) {

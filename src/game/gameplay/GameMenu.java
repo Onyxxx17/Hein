@@ -4,19 +4,31 @@ import game.core.*;
 import game.exceptions.InvalidInputException;
 import game.renderer.GamePhaseRenderer;
 import game.setup.*;
-import game.utils.Constants;
-import game.utils.Helper;
-import java.util.List;
-import java.util.Scanner;
+import game.utils.*;
+import java.util.*;
 
 public class GameMenu {
 
     private final Scanner scanner;
 
+    // ============================ Constructor ============================
+
+    /**
+     * Constructs the GameMenu with a Scanner for user input.
+     *
+     * @param scanner the Scanner to use
+     */
     public GameMenu(Scanner scanner) {
         this.scanner = scanner;
     }
+    // ============================ Instance Methods =========================
 
+    
+    // ============================ Menu Launcher ============================
+
+    /**
+     * Launches the main menu and handles user selection.
+     */
     public void launch() {
         boolean loop = true;
         while (loop) {
@@ -31,44 +43,56 @@ public class GameMenu {
                         startNewGame();
                         loop = false;
                     }
-                    case 2 ->
-                        showInstructions();
-                    // loop continues, menu shown again
+                    case 2 -> showInstructions(); // Loop continues
                     case 3 -> {
                         GamePhaseRenderer.showGoodByeMessage();
                         System.exit(0);
                     }
-                    default ->
-                        throw new InvalidInputException();
+                    default -> throw new InvalidInputException();
                 }
             } catch (NumberFormatException | InvalidInputException e) {
                 System.out.println("❌ Invalid input. Please enter a number (1-3).\n");
-
             }
         }
     }
 
+    // ============================ Start New Game ============================
+
+    /**
+     * Starts a new game by setting up players, deck, and the game controller.
+     */
     private void startNewGame() {
         System.out.print("\nStarting a new game");
         Helper.loading();
         Helper.flush();
+
         PlayerSetup setup = new PlayerSetup(scanner);
         int playerCount = setup.askForNumberOfPlayers();
         List<Player> players = setup.createPlayers(playerCount);
         Deck deck = new Deck();
+
         GameManager gameManager = new GameManager(players, deck);
         GameController game = new GameController(gameManager, scanner);
         game.startGame();
     }
 
+    // ============================ Replay Prompt ============================
+
+    /**
+     * Asks the user if they want to play another game.
+     *
+     * @return true if the user chooses to play again, false otherwise
+     */
     public boolean askForAnotherGame() {
         System.out.print("\n✨ Do you want to play another game? (y/n): ");
         String input = scanner.nextLine().trim().toLowerCase();
+
         while (!input.matches("yes|no|y|n")) {
-            System.out.print("Invalid input. Please enter 'yes' or 'no'.\n");
+            System.out.print("❌ Invalid input. Please enter 'yes' or 'no'.\n");
             System.out.print("\nDo you want to play another game? (yes/no): ");
-            input = scanner.nextLine().trim();
+            input = scanner.nextLine().trim().toLowerCase();
         }
+
         if (input.equals("yes") || input.equals("y")) {
             Helper.flush();
             return true;
@@ -78,8 +102,12 @@ public class GameMenu {
         }
     }
 
-    private void showMenuOptions() {
+    // ============================ Menu Options ============================
 
+    /**
+     * Displays the main menu options.
+     */
+    private void showMenuOptions() {
         System.out.println("╔═══════════════════════════════════════╗");
         System.out.println("║          🎮 MAIN MENU 🎮              ║");
         System.out.println("╠═══════════════════════════════════════╣");
@@ -90,6 +118,11 @@ public class GameMenu {
         System.out.print("Choose an option (1-3): ");
     }
 
+    // ============================ Instructions ============================
+
+    /**
+     * Displays the game instructions.
+     */
     private void showInstructions() {
         Helper.flush();
         System.out.println("\n══════════════════════════════════════════");

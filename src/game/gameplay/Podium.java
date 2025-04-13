@@ -6,13 +6,19 @@ import game.utils.*;
 import java.util.*;
 
 /**
- * Displays a podium of top players at the end of the game like Kahoot
+ * Displays the final podium and rankings of players at the end of the game.
+ * Mimics a celebratory leaderboard similar to Kahoot.
  */
 public class Podium {
 
+    /**
+     * Renders the podium and final rankings based on player scores.
+     *
+     * @param players List of players sorted by rank (highest score first).
+     * @param winner The player who won the game.
+     */
     public static void showPodium(List<Player> players, Player winner) {
         GamePhaseRenderer.showFinalResultPhase();
-
         Helper.sleep(500);
 
         // Display simple ASCII podium
@@ -67,12 +73,14 @@ public class Podium {
         // Display winner message
         System.out.println("\n🎉 CONGRATULATIONS 🎉");
         System.out.println("🏆 " + winner.getName() + " WINS THE GAME! 🏆");
-        System.out.println("\nThanks for playing Parade!");
         System.out.println("===============================");
     }
 
     /**
-     * Gets the first letter/initial of a name for the podium display
+     * Returns the uppercase first character of a player's name.
+     *
+     * @param name Player's name.
+     * @return Initial letter as uppercase string, or a space if name is empty.
      */
     private static String getInitial(String name) {
         if (name == null || name.isEmpty()) {

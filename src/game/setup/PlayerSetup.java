@@ -5,13 +5,24 @@ import game.exceptions.*;
 import game.renderer.GamePhaseRenderer;
 import java.util.*;
 
+/**
+ * PlayerSetup is responsible for setting up players in the game.
+ */
 public class PlayerSetup {
+    // ============================ Instance Variables ============================
 
     private final Scanner scanner;
 
+    // ============================ Constructor ============================
+    /**
+     * Constructs a PlayerSetup with the given scanner.
+     *
+     * @param scanner The scanner for user input.
+     */
     public PlayerSetup(Scanner scanner) {
         this.scanner = scanner;
     }
+    // ============================ Instance Methods ============================
 
     public int askForNumberOfPlayers() {
         int playerCount = 0;
@@ -44,6 +55,12 @@ public class PlayerSetup {
         return playerCount;
     }
 
+    /**
+     * Creates a list of players with the given number of players.
+     *
+     * @param numPlayers The number of players to create.
+     * @return A list of the created players.
+     */
     public List<Player> createPlayers(int numPlayers) {
         List<Player> players = new ArrayList<>();
         Set<String> names = new HashSet<>();
@@ -75,6 +92,12 @@ public class PlayerSetup {
         return players;
     }
 
+    /**
+     * Prompts the user to enter the type of a player (human/computer).
+     *
+     * @param playerNumber The number of the player.
+     * @return The type of the player as a string ("HUMAN" or "COMPUTER").
+     */
     private String getPlayerType(int playerNumber) {
         while (true) {
             try {
@@ -140,6 +163,15 @@ public class PlayerSetup {
         return false;
     }
 
+    /**
+     * Validates the given name and throws an InvalidNameException if the name
+     * is invalid.
+     *
+     * @param name The name to validate.
+     * @param names The set of existing player names to check against for
+     * uniqueness.
+     * @throws InvalidNameException If the name is invalid.
+     */
     private void validateName(String name, Set<String> names) throws InvalidNameException {
         if (!isValidLength(name)) {
             throw new InvalidNameException("Name must be (3-10) characters long.");

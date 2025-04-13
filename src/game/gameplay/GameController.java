@@ -14,6 +14,8 @@ import java.util.*;
  */
 public class GameController {
 
+    // ============================ Instance Variables ============================
+
     private final GameManager gameManager;
     private final Deck deck;
     private final Parade parade;
@@ -23,6 +25,13 @@ public class GameController {
     private final StartingPlayerDecider startingPlayerdecider;
     private final QuitHandler quitHandler;
 
+    // ============================ Constructor ============================
+    /**
+     * Constructs a GameController with the given game manager and scanner.
+     *
+     * @param gameManager The game manager that manages the game state.
+     * @param sc          The scanner for user input.
+     */
     public GameController(GameManager gameManager, Scanner sc) {
         this.gameManager = gameManager;
         this.deck = gameManager.getDeck();
@@ -34,6 +43,20 @@ public class GameController {
         this.quitHandler = new QuitHandler(players, scanner);
     }
 
+    // ============================ Instance Methods ============================
+
+    /**
+     * Starts the game by initializing the game state, processing turns for
+     * all players in sequence, and handling the game end condition.
+     *
+     * This method is the main entry point for game flow. It will loop until all
+     * players have either collected all colors or the deck runs out of cards.
+     * If the deck runs out of cards, the game will end and the final scores will
+     * be calculated.
+     *
+     * During the game loop, the method will check for quit commands and
+     * terminate the game early if all players have quit.
+     */
     public void startGame() {
         initializeGame();
         boolean gameEnds = false;
@@ -79,13 +102,20 @@ public class GameController {
                 Helper.pressEnterToContinue(scanner);
             }
         }
-
+        // If the game ends due to deck running out of cards or a player collecting all colors
+        // and not due to early termination, handle the end game.
         if (!earlyTermination) {
             handleEndGame();
         }
     }
 
-    public void initializeGame() {
+// ============================ Game Initialization ============================
+
+    /**
+     * Initializes the game by shuffling the deck, dealing cards to players,
+     * and setting up the parade.
+     */
+    private void initializeGame() {
         Helper.pressEnterToContinue(scanner);
         Helper.flush();
 
@@ -96,34 +126,46 @@ public class GameController {
         Helper.flush();
 
         GameFlowRenderer.showGameStart(firstPlayer);
-        Helper.sleep(Constants.FASTDELAY);
+        Helper.sleep(Constants.NORMAL_DELAY_TIME);
 
         System.out.println("\nDeck size: " + deck.getCards().size() + " cards");
         deck.shuffle();
         GameFlowRenderer.showCardDealing();
         dealCardsToPlayers();
-        Helper.sleep(Constants.FASTDELAY);
+        Helper.sleep(Constants.NORMAL_DELAY_TIME);
 
         parade.initializeParade();
         GameFlowRenderer.showParadeInitialization();
-        Helper.sleep(Constants.SLOWDELAY);
+        Helper.sleep(Constants.NORMAL_DELAY_TIME);
         ParadeRenderer.showParade(parade);
-        Helper.sleep(Constants.SLOWDELAY);
+        Helper.sleep(Constants.NORMAL_DELAY_TIME);
 
         Helper.pressEnterToContinue(scanner);
     }
 
-    public void playTurn(Player player) {
+// ============================ Turn Processing ============================
+
+    /**
+     * Processes a turn for a specific player.
+     *
+     * @param player The player whose turn it is.
+     */
+    private void playTurn(Player player) {
         if (player.isHuman()) {
             PlayerRenderer.showClosedCards(player);
         }
         player.playCard(parade, scanner);
-        Helper.sleep(Constants.FASTDELAY);
+        Helper.sleep(Constants.NORMAL_DELAY_TIME);
         List<Card> drawnCards = player.drawCardsFromParade(parade);
         PlayerRenderer.showReceivedCards(player, drawnCards);
     }
 
-    public void handleEndGame() {
+// ============================ Game Conclusion ============================
+
+    /**
+     * Handles the end of the game by processing turns for the final two rounds.
+     */
+    private void handleEndGame() {
         for (Player player : players) {
             GamePhaseRenderer.showLastRoundPhase();
 
@@ -134,11 +176,14 @@ public class GameController {
         addFinalTwoCards();
     }
 
+    /**
+     * Adds the final two cards to each player's hand and concludes the game.
+     */
     private void addFinalTwoCards() {
         for (Player player : players) {
             Helper.flush();
             GamePhaseRenderer.showFinalPhase();
-            Helper.sleep(Constants.FASTDELAY);
+            Helper.sleep(Constants.NORMAL_DELAY_TIME);
             GameFlowRenderer.showOpenCards(players);
             GameFlowRenderer.showTurnHeader(player.getName());
             player.finalPlay(scanner);
@@ -147,7 +192,14 @@ public class GameController {
         concludeGame();
     }
 
-    public void dealCardsToPlayers() {
+// ============================ Card Dealing and Finalization ============================
+
+    /**
+     * Deals cards to each player at the start of the game.
+     *
+     * Each player receives a specified number of cards from the deck.
+     */
+    private void dealCardsToPlayers() {
         for (Player player : players) {
             for (int i = 0; i < Constants.CARDS_TO_DEAL; i++) {
                 player.drawCardFromDeck(deck);
@@ -155,14 +207,19 @@ public class GameController {
         }
     }
 
+    /**
+     * Concludes the game by flipping cards and calculating scores.
+     *
+     * This method displays the final scores and determines the winner of the game.
+     */
     private void concludeGame() {
         Helper.flush();
         Helper.printBox("🐧 Open Cards Before Flipping");
-        Helper.sleep(Constants.SLOWDELAY);
+        Helper.sleep(Constants.NORMAL_DELAY_TIME);
 
         GameFlowRenderer.showOpenCards(players);
         GamePhaseRenderer.showFlippingPhase();
-        Helper.sleep(Constants.SLOWDELAY);
+        Helper.sleep(Constants.NORMAL_DELAY_TIME);
 
         Map<Player, List<Card>> flippedCards = gameManager.flipCards();
         GameFlowRenderer.showFlippedCards(flippedCards, players);

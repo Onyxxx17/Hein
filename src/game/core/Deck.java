@@ -3,6 +3,10 @@ package game.core;
 import game.utils.Constants;
 import java.util.*;
 
+/**
+ * Deck class represents the collection of cards in the game. It provides methods
+ * to shuffle the deck, draw cards from the deck, and check if the deck is empty.
+ */
 public class Deck {
 
     // ============================ Instance Variables ============================
@@ -26,46 +30,23 @@ public class Deck {
     }
 
     // ============================ Deck Operations ============================
-    /**
-     * Shuffles the deck to randomize card order.
-     */
     public void shuffle() {
         Collections.shuffle(cards);
     }
 
-    /**
-     * Removes and returns the top card from the deck. Assumes the deck is not
-     * empty.
-     *
-     * @return The removed card from the deck, or null if the deck is empty.
-     */
     public Card removeCardFromDeck() {
         return cards.isEmpty() ? null : cards.remove(cards.size() - 1);
     }
 
-    /**
-     * Checks if the deck is empty.
-     *
-     * @return true if the deck is empty, false otherwise.
-     */
     public boolean isEmpty() {
         return cards.isEmpty();
     }
 
     // ============================ Getters ============================
-    /**
-     * Returns the list of cards in the deck.
-     *
-     * @return An ArrayList of Card objects.
-     */
     public List<Card> getCards() {
         return Collections.unmodifiableList(cards);
     }
-    /**
-     * Returns the number of cards remaining in the deck.
-     *
-     * @return The size of the deck.
-     */
+
     public int size() {
         return cards.size();
     }

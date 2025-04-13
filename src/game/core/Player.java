@@ -53,21 +53,8 @@ public abstract class Player {
     }
 
     // ============================ Abstract Methods ============================
-    /**
-     * Plays a card from the player's hand to the parade. Implementation will
-     * differ between human and AI players.
-     *
-     * @param parade The parade to play the card to.
-     * @param scanner Scanner for user input (for human players).
-     */
     public abstract void playCard(Parade parade, Scanner scanner);
 
-    /**
-     * Handles the player's final play when the game is ending. Implementation
-     * will differ between human and AI players.
-     *
-     * @param scanner Scanner for user input (for human players).
-     */
     public abstract void finalPlay(Scanner scanner);
 
     // ============================ Card Initialization ============================
@@ -108,11 +95,6 @@ public abstract class Player {
         return cardsToReceive;
     }
 
-    /**
-     * Adds a list of cards to the player's open cards, organizing by color.
-     *
-     * @param cards List of cards to add to open cards.
-     */
     private void addCardsToOpenCards(List<Card> cards) {
         for (Card card : cards) {
             openCards.computeIfAbsent(card.getColor(), key -> new ArrayList<>()).add(card);
@@ -123,7 +105,6 @@ public abstract class Player {
     /**
      * Draws a single card from the deck and adds it to closed cards.
      *
-     * @param deck The deck from which the card is drawn.
      */
     public void drawCardFromDeck(Deck deck) {
         Card card = deck.removeCardFromDeck();
@@ -147,38 +128,18 @@ public abstract class Player {
     }
 
     // ============================ Getter Methods ============================
-    /**
-     * Gets the player's name.
-     *
-     * @return The player's name.
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Gets the player's closed cards (hand).
-     *
-     * @return The list of cards in the player's hand.
-     */
     public List<Card> getClosedCards() {
         return Collections.unmodifiableList(closedCards);
     }
 
-    /**
-     * Gets the player's open cards grouped by color.
-     *
-     * @return Map of color to list of cards.
-     */
     public Map<String, List<Card>> getOpenCards() {
         return Collections.unmodifiableMap(openCards);
     }
 
-    /**
-     * Gets the player's current score.
-     *
-     * @return The player's score.
-     */
     public int getScore() {
         return score;
     }
@@ -195,9 +156,9 @@ public abstract class Player {
     }
 
     /**
-     * Counts the total number of cards in the player's open cards.
+     * Counts the total number of colors in the player's open cards.
      *
-     * @return The total count of open cards.
+     * @return The total color count of open cards.
      */
     public int getColorCount() {
         int totalCount = 0;
@@ -208,11 +169,6 @@ public abstract class Player {
     }
 
     // ============================ Setter Methods ============================
-    /**
-     * Sets the player's score. (Typically for showing edge case scenarios)
-     *
-     * @param score The new score value.
-     */
     public void setScore(int score) {
         this.score = score;
     }
