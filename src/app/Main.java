@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        GamePhaseRenderer.displayWelcomeMessage(scanner);
+        GamePhaseRenderer.showWelcomeMessage(scanner);
         boolean playAnotherGame;
         do {
             GameMenu menu = new GameMenu(scanner);

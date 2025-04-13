@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class GamePhaseRenderer {
 
-    public static void displayWelcomeMessage(Scanner scanner) {
+    public static void showWelcomeMessage(Scanner scanner) {
         Helper.flush();
         Helper.progressBar();
         Helper.flush();
@@ -26,15 +26,15 @@ public class GamePhaseRenderer {
         Helper.flush();
     }
 
-    public static void displayGameSetup() {
+    public static void showGameSetup() {
         Helper.printBox("🎲 WELCOME TO THE GAME SETUP 🎲");
     }
 
-    public static void displaySetUpPlayers() {
+    public static void showSetUpPlayers() {
         Helper.printBox("🎭 PLAYER SETUP 🎭");
     }
 
-    public static void displayGoodByeMessage() {
+    public static void showGoodByeMessage() {
         System.out.println("╔═══════════════════════════════════════╗");
         System.out.println("║                                       ║");
         System.out.println("║     🌟 THANK YOU FOR PLAYING 🌟       ║");
@@ -43,21 +43,21 @@ public class GamePhaseRenderer {
         System.out.println("╚═══════════════════════════════════════╝");
     }
 
-    public static void displayLastRoundPhase() {
+    public static void showLastRoundPhase() {
         Helper.flush();
         Helper.printBox("🚨 Last Round 🚨");
         Helper.sleep(Constants.SLOWDELAY);
     }
 
-    public static void displayFinalPhase() {
+    public static void showFinalPhase() {
         Helper.printBox("🎴 Add 2 Cards to Open Cards");
     }
 
-    public static void displayFlippingPhase() {
+    public static void showFlippingPhase() {
         Helper.printBox("🃏 Flipping Cards");
     }
 
-    public static void displayFinalResultPhase() {
+    public static void showFinalResultPhase() {
         System.out.println("===============================");
         System.out.println("        FINAL RESULTS         ");
         System.out.println("===============================");

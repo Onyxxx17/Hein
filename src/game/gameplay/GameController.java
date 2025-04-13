@@ -125,7 +125,7 @@ public class GameController {
 
     public void handleEndGame() {
         for (Player player : players) {
-            GamePhaseRenderer.displayLastRoundPhase();
+            GamePhaseRenderer.showLastRoundPhase();
 
             GameFlowRenderer.showPlayerRound(player, players, parade, deck);
             playTurn(player);
@@ -137,9 +137,9 @@ public class GameController {
     private void addFinalTwoCards() {
         for (Player player : players) {
             Helper.flush();
-            GamePhaseRenderer.displayFinalPhase();
+            GamePhaseRenderer.showFinalPhase();
             Helper.sleep(Constants.FASTDELAY);
-            GameFlowRenderer.displayOpenCards(players);
+            GameFlowRenderer.showOpenCards(players);
             GameFlowRenderer.showTurnHeader(player.getName());
             player.finalPlay(scanner);
             Helper.pressEnterToContinue(scanner);
@@ -160,8 +160,8 @@ public class GameController {
         Helper.printBox("🐧 Open Cards Before Flipping");
         Helper.sleep(Constants.SLOWDELAY);
 
-        GameFlowRenderer.displayOpenCards(players);
-        GamePhaseRenderer.displayFlippingPhase();
+        GameFlowRenderer.showOpenCards(players);
+        GamePhaseRenderer.showFlippingPhase();
         Helper.sleep(Constants.SLOWDELAY);
 
         Map<Player, List<Card>> flippedCards = gameManager.flipCards();
@@ -171,8 +171,9 @@ public class GameController {
 
         Helper.flush();
         // GameFlowRenderer.showFlippedCards(flippedCards, players);
+        GameFlowRenderer.showFlippedCards(flippedCards, players);
         gameManager.calculateScores();
         Player winner = gameManager.determineWinner();
-        Podium.displayPodium(players, winner);
+        Podium.showPodium(players, winner);
     }
 }

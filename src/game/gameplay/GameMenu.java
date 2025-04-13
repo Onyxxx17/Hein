@@ -35,7 +35,7 @@ public class GameMenu {
                         showInstructions();
                     // loop continues, menu shown again
                     case 3 -> {
-                        GamePhaseRenderer.displayGoodByeMessage();
+                        GamePhaseRenderer.showGoodByeMessage();
                         System.exit(0);
                     }
                     default ->
@@ -73,7 +73,7 @@ public class GameMenu {
             Helper.flush();
             return true;
         } else {
-            GamePhaseRenderer.displayGoodByeMessage();
+            GamePhaseRenderer.showGoodByeMessage();
             return false;
         }
     }

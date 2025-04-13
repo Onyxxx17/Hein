@@ -13,7 +13,7 @@ public class DiceTieBreaker {
     public Player resolveTie(List<Player> tiedPlayers) {
         Map<Player, Integer> rolls = rollDice(tiedPlayers);
         sortPlayersByRolls(tiedPlayers, rolls);
-        displayResults(tiedPlayers, rolls);
+        showResults(tiedPlayers, rolls);
         return tiedPlayers.get(0);
     }
 
@@ -37,7 +37,7 @@ public class DiceTieBreaker {
         });
     }
 
-    private void displayResults(List<Player> players, Map<Player, Integer> rolls) {
+    private void showResults(List<Player> players, Map<Player, Integer> rolls) {
         System.out.println("\n📊 Dice Results:");
         players.forEach(p -> System.out.println(p.getName() + ": " + rolls.get(p)));
     }

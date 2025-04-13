@@ -17,7 +17,7 @@ public class CardFlipper {
 
         for (String color : Constants.COLORS) {
             List<Player> maxPlayers = findPlayersWithMaxCards(color);
-            GameFlowRenderer.displayMaxPlayersForColor(color, maxPlayers);
+            GameFlowRenderer.showMaxPlayersForColor(color, maxPlayers);
 
             for (Player player : maxPlayers) {
                 List<Card> cardsToFlip = player.getOpenCards().get(color);
