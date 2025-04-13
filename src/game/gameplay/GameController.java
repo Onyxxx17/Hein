@@ -125,7 +125,7 @@ public class GameController {
 
     public void handleEndGame() {
         for (Player player : players) {
-            GamePhaseRenderer.showFinalRound();
+            GamePhaseRenderer.displayLastRoundPhase();
 
             GameFlowRenderer.showPlayerRound(player, players, parade, deck);
             playTurn(player);
@@ -137,7 +137,7 @@ public class GameController {
     private void addFinalTwoCards() {
         for (Player player : players) {
             Helper.flush();
-            GamePhaseRenderer.showFinalPhase();
+            GamePhaseRenderer.displayFinalPhase();
             Helper.sleep(Constants.FASTDELAY);
             GameFlowRenderer.displayOpenCards(players);
             GameFlowRenderer.showTurnHeader(player.getName());
@@ -164,7 +164,7 @@ public class GameController {
         Helper.sleep(Constants.SLOWDELAY);
 
         GameFlowRenderer.displayOpenCards(players);
-        GamePhaseRenderer.showFlippingPhase();
+        GamePhaseRenderer.displayFlippingPhase();
         Helper.sleep(Constants.SLOWDELAY);
 
         Map<Player, List<Card>> flippedCards = gameManager.flipCards();

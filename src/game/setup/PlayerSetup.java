@@ -15,7 +15,7 @@ public class PlayerSetup {
 
     public int askForNumberOfPlayers() {
         int playerCount = 0;
-        GamePhaseRenderer.displayGameSetup();
+        GamePhaseRenderer.showGameSetup();
 
         while (true) {
             try {
@@ -80,18 +80,17 @@ public class PlayerSetup {
             try {
                 System.out.print("🎮 Is Player " + playerNumber + " (H)uman or (C)omputer? ");
                 String input = scanner.nextLine().trim().toUpperCase();
-    
+
                 if (input.matches("H|C|HUMAN|COMPUTER")) {
                     return input;
                 } else {
                     throw new InvalidInputException("Invalid choice! Please enter ['H' or 'HUMAN'] or ['C' or 'COMPUTER'].");
                 }
             } catch (InvalidInputException e) {
-                System.out.println( "❌ " + e.getMessage() + "\n");
+                System.out.println("❌ " + e.getMessage() + "\n");
             }
         }
     }
-    
 
     private void handleHumanPlayer(Set<String> names, List<Player> players) {
         String name;
@@ -99,9 +98,9 @@ public class PlayerSetup {
             try {
                 System.out.print("📝 Enter player name: ");
                 name = scanner.nextLine().trim();
-        
+
                 validateName(name, names); // Validate the name (throws InvalidNameException if invalid)
-        
+
                 break; // Exit loop if no exception is thrown
             } catch (InvalidNameException e) {
                 System.out.println("❌ " + e.getMessage() + "\n"); // Print the error message from the exception
@@ -145,15 +144,15 @@ public class PlayerSetup {
         if (!isValidLength(name)) {
             throw new InvalidNameException("Name must be (3-10) characters long.");
         }
-    
+
         if (!containLetter(name)) {
             throw new InvalidNameException("Name must contain at least one letter.");
         }
-    
+
         if (checkNameWithBot(name)) {
             throw new InvalidNameException("Names starting with 'bot' must be at least 6 characters long.");
         }
-    
+
         if (names.contains(name.toLowerCase())) {
             throw new InvalidNameException("Name already taken by another player. Please choose a different name.");
         }
