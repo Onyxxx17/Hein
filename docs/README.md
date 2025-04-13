@@ -62,6 +62,10 @@ CS102 Programming Fundamentals II: Parade Game (G3T2)
      --> A player collects all 6 colours
  [] Player discard 2 cards from their hand and add to their collection
  [] Player with the lowest score wins
+ [] If players have the same score, winner will be determined based on sequence, and if winner is still unable to be determined, move to next condition until winner is announced 
+    (1) Number of faced up cards: player with lesser faced up card wins
+    (2) Number of collected colors: player with lesser color variety wins
+    (3) Dice of Destiny: player with bigger dice value wins
  
  
  ----------------------------------------------
@@ -96,18 +100,18 @@ CS102 Programming Fundamentals II: Parade Game (G3T2)
  
  
  [src/game/exceptions]
- 1. InvalidPlayerCountException
- Customized exception to handle invalid player count input, ensuring user input is between 2 to 6
- 
- 2. InvalidTypeException
- Customized exception to handle invalid player type input, when a player is neither a human or computer
- 
+ 1. InvalidNameException 
+ Custom exception to handle invalid player name input, ensuring that the provided name meets required criteria 
+  
+ 2. InvalidInputException 
+ Custom exception designed to handle invalid inputs, ex. when the player type is not "human" or "computer," or when a player attempts to play cards outside the allowable range of 1 to the maximum number of cards
+
  
  [src/game/gameplay]
  1. GameManager
  Handles game logic, flip cards based on majority and determine winners
 
- 2. GameControl
+ 2. GameController
  Manages the overall game flow, including initialization and turns, conclude the game by coordinating player actions, deck management and parade updates
 
  3. PlayerComparator
@@ -116,13 +120,51 @@ CS102 Programming Fundamentals II: Parade Game (G3T2)
  4. Podium
  Display final standings of players with rankings and score at the end of the game
 
- 5. RollDice
- Prompt players to roll dice to decide who goes first
+ 5. GameMenu
+ Allows user to navigate the game, start a new game, view instructions, or quit the game
+
+
+[src/game/gameplay/managers]
+ 1. CardFlipper
+ Manages the card flipping phase in the Parade game by determining which players have the most cards of each color and flipping their cards based on game rules
+
+ 2. DiceTieBreaker
+ Resolves ties in the Parade game by having tied players roll dice and selecting the highest roller as the winner
+ 
+ 3. EndGameChecker
+ Checks if the Parade game should end either when the deck is empty / a player has collected at least one card of every color
+
+ 4. PlayerManager
+ Manages the list of Parade players and reorders them so that a specified player starts the turn sequence
+
+ 5. QuitHandler
+ Handles player-initiated quitting in the Parade game, confirming intent and updating the game state accordingly
+
+ 6. ScoreCalculator
+ Calculate final scores for all players
+
+ 7. WinnerDeterminer
+ Determine winners based on their scores and resolving ties
+
+
+ [src/game/renderer]
+ Handles all the game's print statements, including displaying messages, animations, and game-related visuals 
+
+
+ [src/game/setup]
+ 1. Dice
+ Animates rolling process for players
+
+ 2. PlayerSetup
+ Manages the process of setting up players before the game begins
+
+ 3. StartingPlayerDecider
+ Determines starting player and use tie-breakers rounds until a single highest roller emerges
 
  
  [src/game/utils]
- 1. GameUtils
- Includes functions to display welcome message, validate user input, and provides utility for game initialization
+ 1. Constants
+ Includes all constants needed and used for game flow
  
  2. Helper
  Provides utility methods for game, for instance, clearing the console, displaying a loading spinner, introducing delays between players' turns, etc.
